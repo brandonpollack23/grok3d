@@ -12,6 +12,13 @@ using namespace Grok3d;
 using namespace Grok3d::Entities;
 using namespace Grok3d::Components;
 
+auto PrintUsageAndExit() -> int
+{
+    std::cout << "Specify a test number to run:\n\
+        1: MoveBackAndForth and delete" << std::endl;
+    return 0;
+}
+
 class MoveBackAndForthBehavour : public GRK_GameBehaviourBase
 {
     public:
@@ -65,10 +72,8 @@ auto CreateAndRegisterMoveTestEntity(GRK_EntityComponentManager& ecm) -> GRK_Res
     return pointEntity.AddComponent(std::move(glc));
 }
 
-auto main() -> int
+auto CreationMovementDeleteTest() -> void
 {
-    std::cout << "Running Grok3d tests" << std::endl;
-
     auto engineInitialization = [](GRK_EntityComponentManager& ecm) -> GRK_Result
     {
         for (int i = 0; i < 5; i++)
@@ -85,6 +90,24 @@ auto main() -> int
 
     GRK_Engine engine(engineInitialization);
     engine.Run();
+}
+
+auto main(int argc, char* argv[]) -> int
+{
+    std::cout << "Running Grok3d tests" << std::endl;
+
+    if(argc < 2)
+    {
+        return PrintUsageAndExit();
+    }
+    
+    switch(*argv[1])
+    {
+    case '1':
+        CreationMovementDeleteTest();
+    default:
+        std::cout << "no such test: " << argv[1] << std::endl;
+    }
 
     return 0;
 }

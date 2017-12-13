@@ -26,8 +26,10 @@ auto main(int argc, char* argv[]) -> int
     {
     case '1':
         CreationMovementDeleteTest();
+        break;
     default:
         std::cout << "no such test: " << argv[1] << std::endl;
+        break;
     }
 
     return 0;

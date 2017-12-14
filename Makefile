@@ -1,5 +1,5 @@
 CC = g++
-INCLUDEDIRS = grok3d/Grok3d_Windows/inc grok3d/glm grok3d/notstd
+INCLUDEDIRS = grok3d/grok3d/inc grok3d/glm grok3d/notstd grok3d/include
 CFLAGS = -std=c++17 -g -O2 -Wall -fno-exceptions $(GLFAGS) $(addprefix -I, $(INCLUDEDIRS))
 
 LD = g++
@@ -18,11 +18,12 @@ VPATH = $(VPATHCPP) $(VPATHOBJ)
 BINDIR = bin
 OBJDIR = o
 
-all: $(TARGET)
+STATICLIBS = grok3d/grok3d/o/libgrok3d.a
 
-$(TARGET): dependencies $(OBJECTS) | $(BINDIR)
-	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS)
+all: dependencies $(TARGET)
 
+$(TARGET): $(OBJECTS) | $(BINDIR)
+	$(LD) -o $(BINDIR)/$@ $^ $(STATICLIBS) $(LDFLAGS) 
 $(OBJDIR)/%.o: %.cpp | $(VPATHOBJ)
 	$(CC) -c $(CFLAGS) $< -o $@
 
@@ -37,7 +38,7 @@ $(VPATHOBJ):
 
 clean:
 	rm -rf o bin
-	cd grok3d/Grok3d_Windows && make clean
+	cd grok3d/grok3d && make clean
 
 print-%: 
 	@echo $($*)

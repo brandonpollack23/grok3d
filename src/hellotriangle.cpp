@@ -38,6 +38,9 @@ auto HelloTriangleTest(char* args[]) -> void
                 vertexes,
                 3,
                 sizeof(float),
+                GRK_PrimitiveType::Unsigned_Int,
+                nullptr,
+                0,
                 GRK_OpenGLPrimitive::GL_Triangles,
                 shaderProgram);
 

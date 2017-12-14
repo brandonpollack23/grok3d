@@ -37,6 +37,7 @@ auto HelloTriangleTest(char* args[]) -> void
         auto rc = GRK_RenderComponent(
                 vertexes,
                 3,
+                sizeof(float),
                 GRK_OpenGLPrimitive::GL_Triangles,
                 shaderProgram);
 

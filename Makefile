@@ -20,14 +20,14 @@ OBJDIR = o
 
 all: $(TARGET)
 
-$(TARGET): $(OBJECTS) grok3d/Grok3d_Windows/o/libgrok3d.a | $(BINDIR)
+$(TARGET): dependencies $(OBJECTS) | $(BINDIR)
 	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS)
 
 $(OBJDIR)/%.o: %.cpp | $(VPATHOBJ)
 	$(CC) -c $(CFLAGS) $< -o $@
 
-grok3d/Grok3d_Windows/o/libgrok3d.a:
-	cd grok3d/Grok3d_Windows && make
+dependencies:
+	cd grok3d/grok3d && make
 
 $(BINDIR):
 	mkdir -p $@

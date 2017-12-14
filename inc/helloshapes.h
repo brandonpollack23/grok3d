@@ -4,5 +4,6 @@
 #include "grok3d.h"
 
 auto HelloTriangleTest(char* args[]) -> void;
+auto HelloSquareTest(char* args[]) -> void;
 
 #endif

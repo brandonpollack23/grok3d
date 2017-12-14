@@ -3,7 +3,7 @@
 * This file is available under the MIT license included in the project
 */
 #include "../inc/movebackandforthtest.h"
-#include "../inc/hellotriangle.h"
+#include "../inc/helloshapes.h"
 
 #include <iostream>
 
@@ -11,7 +11,8 @@ auto PrintUsageAndExit() -> int
 {
     std::cout << "Specify a test number to run:\n\
         1: MoveBackAndForth and delete\n\
-        2: Render a triangle" 
+        2: Render a triangle\n\
+        3: Render a square" 
         << std::endl;
     return 0;
 }
@@ -39,6 +40,17 @@ auto main(int argc, char* argv[]) -> int
         else
         {
             HelloTriangleTest(argv);
+        }
+        break;
+    case '3':
+        if(argc < 4)
+        {
+            std::cout << "Square test requires a vertex and frag shader passed as arguments 2 and 3" << std::endl;
+            return -1;
+        }
+        else
+        {
+            HelloSquareTest(argv);
         }
         break;
     default:

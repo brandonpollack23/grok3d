@@ -10,10 +10,10 @@ using namespace Grok3d;
 using namespace Grok3d::Entities;
 using namespace Grok3d::Components;
 
-class MoveBackAndForthBehavour : public GRK_GameBehaviourBase
+class MoveBackAndForthBehaviour : public GRK_GameBehaviourBase
 {
     public:
-        MoveBackAndForthBehavour(GRK_EntityHandle entity) noexcept : 
+        MoveBackAndForthBehaviour(GRK_EntityHandle entity) noexcept :
             GRK_GameBehaviourBase(entity),
             m_transform(entity.GetComponent<GRK_TransformComponent>())
         {
@@ -55,7 +55,7 @@ auto CreateAndRegisterMoveTestEntity(GRK_EntityComponentManager& ecm) -> GRK_Res
 {
     auto pointEntity = ecm.CreateEntity();
 
-    auto moveBehaviour = std::make_unique<MoveBackAndForthBehavour>(pointEntity);
+    auto moveBehaviour = std::make_unique<MoveBackAndForthBehaviour>(pointEntity);
 
     GRK_GameLogicComponent glc;
     glc.RegisterBehaviour(std::move(moveBehaviour));

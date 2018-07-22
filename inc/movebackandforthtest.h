@@ -3,7 +3,7 @@
 
 #include "grok3d.h"
 
-auto CreateAndRegisterMoveTestEntity(Grok3d::GRK_EntityComponentManager& ecm) -> Grok3d::GRK_Result;
+auto CreateAndRegisterMoveTestEntity(Grok3d::GRK_EntityComponentManager &ecm) -> Grok3d::GRK_Result;
 
 auto CreationMovementDeleteTest() -> void;
 

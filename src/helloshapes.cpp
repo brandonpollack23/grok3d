@@ -8,37 +8,38 @@ using namespace Grok3d::Components;
 using namespace Grok3d::Utilities;
 
 auto HelloTriangleTest(char *args[]) -> void {
-  auto engineInitialization = [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
-    auto triangleEntity = ecm.CreateEntity();
+  auto engineInitialization =
+    [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
+      auto triangleEntity = ecm.CreateEntity();
 
-    float triangleFloats[] = {
-      -0.5f, -0.5f, 0.0f,
-      0.5f, -0.5f, 0.0f,
-      0.0f, 0.5f, 0.0
+      float triangleFloats[] = {
+        -0.5f, -0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        0.0f, 0.5f, 0.0
+      };
+      auto vertexes = std::make_unique<float>(9);
+      std::copy(triangleFloats, &triangleFloats[9], vertexes.get());
+
+      auto vertexShader =
+        ShaderManager::GRK_LoadShaderFile(args[2], ShaderManager::ShaderType::VertexShader);
+
+      auto fragShader =
+        ShaderManager::GRK_LoadShaderFile(args[3], ShaderManager::ShaderType::FragmentShader);
+
+      auto shaderProgram = ShaderManager::GRK_CreateShaderProgram({vertexShader, fragShader});
+
+      auto rc = GRK_RenderComponent(
+        std::move(vertexes),
+        3,
+        sizeof(float),
+        GRK_GL_PrimitiveType::Unsigned_Int,
+        nullptr,
+        0,
+        GRK_OpenGLPrimitive::GL_Triangles,
+        shaderProgram);
+
+      return triangleEntity.AddComponent(std::move(rc));
     };
-    auto vertexes = new float[9];
-    std::copy(triangleFloats, &triangleFloats[9], vertexes);
-
-    auto vertexShader =
-      ShaderManager::GRK_LoadShaderFile(args[2], ShaderManager::ShaderType::VertexShader);
-
-    auto fragShader =
-      ShaderManager::GRK_LoadShaderFile(args[3], ShaderManager::ShaderType::FragmentShader);
-
-    auto shaderProgram = ShaderManager::GRK_CreateShaderProgram({vertexShader, fragShader});
-
-    auto rc = GRK_RenderComponent(
-      vertexes,
-      3,
-      sizeof(float),
-      GRK_GL_PrimitiveType::Unsigned_Int,
-      nullptr,
-      0,
-      GRK_OpenGLPrimitive::GL_Triangles,
-      shaderProgram);
-
-    return triangleEntity.AddComponent(std::move(rc));
-  };
 
   GRK_Engine engine(engineInitialization);
   engine.Run();
@@ -55,8 +56,8 @@ auto HelloSquareTest(char *args[]) -> void {
       -0.5f, -0.5f, 0.0f, //bottom left
       -0.5f, 0.5f, 0.0f  //top left
     };
-    auto vertexes = new float[12];
-    std::copy(squareFloats, &squareFloats[12], vertexes);
+    auto vertexes = std::make_unique<float>(12);
+    std::copy(squareFloats, &squareFloats[12], vertexes.get());
 
     // create index order array
     unsigned int squareIndexes[] = {
@@ -74,7 +75,7 @@ auto HelloSquareTest(char *args[]) -> void {
     auto shaderProgram = ShaderManager::GRK_CreateShaderProgram({vertexShader, fragShader});
 
     auto rc = GRK_RenderComponent(
-      vertexes,
+      std::move(vertexes),
       4,
       sizeof(float),
       GRK_GL_PrimitiveType::Unsigned_Int,

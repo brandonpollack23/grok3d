@@ -19,5 +19,5 @@ new_local_repository(
 new_local_repository(
     name = "glfw3",
     build_file = "third_party/glfw3.BUILD",
-    path = "third_party/glm",
+    path = "third_party/glfw",
 )

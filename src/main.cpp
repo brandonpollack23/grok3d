@@ -2,8 +2,8 @@
 * Contact @ grok3d@gmail.com
 * This file is available under the MIT license included in the project
 */
-#include "../inc/movebackandforthtest.h"
-#include "../inc/helloshapes.h"
+#include "movebackandforthtest.h"
+#include "helloshapes.h"
 
 #include <iostream>
 

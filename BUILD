@@ -19,13 +19,14 @@ cc_binary(
     name = "grokgame_debug",
     srcs = CPP_FILES + HEADER_FILES,
     copts = [
-        "-std=C++17",
+        "-std=c++17",
         "-g",
         "-O0",
         "-Wall",
         "-fno-exceptions",
     ],
     data = RUNTIME_FILE_DEPENDENCIES,
+    includes = ["include"],
     linkopts = [
         "-lglfw",
         "-lGL",
@@ -39,12 +40,13 @@ cc_binary(
     name = "grokgame",
     srcs = CPP_FILES + HEADER_FILES,
     copts = [
-        "-std=C++17",
+        "-std=c++17",
         "-O3",
         "-Wall",
         "-fno-exceptions",
     ],
     data = RUNTIME_FILE_DEPENDENCIES,
+    includes = ["include"],
     linkopts = [
         "-lglfw",
         "-lGL",

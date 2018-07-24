@@ -1,6 +1,6 @@
 #include "grok3d.h"
 
-#include "../inc/movebackandforthtest.h"
+#include "movebackandforthtest.h"
 
 #include <iostream>
 

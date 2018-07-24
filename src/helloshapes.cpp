@@ -91,29 +91,30 @@ auto HelloSquareTest(char *args[]) -> void {
   GRK_Engine engine(engineInitialization);
   engine.Run();
 }
-class ChangingColorBehaviour : GRK_GameBehaviourBase {
-public:
-  ChangingColorBehaviour(GRK_EntityHandle entity) noexcept :
-    GRK_GameBehaviourBase(entity),
-    m_renderComponent(entity.GetComponent<GRK_RenderComponent>()) {
-  }
 
-  auto Update(double dt) -> void override {
-    auto greenValue = std::sin(getCurrentTime()) / 2.0f + 0.5f;
-  }
+// class ChangingColorBehaviour : GRK_GameBehaviourBase {
+// public:
+//   ChangingColorBehaviour(GRK_EntityHandle entity) noexcept :
+//     GRK_GameBehaviourBase(entity),
+//     m_renderComponent(entity.GetComponent<GRK_RenderComponent>()) {
+//   }
 
-  long long int getCurrentTime() const { return std::chrono::_V2::system_clock::now().time_since_epoch().count(); }
+//   auto Update(double dt) -> void override {
+//     auto greenValue = std::sin(getCurrentTime()) / 2.0f + 0.5f;
+//   }
 
-private:
-  GRK_ComponentHandle<GRK_RenderComponent> m_renderComponent;
-};
+//   long long int getCurrentTime() const { return std::chrono::_V2::system_clock::now().time_since_epoch().count(); }
 
-auto HelloChangingTriangleTest(char *args[]) -> void {
-  auto engineInitialization = [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
-    GRK_
-    return GRK_Result::Ok;
-  };
+// private:
+//   GRK_ComponentHandle<GRK_RenderComponent> m_renderComponent;
+// };
 
-  GRK_Engine engine(engineInitialization);
-  engine.Run();
-};
+// auto HelloChangingTriangleTest(char *args[]) -> void {
+//   auto engineInitialization = [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
+//     GRK_
+//     return GRK_Result::Ok;
+//   };
+
+//   GRK_Engine engine(engineInitialization);
+//   engine.Run();
+// };

@@ -4,6 +4,11 @@ project(grok3dtests)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE})
 
+add_custom_target(build-time-make-directory ALL
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+file(COPY ${CMAKE_SOURCE_DIR}/shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
+
 include_directories(grok3d/glm)
 include_directories(grok3d/glm/glm/detail)
 include_directories(grok3d/glm/glm/ext)
@@ -84,5 +89,3 @@ add_executable(grok3dtests
         .gitmodules
         LICENSE
         Makefile)
-
-file(COPY shaders DESTINATION ./)

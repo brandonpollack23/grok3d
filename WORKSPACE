@@ -1,27 +1,23 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
-git_repository(
+local_repository(
     name = "grok3d",
-    commit = "glfw_graphics",
-    remote = "https://github.com/brandonpollack23/grok3d",
+    path = "third_party/grok3d",
 )
 
-git_repository(
+local_repository(
     name = "notstd",
-    commit = "master",
-    remote = "https://github.com/brandonpollack23/notstd",
+    path = "third_party/notstd",
 )
 
-new_git_repository(
+new_local_repository(
     name = "glm",
-    build_file = "glm.BUILD",
-    remote = "https://github.com/g-truc/glm",
-    tag = "0.9.9.0",
+    build_file = "third_party/glm.BUILD",
+    path = "third_party/glm",
 )
 
-new_git_repository(
+new_local_repository(
     name = "glfw3",
-    build_file = "glfw3.BUILD",
-    remote = "https://github.com/glfw/glfw",
-    tag = "3.2.1",
+    build_file = "third_party/glfw3.BUILD",
+    path = "third_party/glm",
 )

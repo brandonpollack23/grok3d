@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
     <generated>
+      <config projectName="grok3dtests" targetName="build-time-make-directory" />
       <config projectName="grok3dtests" targetName="grok3dtests" />
     </generated>
   </component>
@@ -12,7 +13,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dcbc29bc-b8fa-4b9a-b63b-aa8b5da9d47a" name="Default" comment="" />
+    <list default="true" id="dcbc29bc-b8fa-4b9a-b63b-aa8b5da9d47a" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grok3d/grok3d/src/System/RenderSystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/grok3d/grok3d/src/System/RenderSystem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shaders/fragment/orange.frag" beforeDir="false" afterPath="$PROJECT_DIR$/shaders/fragment/orange.frag" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shaders/vertex/equal.vert" beforeDir="false" afterPath="$PROJECT_DIR$/shaders/vertex/equal.vert" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helloshapes.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/helloshapes.cpp" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/debug/" />
     <ignored path="$PROJECT_DIR$/release/" />
@@ -33,20 +41,17 @@
           <file leaf-file-name="ShaderManager.h" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/grok3d/grok3d/inc/utilities/ShaderManager.h">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="117">
-                  <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+                <state relative-caret-position="389">
+                  <caret line="33" column="27" selection-start-line="33" selection-start-column="27" selection-end-line="33" selection-end-column="27" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ShaderManager.cpp" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/utilities/ShaderManager.cpp">
+          <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="544">
-                  <caret line="92" column="37" lean-forward="true" selection-start-line="92" selection-start-column="37" selection-end-line="92" selection-end-column="37" />
-                  <folding>
-                    <element signature="e#160#196#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="153">
+                  <caret line="9" column="78" selection-start-line="9" selection-start-column="78" selection-end-line="9" selection-end-column="78" />
                 </state>
               </provider>
             </entry>
@@ -54,8 +59,11 @@
           <file leaf-file-name="RenderComponent.h" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/grok3d/grok3d/inc/Component/RenderComponent.h">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="646">
-                  <caret line="45" column="45" lean-forward="true" selection-start-line="45" selection-start-column="45" selection-end-line="45" selection-end-column="45" />
+                <state relative-caret-position="731">
+                  <caret line="119" selection-start-line="119" selection-end-line="119" />
+                  <folding>
+                    <element signature="e#251#276#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -63,8 +71,26 @@
           <file leaf-file-name="RenderComponent.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/Component/RenderComponent.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="606">
-                  <caret line="67" column="100" selection-start-line="67" selection-start-column="100" selection-end-line="67" selection-end-column="100" />
+                <state relative-caret-position="748">
+                  <caret line="84" selection-start-line="84" selection-end-line="84" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="equal.vert" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/shaders/vertex/equal.vert">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="136">
+                  <caret line="8" column="72" selection-start-line="8" selection-start-column="72" selection-end-line="8" selection-end-column="72" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="orange.frag" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/shaders/fragment/orange.frag">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="85">
+                  <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
                 </state>
               </provider>
             </entry>
@@ -73,11 +99,35 @@
       </split-first>
       <split-second>
         <leaf>
+          <file leaf-file-name="Engine.h" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/grok3d/grok3d/inc/Engine.h">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="100">
+                  <caret line="18" column="9" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
+                  <folding>
+                    <element signature="e#201#226#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="helloshapes.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/helloshapes.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="396">
-                  <caret line="47" column="12" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="12" />
+                <state relative-caret-position="544">
+                  <caret line="101" column="42" selection-start-line="101" selection-start-column="42" selection-end-line="101" selection-end-column="42" />
+                  <folding>
+                    <element signature="e#0#19#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="movebackandforthtest.cpp" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/movebackandforthtest.cpp">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="102">
+                  <caret line="12" selection-start-line="12" selection-end-line="12" />
                   <folding>
                     <element signature="e#0#19#0" expanded="true" />
                   </folding>
@@ -100,8 +150,8 @@
           <file leaf-file-name="RenderSystem.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/System/RenderSystem.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="753">
-                  <caret line="141" column="31" selection-start-line="141" selection-start-column="31" selection-end-line="141" selection-end-column="31" />
+                <state relative-caret-position="447">
+                  <caret line="135" column="53" selection-start-line="135" selection-start-column="53" selection-end-line="135" selection-end-column="53" />
                   <folding>
                     <element signature="e#164#183#0" expanded="true" />
                     <element signature="e#2633#2685#0" expanded="true" />
@@ -122,6 +172,7 @@
       <find>doubleConversion</find>
       <find>kju</find>
       <find>NULL</find>
+      <find>now</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -136,8 +187,6 @@
         <option value="$PROJECT_DIR$/grok3d/glm/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/grok3d/grok3d/Makefile" />
         <option value="$PROJECT_DIR$/Makefile" />
-        <option value="$PROJECT_DIR$/src/movebackandforthtest.cpp" />
-        <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/src/main.cpp" />
         <option value="$PROJECT_DIR$/grok3d/grok3d/inc/grok3d_types.h" />
         <option value="$PROJECT_DIR$/grok3d/grok3d/src/System/SystemManager.cpp" />
@@ -145,11 +194,15 @@
         <option value="$PROJECT_DIR$/grok3d/grok3d/src/Engine.cpp" />
         <option value="$PROJECT_DIR$/grok3d/grok3d/inc/Engine.h" />
         <option value="$PROJECT_DIR$/grok3d/grok3d/inc/System/RenderSystem.h" />
-        <option value="$PROJECT_DIR$/grok3d/grok3d/inc/Component/RenderComponent.h" />
-        <option value="$PROJECT_DIR$/src/helloshapes.cpp" />
-        <option value="$PROJECT_DIR$/grok3d/grok3d/src/System/RenderSystem.cpp" />
         <option value="$PROJECT_DIR$/grok3d/grok3d/src/utilities/ShaderManager.cpp" />
+        <option value="$PROJECT_DIR$/shaders/vertex/equal.vert" />
+        <option value="$PROJECT_DIR$/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/shaders/fragment/orange.frag" />
+        <option value="$PROJECT_DIR$/src/movebackandforthtest.cpp" />
+        <option value="$PROJECT_DIR$/src/helloshapes.cpp" />
         <option value="$PROJECT_DIR$/grok3d/grok3d/src/Component/RenderComponent.cpp" />
+        <option value="$PROJECT_DIR$/grok3d/grok3d/src/System/RenderSystem.cpp" />
+        <option value="$PROJECT_DIR$/grok3d/grok3d/inc/Component/RenderComponent.h" />
       </list>
     </option>
   </component>
@@ -180,24 +233,6 @@
             <path>
               <item name="grok3dtests" type="b2602c69:ProjectViewProjectNode" />
               <item name="grok3dtests" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="grok3dtests" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grok3dtests" type="462c0819:PsiDirectoryNode" />
-              <item name="grok3d" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="grok3dtests" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grok3dtests" type="462c0819:PsiDirectoryNode" />
-              <item name="grok3d" type="462c0819:PsiDirectoryNode" />
-              <item name="grok3d" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="grok3dtests" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grok3dtests" type="462c0819:PsiDirectoryNode" />
-              <item name="grok3d" type="462c0819:PsiDirectoryNode" />
-              <item name="grok3d" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="grok3dtests" type="b2602c69:ProjectViewProjectNode" />
@@ -247,6 +282,7 @@
   </component>
   <component name="RunManager" selected="Application.grok3dtests Render a Triangle">
     <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="grok3dtests" RUN_TARGET_NAME="grok3dtests" EXPLICIT_BUILD_TARGET_NAME="all" />
+    <configuration name="build-time-make-directory" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="grok3dtests" TARGET_NAME="build-time-make-directory" CONFIG_NAME="Debug" />
     <configuration name="grok3dtests Move Back and Forth" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="1" PASS_PARENT_ENVS_2="true" PROJECT_NAME="grok3dtests" TARGET_NAME="grok3dtests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="grok3dtests" RUN_TARGET_NAME="grok3dtests" />
     <configuration name="grok3dtests Render a Square" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="3 shaders/vertex/equal.vert shaders/fragment/orange.frag" PASS_PARENT_ENVS_2="true" PROJECT_NAME="grok3dtests" TARGET_NAME="grok3dtests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="grok3dtests" RUN_TARGET_NAME="grok3dtests" />
     <configuration name="grok3dtests Render a Triangle" type="CMakeRunConfiguration" factoryName="Application" singleton="true" PROGRAM_PARAMS="2 shaders/vertex/equal.vert shaders/fragment/orange.frag" PASS_PARENT_ENVS_2="true" PROJECT_NAME="grok3dtests" TARGET_NAME="grok3dtests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="grok3dtests" RUN_TARGET_NAME="grok3dtests" />
@@ -255,6 +291,7 @@
       <item itemvalue="Application.grok3dtests Move Back and Forth" />
       <item itemvalue="Application.grok3dtests Render a Triangle" />
       <item itemvalue="Application.grok3dtests Render a Square" />
+      <item itemvalue="Application.build-time-make-directory" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -270,25 +307,25 @@
       <workItem from="1532218567517" duration="6285000" />
       <workItem from="1532227374577" duration="6047000" />
       <workItem from="1532242944771" duration="2641000" />
-      <workItem from="1532245606159" duration="12386000" />
+      <workItem from="1532245606159" duration="20482000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27359000" />
+    <option name="totallyTimeSpent" value="35455000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1426" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10429688" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10429688" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Messages" order="0" weight="0.32951945" />
       <window_info anchor="bottom" id="CMake" order="7" weight="0.32951945" />
       <window_info anchor="bottom" id="Event Log" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.32951945" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.32951945" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32951945" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32951945" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="1" weight="0.32951945" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -317,7 +354,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/helloshapes.cpp</url>
-          <line>40</line>
+          <line>41</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -376,29 +413,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/helloshapes.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grok3d/grok3d/inc/utilities/ShaderManager.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/utilities/ShaderManager.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="26" lean-forward="true" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/System/RenderSystem.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -492,13 +506,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grok3d/glm/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="46" selection-start-line="31" selection-start-column="46" selection-end-line="31" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/grok3d/glm/test/gtc/gtc_user_defined_types.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -545,34 +552,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inc/GLFW/glfw3.h" />
-    <entry file="file://$PROJECT_DIR$/shaders/vertex/equal.vert">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/std_function.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="254">
           <caret line="684" selection-start-line="684" selection-end-line="684" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/movebackandforthtest.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="16" column="41" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
@@ -648,23 +631,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grok3d/grok3d/inc/Engine.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="49" column="20" selection-start-line="49" selection-start-column="20" selection-end-line="49" selection-end-column="20" />
-          <folding>
-            <element signature="e#201#226#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/Engine.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="38" column="25" selection-start-line="38" selection-start-column="25" selection-end-line="38" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/x86_64-w64-mingw32/include/GLFW/glfw3.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="799">
@@ -689,10 +655,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grok3d/grok3d/inc/utilities/ShaderManager.h">
+    <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/utilities/ShaderManager.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+        <state relative-caret-position="544">
+          <caret line="92" column="37" lean-forward="true" selection-start-line="92" selection-start-column="37" selection-end-line="92" selection-end-column="37" />
+          <folding>
+            <element signature="e#160#196#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grok3d/glm/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2533">
+          <caret line="4" column="10" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shaders/vertex/equal.vert">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="72" selection-start-line="8" selection-start-column="72" selection-end-line="8" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shaders/fragment/orange.frag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -706,20 +696,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/helloshapes.cpp">
+    <entry file="file://$PROJECT_DIR$/src/movebackandforthtest.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="47" column="12" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="12" />
+        <state relative-caret-position="102">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/grok3d/grok3d/inc/Engine.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="18" column="9" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
+          <folding>
+            <element signature="e#201#226#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/Engine.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="413">
+          <caret line="75" column="47" selection-start-line="75" selection-start-column="47" selection-end-line="75" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/chrono">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="300" column="13" selection-start-line="300" selection-start-column="13" selection-end-line="300" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/cmath">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="436" column="4" selection-start-line="436" selection-start-column="4" selection-end-line="436" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/helloshapes.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="101" column="42" selection-start-line="101" selection-start-column="42" selection-end-line="101" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grok3d/grok3d/inc/utilities/ShaderManager.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="389">
+          <caret line="33" column="27" selection-start-line="33" selection-start-column="27" selection-end-line="33" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="78" selection-start-line="9" selection-start-column="78" selection-end-line="9" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/System/RenderSystem.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="753">
-          <caret line="141" column="31" selection-start-line="141" selection-start-column="31" selection-end-line="141" selection-end-column="31" />
+        <state relative-caret-position="447">
+          <caret line="135" column="53" selection-start-line="135" selection-start-column="53" selection-end-line="135" selection-end-column="53" />
           <folding>
             <element signature="e#164#183#0" expanded="true" />
             <element signature="e#2633#2685#0" expanded="true" />
@@ -729,25 +774,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grok3d/grok3d/inc/Component/RenderComponent.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="45" column="45" lean-forward="true" selection-start-line="45" selection-start-column="45" selection-end-line="45" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/utilities/ShaderManager.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="92" column="37" lean-forward="true" selection-start-line="92" selection-start-column="37" selection-end-line="92" selection-end-column="37" />
+        <state relative-caret-position="731">
+          <caret line="119" selection-start-line="119" selection-end-line="119" />
           <folding>
-            <element signature="e#160#196#0" expanded="true" />
+            <element signature="e#251#276#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/Component/RenderComponent.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="606">
-          <caret line="67" column="100" selection-start-line="67" selection-start-column="100" selection-end-line="67" selection-end-column="100" />
+        <state relative-caret-position="748">
+          <caret line="84" selection-start-line="84" selection-end-line="84" />
         </state>
       </provider>
     </entry>

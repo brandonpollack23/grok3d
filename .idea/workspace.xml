@@ -12,11 +12,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dcbc29bc-b8fa-4b9a-b63b-aa8b5da9d47a" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/grok3d" beforeDir="false" afterPath="$PROJECT_DIR$/grok3d" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grok3d/grok3d/src/Component/RenderComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/grok3d/grok3d/src/Component/RenderComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helloshapes.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/helloshapes.cpp" afterDir="false" />
-    </list>
+    <list default="true" id="dcbc29bc-b8fa-4b9a-b63b-aa8b5da9d47a" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/debug/" />
     <ignored path="$PROJECT_DIR$/release/" />
@@ -67,7 +63,7 @@
           <file leaf-file-name="RenderComponent.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/Component/RenderComponent.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="627">
+                <state relative-caret-position="606">
                   <caret line="67" column="100" selection-start-line="67" selection-start-column="100" selection-end-line="67" selection-end-column="100" />
                 </state>
               </provider>
@@ -104,7 +100,7 @@
           <file leaf-file-name="RenderSystem.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/System/RenderSystem.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="549">
+                <state relative-caret-position="753">
                   <caret line="141" column="31" selection-start-line="141" selection-start-column="31" selection-end-line="141" selection-end-column="31" />
                   <folding>
                     <element signature="e#164#183#0" expanded="true" />
@@ -274,12 +270,12 @@
       <workItem from="1532218567517" duration="6285000" />
       <workItem from="1532227374577" duration="6047000" />
       <workItem from="1532242944771" duration="2641000" />
-      <workItem from="1532245606159" duration="11733000" />
+      <workItem from="1532245606159" duration="12386000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26706000" />
+    <option name="totallyTimeSpent" value="27359000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1426" extended-state="6" />
@@ -722,7 +718,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/System/RenderSystem.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="549">
+        <state relative-caret-position="753">
           <caret line="141" column="31" selection-start-line="141" selection-start-column="31" selection-end-line="141" selection-end-column="31" />
           <folding>
             <element signature="e#164#183#0" expanded="true" />
@@ -750,7 +746,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grok3d/grok3d/src/Component/RenderComponent.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="627">
+        <state relative-caret-position="606">
           <caret line="67" column="100" selection-start-line="67" selection-start-column="100" selection-end-line="67" selection-end-column="100" />
         </state>
       </provider>

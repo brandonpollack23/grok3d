@@ -7,6 +7,12 @@ EXTERNAL_DEPENDENCIES_DEBUG = [
     "@grok3d//:grok3d_debug",
 ]
 
+LOPTS = [
+    "-lglfw",
+    "-lGL",
+    "-ldl",
+]
+
 CPP_FILES = glob(["src/**/*.cpp"])
 
 HEADER_FILES = glob(["include/**/*.h"])
@@ -27,11 +33,7 @@ cc_binary(
     ],
     data = RUNTIME_FILE_DEPENDENCIES,
     includes = ["include"],
-    linkopts = [
-        "-lglfw",
-        "-lGL",
-        "-ldl",
-    ],
+    linkopts = LOPTS,
     linkstatic = True,
     deps = EXTERNAL_DEPENDENCIES_DEBUG,
 )
@@ -47,11 +49,7 @@ cc_binary(
     ],
     data = RUNTIME_FILE_DEPENDENCIES,
     includes = ["include"],
-    linkopts = [
-        "-lglfw",
-        "-lGL",
-        "-ldl",
-    ],
+    linkopts = LOPTS,
     linkstatic = True,
     deps = EXTERNAL_DEPENDENCIES,
 )

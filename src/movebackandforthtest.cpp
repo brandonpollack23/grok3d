@@ -9,10 +9,10 @@ using namespace Grok3d::Entities;
 using namespace Grok3d::Components;
 
 class MoveBackAndForthBehaviour : public GRK_GameBehaviourBase {
-public:
+ public:
   MoveBackAndForthBehaviour(GRK_EntityHandle entity) noexcept :
-    GRK_GameBehaviourBase(entity),
-    m_transform(entity.GetComponent<GRK_TransformComponent>()) {
+      GRK_GameBehaviourBase(entity),
+      m_transform(entity.GetComponent<GRK_TransformComponent>()) {
   }
 
   auto Update(double dt) -> void override {
@@ -39,7 +39,7 @@ public:
     }
   }
 
-private:
+ private:
   GRK_ComponentHandle<GRK_TransformComponent> m_transform;
   float m_direction = 1;
   int m_updateCount = 0;

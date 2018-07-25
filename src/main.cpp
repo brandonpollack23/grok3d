@@ -24,8 +24,7 @@ auto main(int argc, char *argv[]) -> int {
   }
 
   switch (*argv[1]) {
-    case '1':
-      CreationMovementDeleteTest();
+    case '1':CreationMovementDeleteTest();
       break;
     case '2':
       if (argc < 4) {
@@ -43,8 +42,7 @@ auto main(int argc, char *argv[]) -> int {
         HelloSquareTest(argv);
       }
       break;
-    default:
-      std::cout << "no such test: " << argv[1] << std::endl;
+    default:std::cout << "no such test: " << argv[1] << std::endl;
       break;
   }
 

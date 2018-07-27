@@ -60,8 +60,6 @@ auto GRK_Engine::EnsureInitialized() -> void {
 };
 
 auto GRK_Engine::RunGameLoop() -> void {
-  using clock = std::chrono::high_resolution_clock;
-
   // TODO use CVAR to set this as tickrate
   // This is 144hz period in ns: 6944444ns
   const auto tickPeriod = std::chrono::nanoseconds(6944444ns);

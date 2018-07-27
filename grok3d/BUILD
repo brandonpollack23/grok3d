@@ -49,7 +49,6 @@ cc_library(
         ":top_level",
     ],
     hdrs = ["grok3d.h"],
-    includes = ["//grok3d"],
     visibility = ["//visibility:public"],
     deps = [
         "//grok3d/glad",

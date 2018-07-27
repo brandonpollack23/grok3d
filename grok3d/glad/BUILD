@@ -12,5 +12,4 @@ cc_library(
     hdrs = [
         "glad/glad.h",
     ],
-    includes = ["."],
 )

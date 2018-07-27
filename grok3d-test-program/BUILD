@@ -5,15 +5,12 @@ filegroup(
     srcs = glob(["src/*"]),
 )
 
-filegroup(
-    name = "shader-files",
-    srcs = glob(["shaders"]),
-)
+SHADER_FILES = glob(["shaders/**/*"])
 
 cc_binary(
     name = "grok3d-test-program",
     srcs = [":source"],
-    data = [":shader-files"],
+    data = SHADER_FILES,
     linkopts = [
         "-lglfw",
         "-lGL",

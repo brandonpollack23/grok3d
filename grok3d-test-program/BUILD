@@ -11,14 +11,14 @@ filegroup(
 )
 
 cc_binary(
-    name = "grok3d-test-programs",
+    name = "grok3d-test-program",
     srcs = [":source"],
+    data = [":shader-files"],
     linkopts = [
         "-lglfw",
         "-lGL",
         "-ldl",
     ],
-    data = [":shader-files"],
     deps = [
         ":shader-files",
         "//grok3d",

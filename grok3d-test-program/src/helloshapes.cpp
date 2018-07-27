@@ -1,33 +1,33 @@
+#include "helloshapes.h"
+
 #include "grok3d/grok3d.h"
 
-#include <cmath>
 #include <iostream>
 
 using namespace Grok3d;
 using namespace Grok3d::Entities;
 using namespace Grok3d::Components;
-using namespace Grok3d::Utilities;
+using namespace Grok3d::ShaderManager;
+
+// Normally these would be loaded from some file or something, here they're static, but I show what you would
+// do if they weren't by allocating the memory anyway.
+static float triangleFloats[] = {
+    -0.5f, -0.5f, 0.0f,
+    0.5f, -0.5f, 0.0f,
+    0.0f, 0.5f, 0.0
+};
+
+// TODO inidiviaul program below
 
 auto HelloTriangleTest(char *args[]) -> void {
   auto engineInitialization =
       [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
         auto triangleEntity = ecm.CreateEntity();
 
-        float triangleFloats[] = {
-            -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.0f, 0.5f, 0.0
-        };
         auto vertexes = std::make_unique<float>(9);
         std::copy(triangleFloats, &triangleFloats[9], vertexes.get());
 
-        auto vertexShader =
-            ShaderManager::GRK_LoadShaderFile(args[2], ShaderManager::ShaderType::VertexShader);
-
-        auto fragShader =
-            ShaderManager::GRK_LoadShaderFile(args[3], ShaderManager::ShaderType::FragmentShader);
-
-        auto shaderProgram = ShaderManager::GRK_CreateShaderProgram({vertexShader, fragShader});
+        auto shaderProgram = ShaderProgram(args[2], args[3]);
 
         auto rc = GRK_RenderComponent(
             std::move(vertexes),
@@ -45,6 +45,8 @@ auto HelloTriangleTest(char *args[]) -> void {
   GRK_Engine engine(engineInitialization);
   engine.Run();
 }
+
+// TODO inidiviaul program below
 
 auto HelloSquareTest(char *args[]) -> void {
   auto engineInitialization = [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
@@ -69,11 +71,7 @@ auto HelloSquareTest(char *args[]) -> void {
     std::copy(squareIndexes, &squareIndexes[6], indices);
 
     // load shaders
-    auto vertexShader =
-        ShaderManager::GRK_LoadShaderFile(args[2], ShaderManager::ShaderType::VertexShader);
-    auto fragShader =
-        ShaderManager::GRK_LoadShaderFile(args[3], ShaderManager::ShaderType::FragmentShader);
-    auto shaderProgram = ShaderManager::GRK_CreateShaderProgram({vertexShader, fragShader});
+    auto shaderProgram = ShaderManager::ShaderProgram({args[2], args[3]});
 
     auto rc = GRK_RenderComponent(
         std::move(vertexes),
@@ -92,29 +90,84 @@ auto HelloSquareTest(char *args[]) -> void {
   engine.Run();
 }
 
-// class ChangingColorBehaviour : GRK_GameBehaviourBase {
-// public:
-//   ChangingColorBehaviour(GRK_EntityHandle entity) noexcept :
-//     GRK_GameBehaviourBase(entity),
-//     m_renderComponent(entity.GetComponent<GRK_RenderComponent>()) {
-//   }
+// TODO inidiviaul program below
+static constexpr auto kFirstUniform = "ourColor";
 
-//   auto Update(double dt) -> void override {
-//     auto greenValue = std::sin(getCurrentTime()) / 2.0f + 0.5f;
-//   }
+class FirstUniformShader : public ShaderProgram {
+ public:
+  FirstUniformShader(
+      const char * const vertexShader,
+      const char * const fragmentShader,
+      const char * const uniform) : ShaderProgram(vertexShader, fragmentShader) {
+    firstUniform = static_cast<GRK_UniformID>(glGetUniformLocation(shaderProgramId, uniform));
+    if (firstUniform < 0) {
+      std::cout << "Error getting uniform \"" << uniform << "\" from shaders: "
+                << vertexShader << " " << fragmentShader << std::endl;
+      std::exit(-1);
+    }
+  }
 
-//   long long int getCurrentTime() const { return std::chrono::_V2::system_clock::now().time_since_epoch().count(); }
+  auto SetFirstUniformFloat(float f) {
+    glUniform4f(firstUniform, 0.0f, f, 0.0f, 1.0f);
+  }
 
-// private:
-//   GRK_ComponentHandle<GRK_RenderComponent> m_renderComponent;
-// };
+ private:
+  GRK_UniformID firstUniform;
+};
 
-// auto HelloChangingTriangleTest(char *args[]) -> void {
-//   auto engineInitialization = [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
-//     GRK_
-//     return GRK_Result::Ok;
-//   };
+class ChangeColorBehaviour : public GRK_GameBehaviourBase {
+ public:
+  explicit ChangeColorBehaviour(GRK_EntityHandle entity, FirstUniformShader shader) noexcept
+      : GRK_GameBehaviourBase(entity),
+        renderComponent(entity.GetComponent<GRK_RenderComponent>()),
+        shader(shader) {}
 
-//   GRK_Engine engine(engineInitialization);
-//   engine.Run();
-// };
+  auto Update(double dt) -> void override {
+    time = time + dt;
+
+    // Convert running time into sinusoid.
+    float greenValue = std::sin(2 * time) / 2.0f + .5f;
+    shader.SetFirstUniformFloat(greenValue);
+  }
+
+ private:
+  GRK_ComponentHandle<GRK_RenderComponent> renderComponent;
+  FirstUniformShader shader;
+  double time = 0;
+};
+
+// TODO clean
+auto HelloChangingTriangleTest(char *args[]) -> void {
+  auto engineInitialization =
+      [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
+        auto triangleEntity = ecm.CreateEntity();
+
+        auto vertexes = std::make_unique<float>(9);
+        std::copy(triangleFloats, &triangleFloats[9], vertexes.get());
+
+        auto shaderProgram = FirstUniformShader(args[2], args[3], kFirstUniform);
+
+        auto rc = GRK_RenderComponent(
+            std::move(vertexes),
+            3,
+            sizeof(float),
+            GRK_GL_PrimitiveType::Unsigned_Int,
+            nullptr,
+            0,
+            GRK_OpenGLPrimitive::GL_Triangles,
+            shaderProgram);
+
+        triangleEntity.AddComponent(std::move(rc));
+
+        GRK_GameLogicComponent glc;
+        auto changeColorBehaviour = std::make_unique<ChangeColorBehaviour>(triangleEntity, shaderProgram);
+        glc.RegisterBehaviour(std::move(changeColorBehaviour));
+
+        triangleEntity.AddComponent(std::move(glc));
+
+        return GRK_Result::Ok;
+      };
+
+  GRK_Engine engine(engineInitialization);
+  engine.Run();
+};

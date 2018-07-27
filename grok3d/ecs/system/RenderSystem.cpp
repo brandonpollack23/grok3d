@@ -129,7 +129,7 @@ auto GRK_RenderSystem::ClearBuffer() const -> void {
 auto GRK_RenderSystem::RenderComponents() const -> void {
   for (auto &renderComponent : *m_renderComponents) {
     // Specify shader program.
-    glUseProgram(renderComponent.GetShaderProgram());
+    glUseProgram(renderComponent.GetShaderProgram().GetId());
 
     // Bind VAO (rules for how this vertex shader data is formatted).
     glBindVertexArray(renderComponent.GetVAO());

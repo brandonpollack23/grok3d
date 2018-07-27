@@ -16,6 +16,7 @@ cc_binary(
         "-lGL",
         "-ldl",
     ],
+    visibility = ["//visibility:public"],
     deps = [
         "//grok3d",
         "@glm",

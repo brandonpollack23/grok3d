@@ -9,12 +9,13 @@
 
 #include <fstream>
 #include <iostream>
+#include <stdlib.h>
 
 using namespace Grok3d;
 
 // TODO make this a class with helper functions and clean up.
 // TODO then go ahead and make it a real class that returns shared_ptr, destructor for shared ptr unloads the shader
-namespace Grok3d::Utilities::ShaderManager {
+namespace Grok3d::ShaderManager {
 auto GRK_LoadShader(const char *const shaderSource, ShaderType type) -> GRK_ShaderID {
   auto id = glCreateShader(static_cast<GLenum>(type));
 
@@ -110,5 +111,18 @@ auto GRK_UnloadShaderProgram(GRK_ShaderProgramID id) -> GRK_Result {
   } else {
     return GRK_Result::Ok;
   }
+}
+
+ShaderProgram::ShaderProgram(const char * const vertexShader, const char * const fragmentShader) {
+  auto vertexShaderID =
+      GRK_LoadShaderFile(vertexShader, ShaderManager::ShaderType::VertexShader);
+
+  auto fragShaderID =
+      GRK_LoadShaderFile(fragmentShader, ShaderManager::ShaderType::FragmentShader);
+
+  shaderProgramId = GRK_CreateShaderProgram({vertexShaderID, fragShaderID});
+}
+auto ShaderProgram::GetId() -> const GRK_ShaderProgramID {
+  return shaderProgramId;
 }
 }

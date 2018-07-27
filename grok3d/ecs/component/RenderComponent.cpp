@@ -9,7 +9,7 @@
 
 using namespace Grok3d;
 using namespace Grok3d::Components;
-using namespace Grok3d::Utilities::ShaderManager;
+using namespace Grok3d::ShaderManager;
 
 static constexpr unsigned int c_dimensions = 3;
 
@@ -21,7 +21,7 @@ GRK_RenderComponent::GRK_RenderComponent(
     void *indices,
     std::size_t indexCount,
     GRK_OpenGLPrimitive primitive,
-    GRK_ShaderProgramID shaderProgram) noexcept :
+    ShaderProgram shaderProgram) noexcept :
     m_vertexes(std::move(vertexes)), // TODO don't store these in cpu memory, only copy to GPU VBO?
     m_VBOOffset(0),
     m_vertexCount(vertexCount),
@@ -57,14 +57,16 @@ GRK_RenderComponent::GRK_RenderComponent(
     m_drawFunction = GRK_DrawFunction::DrawElements;
   }
 
-  //TODO make this configurable
-  //Set up vertex attributes for the 0 vertex
+  // TODO make it so we can have more than one vertex attribute, make it so it they be set,
+  // removing vertices and these values from constuctor
+  // TODO make this configurable
+  // Set up vertex attributes for the 0 vertex
   // Configure 0 vertex attribute
-  // size is 3
-  // they are floats
-  // do not normalize
-  // stride is 3 floats between each vertex
-  // offset of buffer where vertex data is is 0
+  // Size is 3
+  // They are floats
+  // Do not normalize
+  // Stride is 3 floats between each vertex
+  // Offset of buffer where vertex data is is 0
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, c_dimensions * sizeof(float), static_cast<void *>(nullptr));
   glEnableVertexAttribArray(0);
 
@@ -74,3 +76,4 @@ GRK_RenderComponent::GRK_RenderComponent(
   //unbind VAO just be safe and not change it somewhere later
   glBindVertexArray(0);
 }
+

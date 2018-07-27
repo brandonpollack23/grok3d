@@ -42,6 +42,14 @@ auto main(int argc, char *argv[]) -> int {
         HelloSquareTest(argv);
       }
       break;
+    case '4':
+      if (argc < 4) {
+        std::cout << "Color Green shader test requires a vertex and frag shader passed as arguments 2 and 3" << std::endl;
+        return -1;
+      } else {
+        HelloChangingTriangleTest(argv);
+      }
+      break;
     default:std::cout << "no such test: " << argv[1] << std::endl;
       break;
   }

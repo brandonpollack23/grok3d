@@ -7,4 +7,6 @@ auto HelloTriangleTest(char *args[]) -> void;
 
 auto HelloSquareTest(char *args[]) -> void;
 
+auto HelloChangingTriangleTest(char *args[]) -> void;
+
 #endif

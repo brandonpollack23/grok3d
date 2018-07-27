@@ -12,7 +12,8 @@ using namespace Grok3d::Components;
 class MoveBackAndForthBehaviour : public GRK_GameBehaviourBase {
  public:
   explicit MoveBackAndForthBehaviour(GRK_EntityHandle entity) noexcept :
-      GRK_GameBehaviourBase(entity), m_transform(entity.GetComponent<GRK_TransformComponent>()) {
+      GRK_GameBehaviourBase(entity),
+      m_transform(entity.GetComponent<GRK_TransformComponent>()) {
   }
 
   auto Update(double dt) -> void override {

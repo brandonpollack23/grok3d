@@ -20,14 +20,23 @@
  * All shaders need to be loaded and compiled at runtime due to different implementations of
  * opengl, this is super driver/card dependent.  these functions do that for you and allow you to
  * access them or unload them when you want with an id*/
-namespace Grok3d::Utilities::ShaderManager {
+namespace Grok3d::ShaderManager {
 /** This is the shader ID number, also to be passed to OGL to use the shader*/
-using GRK_ShaderID = unsigned int;
-using GRK_ShaderProgramID = unsigned int;
+using GRK_ShaderID = GLuint;
+using GRK_UniformID = GLuint;
+using GRK_ShaderProgramID = GLuint;
 
 enum class ShaderType : GLenum {
   VertexShader = GL_VERTEX_SHADER,
   FragmentShader = GL_FRAGMENT_SHADER
+};
+
+class ShaderProgram {
+ public:
+  ShaderProgram(const char* vertexShader, const char* fragmentShader);
+  auto GetId() -> GRK_ShaderProgramID const;
+ protected:
+  GRK_ShaderProgramID shaderProgramId;
 };
 
 /** compiles the source of a shader program, and returns a handle*/

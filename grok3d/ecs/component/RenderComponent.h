@@ -39,7 +39,7 @@ class GRK_RenderComponent {
       void *indices,
       std::size_t indexCount,
       GRK_OpenGLPrimitive primitive,
-      Grok3d::Utilities::ShaderManager::GRK_ShaderProgramID shaderProgram) noexcept;
+      Grok3d::ShaderManager::ShaderProgram shaderProgram) noexcept;
 
   auto GetVAO() const { return m_VAO; }
 
@@ -59,7 +59,7 @@ class GRK_RenderComponent {
 
   auto GetPrimitive() const { return static_cast<GLenum>(m_primitive); }
 
-  auto GetShaderProgram() const { return m_shaderProgram; }
+  auto GetShaderProgram() const -> Grok3d::ShaderManager::ShaderProgram { return m_shaderProgram; }
 
   auto SizeOfIndexType() const -> std::size_t {
     switch (m_indexType) {
@@ -107,7 +107,7 @@ class GRK_RenderComponent {
 
   GRK_OpenGLPrimitive m_primitive;
 
-  Grok3d::Utilities::ShaderManager::GRK_ShaderProgramID m_shaderProgram;
+  Grok3d::ShaderManager::ShaderProgram m_shaderProgram;
 };
 }
 

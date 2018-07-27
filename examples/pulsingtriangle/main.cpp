@@ -37,8 +37,12 @@ class FirstUniformShader : public ShaderProgram {
     }
   }
 
-  auto SetFirstUniformFloat(float f) {
-    glUniform4f(firstUniform, 0.0f, f, 0.0f, 1.0f);
+  auto SetFirstUniformFloat(float r, float g, float b, float w) {
+    glUniform4f(firstUniform, r, g, b, 1.0f);
+  }
+
+  auto SetFirstUniformFloat(float r, float g, float b) {
+    SetFirstUniformFloat(r, g, b, 1);
   }
 
  private:
@@ -57,7 +61,9 @@ class ChangeColorBehaviour : public GRK_GameBehaviourBase {
 
     // Convert running time into sinusoid.
     float greenValue = std::sin(2 * time) / 2.0f + .5f;
-    shader.SetFirstUniformFloat(greenValue);
+    float redValue = std::cos(2*time) / 2.0f + .5f;
+    float blueValue = std::rand();
+    shader.SetFirstUniformFloat(redValue, greenValue, blueValue);
   }
 
  private:

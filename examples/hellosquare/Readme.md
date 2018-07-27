@@ -1,0 +1,1 @@
+Like the triangle example but now with EBO (Element Buffer Object) instead of just VAO

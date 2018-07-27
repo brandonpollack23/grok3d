@@ -1,9 +1,13 @@
+//
+// Created by brpol on 7/26/18.
+//
+
+#ifndef GROK3DTESTS_MOVEBACKANDFORTHBEHAVIOUR_H
+#define GROK3DTESTS_MOVEBACKANDFORTHBEHAVIOUR_H
+
 #include "grok3d/grok3d.h"
 
-#include "movebackandforthtest.h"
-
 #include <iostream>
-#include <memory>
 
 using namespace Grok3d;
 using namespace Grok3d::Entities;
@@ -46,30 +50,4 @@ class MoveBackAndForthBehaviour : public GRK_GameBehaviourBase {
   int m_updateCount = 0;
 };
 
-auto CreateAndRegisterMoveTestEntity(GRK_EntityComponentManager &ecm) -> GRK_Result {
-  auto pointEntity = ecm.CreateEntity();
-
-  auto moveBehaviour = std::make_unique<MoveBackAndForthBehaviour>(pointEntity);
-
-  GRK_GameLogicComponent glc;
-  glc.RegisterBehaviour(std::move(moveBehaviour));
-
-  return pointEntity.AddComponent(std::move(glc));
-}
-
-auto CreationMovementDeleteTest() -> void {
-  auto engineInitialization = [](GRK_EntityComponentManager &ecm) -> GRK_Result {
-    for (int i = 0; i < 5; i++) {
-      auto result = CreateAndRegisterMoveTestEntity(ecm);
-      if (result != GRK_Result::Ok) {
-        return result;
-      }
-    }
-
-    return GRK_Result::Ok;
-  };
-
-  GRK_Engine engine(engineInitialization);
-  engine.Run();
-}
-
+#endif //GROK3DTESTS_MOVEBACKANDFORTHBEHAVIOUR_H

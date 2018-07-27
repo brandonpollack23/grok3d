@@ -1,0 +1,1 @@
+Like the triangle example but now with a behaviour writing to a shader uniform to be used by the GPU to set the color of the triangle over time.

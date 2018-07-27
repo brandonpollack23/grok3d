@@ -1,3 +1,11 @@
+/* Copyright (c) 2017 Brandon Pollack
+* Contact @ grok3d@gmail.com
+* This file is available under the MIT license included in the project
+*/
+#include "helloshapes.h"
+
+#include <iostream>
+
 #include "helloshapes.h"
 
 #include "grok3d/grok3d.h"
@@ -17,80 +25,6 @@ static float triangleFloats[] = {
     0.0f, 0.5f, 0.0
 };
 
-// TODO inidiviaul program below
-
-auto HelloTriangleTest(char *args[]) -> void {
-  auto engineInitialization =
-      [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
-        auto triangleEntity = ecm.CreateEntity();
-
-        auto vertexes = std::make_unique<float>(9);
-        std::copy(triangleFloats, &triangleFloats[9], vertexes.get());
-
-        auto shaderProgram = ShaderProgram(args[2], args[3]);
-
-        auto rc = GRK_RenderComponent(
-            std::move(vertexes),
-            3,
-            sizeof(float),
-            GRK_GL_PrimitiveType::Unsigned_Int,
-            nullptr,
-            0,
-            GRK_OpenGLPrimitive::GL_Triangles,
-            shaderProgram);
-
-        return triangleEntity.AddComponent(std::move(rc));
-      };
-
-  GRK_Engine engine(engineInitialization);
-  engine.Run();
-}
-
-// TODO inidiviaul program below
-
-auto HelloSquareTest(char *args[]) -> void {
-  auto engineInitialization = [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
-    auto triangleEntity = ecm.CreateEntity();
-
-    // create vertex array
-    float squareFloats[] = {
-        0.5f, 0.5f, 0.0f, //top right
-        0.5f, -0.5f, 0.0f, //bottom right
-        -0.5f, -0.5f, 0.0f, //bottom left
-        -0.5f, 0.5f, 0.0f  //top left
-    };
-    auto vertexes = std::make_unique<float>(12);
-    std::copy(squareFloats, &squareFloats[12], vertexes.get());
-
-    // create index order array
-    unsigned int squareIndexes[] = {
-        0, 1, 3, //top right triangle
-        1, 2, 3  //bottom left triangle
-    };
-    auto indices = new unsigned int[6];
-    std::copy(squareIndexes, &squareIndexes[6], indices);
-
-    // load shaders
-    auto shaderProgram = ShaderManager::ShaderProgram({args[2], args[3]});
-
-    auto rc = GRK_RenderComponent(
-        std::move(vertexes),
-        4,
-        sizeof(float),
-        GRK_GL_PrimitiveType::Unsigned_Int,
-        indices,
-        6,
-        GRK_OpenGLPrimitive::GL_Triangles,
-        shaderProgram);
-
-    return triangleEntity.AddComponent(std::move(rc));
-  };
-
-  GRK_Engine engine(engineInitialization);
-  engine.Run();
-}
-
-// TODO inidiviaul program below
 static constexpr auto kFirstUniform = "ourColor";
 
 class FirstUniformShader : public ShaderProgram {
@@ -145,7 +79,7 @@ auto HelloChangingTriangleTest(char *args[]) -> void {
         auto vertexes = std::make_unique<float>(9);
         std::copy(triangleFloats, &triangleFloats[9], vertexes.get());
 
-        auto shaderProgram = FirstUniformShader(args[2], args[3], kFirstUniform);
+        auto shaderProgram = FirstUniformShader(args[1], args[2], kFirstUniform);
 
         auto rc = GRK_RenderComponent(
             std::move(vertexes),
@@ -171,3 +105,14 @@ auto HelloChangingTriangleTest(char *args[]) -> void {
   GRK_Engine engine(engineInitialization);
   engine.Run();
 };
+
+auto main(int argc, char *argv[]) -> int {
+  if (argc < 3) {
+    std::cout << "Triangle test requires a vertex and frag shader passed as arguments 1 and 2" << std::endl;
+    return -1;
+  } else {
+    HelloChangingTriangleTest(argv);
+  }
+
+  return 0;
+}

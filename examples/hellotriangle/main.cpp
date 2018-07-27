@@ -22,20 +22,20 @@ auto HelloTriangleTest(char *args[]) -> void {
       [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
         auto triangleEntity = ecm.CreateEntity();
 
-        auto vertexes = std::make_unique<float>(9);
+        auto vertexes = std::make_unique<float[]>(9);
         std::copy(triangleFloats, &triangleFloats[9], vertexes.get());
 
         auto shaderProgram = ShaderProgram(args[1], args[2]);
 
         auto rc = GRK_RenderComponent(
-            std::move(vertexes),
+            vertexes,
             3,
             sizeof(float),
             GRK_GL_PrimitiveType::Unsigned_Int,
             nullptr,
             0,
             GRK_OpenGLPrimitive::GL_Triangles,
-            shaderProgram);
+            shaderProgram.GetId());
 
         return triangleEntity.AddComponent(std::move(rc));
       };

@@ -21,7 +21,7 @@ auto HelloSquareTest(char *args[]) -> void {
     auto triangleEntity = ecm.CreateEntity();
 
     // create vertex array
-    auto vertexes = std::make_unique<float>(12);
+    auto vertexes = std::make_unique<float[]>(12);
     std::copy(squareFloats, &squareFloats[12], vertexes.get());
 
     // create index order array
@@ -36,14 +36,14 @@ auto HelloSquareTest(char *args[]) -> void {
     auto shaderProgram = ShaderManager::ShaderProgram({args[1], args[2]});
 
     auto rc = GRK_RenderComponent(
-        std::move(vertexes),
+        vertexes,
         4,
         sizeof(float),
         GRK_GL_PrimitiveType::Unsigned_Int,
         indices,
         6,
         GRK_OpenGLPrimitive::GL_Triangles,
-        shaderProgram);
+        shaderProgram.GetId());
 
     return triangleEntity.AddComponent(std::move(rc));
   };

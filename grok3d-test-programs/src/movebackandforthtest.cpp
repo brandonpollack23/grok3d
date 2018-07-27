@@ -1,4 +1,4 @@
-#include "grok3d.h"
+#include "grok3d/grok3d.h"
 
 #include "movebackandforthtest.h"
 

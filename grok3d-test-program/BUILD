@@ -20,7 +20,6 @@ cc_binary(
         "-ldl",
     ],
     deps = [
-        ":shader-files",
         "//grok3d",
         "@glm",
     ],

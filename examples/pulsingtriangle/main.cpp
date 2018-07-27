@@ -62,7 +62,7 @@ class ChangeColorBehaviour : public GRK_GameBehaviourBase {
     // Convert running time into sinusoid.
     float greenValue = std::sin(2 * time) / 2.0f + .5f;
     float redValue = std::cos(2*time) / 2.0f + .5f;
-    float blueValue = std::rand();
+    float blueValue = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
     shader.SetFirstUniformFloat(redValue, greenValue, blueValue);
   }
 

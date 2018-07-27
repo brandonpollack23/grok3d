@@ -22,7 +22,7 @@ GRK_RenderComponent::GRK_RenderComponent(
     void *indices,
     std::size_t numIndices,
     GRK_OpenGLPrimitive primitive,
-    ShaderProgram shaderProgram) noexcept :
+    GRK_ShaderProgramID shaderProgramID) noexcept :
     vertexes_(std::move(vertexes)), // TODO Create another constructor that uses already allocated ones, create alloc manager
     vertexBufferObjectOffset_(0),
     vertexCount_(vertexCount),
@@ -33,7 +33,7 @@ GRK_RenderComponent::GRK_RenderComponent(
     elementBufferObjectOffset_(0),
     drawFunctionType_(GRK_DrawFunction::DrawArrays),
     drawingPrimitive_(primitive),
-    shaderProgram_(shaderProgram) {
+    shaderProgramID_(shaderProgramID) {
   //First bind Vertex Array Object, then bind and set vertex buffers, then configure vertex attributes
   glGenVertexArrays(1, &vertexArrayObject_); // Create Vertex Array Object.
   glGenBuffers(1, &vertexBufferObject_); // Create OGL buffer to store vertex data.
@@ -80,12 +80,26 @@ GRK_RenderComponent::GRK_RenderComponent(
   glBindVertexArray(0);
 }
 
-//GRK_RenderComponent::~GRK_RenderComponent() {
-//  glDeleteVertexArrays(1, &vertexArrayObject_);
-//  glDeleteBuffers(1, &vertexBufferObject_);
-//
-//  if (elementBufferObject_ != 0) {
-//    glDeleteBuffers(1, &elementBufferObject_);
-//  }
-//}
+GRK_RenderComponent::~GRK_RenderComponent() {
+  freeGlPrimitives();
+}
 
+void GRK_RenderComponent::freeGlPrimitives() {
+  glDeleteVertexArrays(1, &vertexArrayObject_);
+  glDeleteBuffers(1, &vertexBufferObject_);
+
+  if (elementBufferObject_ != 0) {
+    glDeleteBuffers(1, &elementBufferObject_);
+  }
+}
+
+GRK_RenderComponent::GRK_RenderComponent(GRK_RenderComponent &&other) {
+  std::memcpy(this, &other, sizeof(GRK_RenderComponent));
+  std::memset(&other, 0, sizeof(GRK_RenderComponent));
+}
+
+GRK_RenderComponent &GRK_RenderComponent::operator=(GRK_RenderComponent &&other) {
+  std::memcpy(this, &other, sizeof(GRK_RenderComponent));
+  std::memset(&other, 0, sizeof(GRK_RenderComponent));
+  return *this;
+}

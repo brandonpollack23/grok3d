@@ -122,7 +122,7 @@ ShaderProgram::ShaderProgram(const char * const vertexShader, const char * const
 
   shaderProgramId = GRK_CreateShaderProgram({vertexShaderID, fragShaderID});
 }
-auto ShaderProgram::GetId() -> const GRK_ShaderProgramID {
+auto ShaderProgram::GetId() const -> GRK_ShaderProgramID {
   return shaderProgramId;
 }
 }

@@ -129,7 +129,7 @@ auto GRK_RenderSystem::ClearBuffer() const -> void {
 auto GRK_RenderSystem::RenderComponents() const -> void {
   for (auto &renderComponent : *m_renderComponents) {
     // Specify shader program.
-    glUseProgram(renderComponent.GetShaderProgram().GetId());
+    glUseProgram(renderComponent.GetShaderProgramID());
 
     // Bind VAO (rules for how this vertex shader data is formatted).
     glBindVertexArray(renderComponent.GetVAO());
@@ -168,6 +168,7 @@ auto GRK_RenderSystem::PollWindowEvents() const -> void {
 }
 
 auto GRK_RenderSystem::CloseRenderingWindow() const -> GRK_Result {
+  // TODO fix throwing issue
   glfwTerminate();
   return GRK_Result::RenderingTerminated;
 }

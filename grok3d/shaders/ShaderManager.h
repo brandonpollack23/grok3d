@@ -34,7 +34,7 @@ enum class ShaderType : GLenum {
 class ShaderProgram {
  public:
   ShaderProgram(const char* vertexShader, const char* fragmentShader);
-  auto GetId() -> GRK_ShaderProgramID const;
+  auto GetId() const -> GRK_ShaderProgramID ;
  protected:
   GRK_ShaderProgramID shaderProgramId;
 };

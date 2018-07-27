@@ -91,7 +91,7 @@ auto HelloChangingTriangleTest(char *args[]) -> void {
             nullptr,
             0,
             GRK_OpenGLPrimitive::GL_Triangles,
-            shaderProgram);
+            shaderProgram.GetId());
 
         triangleEntity.AddComponent(std::move(rc));
 

@@ -146,7 +146,7 @@ auto GRK_RenderSystem::RenderComponents() const -> void {
         glDrawElements(
             renderComponent.GetPrimitive(),
             renderComponent.GetIndexCount(),
-            static_cast<GLenum>(renderComponent.GetIndexType()),
+            static_cast<GLenum>(renderComponent.GetVertexPrimitiveType()),
             renderComponent.GetEBOOffset());
         break;
       default:break;
@@ -154,9 +154,18 @@ auto GRK_RenderSystem::RenderComponents() const -> void {
   }
 }
 
-auto GRK_RenderSystem::Swap() const -> void { glfwSwapBuffers(m_window); }
+/**
+ * Swaps back buffer with front buffer, displaying the drawn data.
+ *
+ * <p>There is an implicit flush that takes place in openGL before swap is done.</p>
+ */
+auto GRK_RenderSystem::Swap() const -> void {
+  glfwSwapBuffers(m_window);
+}
 
-auto GRK_RenderSystem::PollWindowEvents() const -> void { glfwPollEvents(); }
+auto GRK_RenderSystem::PollWindowEvents() const -> void {
+  glfwPollEvents();
+}
 
 auto GRK_RenderSystem::CloseRenderingWindow() const -> GRK_Result {
   glfwTerminate();

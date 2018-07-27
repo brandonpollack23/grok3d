@@ -2,15 +2,11 @@
 * Contact @ grok3d@gmail.com
 * This file is available under the MIT license included in the project
 */
-#include "helloshapes.h"
-
-#include <iostream>
-
-#include "helloshapes.h"
 
 #include "grok3d/grok3d.h"
 
 #include <iostream>
+#include <cmath>
 
 using namespace Grok3d;
 using namespace Grok3d::Entities;

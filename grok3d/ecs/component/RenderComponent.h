@@ -3,8 +3,10 @@
 * This file is available under the MIT license included in the project
 */
 
-/** @file
- * Definition for render componenent*/
+/**
+ * @file
+ * Definition for render component.
+ */
 
 #ifndef __RENDERCOMPONENT__H
 #define __RENDERCOMPONENT__H
@@ -18,7 +20,6 @@
 #include <vector>
 #include <memory>
 
-//TODO have unitied "model store" or "file store" so that vertexes can be shared as shared_ptr
 namespace Grok3d::Components {
 enum class GRK_DrawFunction {
   DrawArrays, ///< Use glDrawArrays to draw this, it is just a list of vertices
@@ -29,6 +30,12 @@ enum class GRK_OpenGLPrimitive : GLenum {
   GL_Triangles = GL_TRIANGLES
 };
 
+// TODO create a constructor that uses already created array/element buffer objects.
+// when this is created, use shared_ptr to reference count them, and move the freeing of those buffers to it's destructor
+// using shared_ptr will require overridding it's constructor/destructor to use OGL.
+
+// TODO for model data, only store GL references to vertex buffers
+
 class GRK_RenderComponent {
  public:
   GRK_RenderComponent(
@@ -37,32 +44,34 @@ class GRK_RenderComponent {
       std::size_t vertexSize,
       GRK_GL_PrimitiveType indexType,
       void *indices,
-      std::size_t indexCount,
+      std::size_t numIndices,
       GRK_OpenGLPrimitive primitive,
       Grok3d::ShaderManager::ShaderProgram shaderProgram) noexcept;
 
-  auto GetVAO() const { return m_VAO; }
+//  ~GRK_RenderComponent();
 
-  auto GetVBOOffset() const { return m_VBOOffset; }
+  auto GetVAO() const { return vertexArrayObject; }
 
-  auto GetVertexCount() const { return m_vertexCount; }
+  auto GetVBOOffset() const { return vertexBufferObjectOffset; }
 
-  auto GetIndexType() const { return m_indexType; }
+  auto GetVertexCount() const { return vertexCount; }
 
-  auto GetIndexCount() const { return m_indexCount; }
+  auto GetVertexPrimitiveType() const { return vertexPrimitiveType; }
+
+  auto GetIndexCount() const { return numIndices; }
 
   auto GetEBOOffset() const {
-    return reinterpret_cast<void *>(SizeOfIndexType() * m_EBOOffset);
+    return reinterpret_cast<void *>(SizeOfIndexType() * elementBufferObjectOffset);
   }
 
-  auto GetDrawFunction() const { return m_drawFunction; }
+  auto GetDrawFunction() const { return drawFunctionType; }
 
-  auto GetPrimitive() const { return static_cast<GLenum>(m_primitive); }
+  auto GetPrimitive() const { return static_cast<GLenum>(drawingPrimitive); }
 
-  auto GetShaderProgram() const -> Grok3d::ShaderManager::ShaderProgram { return m_shaderProgram; }
+  auto GetShaderProgram() const -> Grok3d::ShaderManager::ShaderProgram { return shaderProgram; }
 
   auto SizeOfIndexType() const -> std::size_t {
-    switch (m_indexType) {
+    switch (vertexPrimitiveType) {
       case GRK_GL_PrimitiveType::Unsigned_Int:return sizeof(unsigned int);
       case GRK_GL_PrimitiveType::Unsigned_Byte:return sizeof(unsigned char);
       case GRK_GL_PrimitiveType::Unsigned_Short:return sizeof(unsigned short);
@@ -74,40 +83,40 @@ class GRK_RenderComponent {
 
  private:
   auto IndexTypeIsValid() const -> bool {
-    return m_indexType == GRK_GL_PrimitiveType::Unsigned_Int ||
-        m_indexType == GRK_GL_PrimitiveType::Unsigned_Byte ||
-        m_indexType == GRK_GL_PrimitiveType::Unsigned_Short;
+    return vertexPrimitiveType == GRK_GL_PrimitiveType::Unsigned_Int ||
+        vertexPrimitiveType == GRK_GL_PrimitiveType::Unsigned_Byte ||
+        vertexPrimitiveType == GRK_GL_PrimitiveType::Unsigned_Short;
   }
 
  private:
-  std::unique_ptr<float> m_vertexes;
-  std::size_t m_VBOOffset;
-  std::size_t m_vertexCount;
+  std::unique_ptr<float> vertexes;
+  std::size_t vertexBufferObjectOffset;
+  std::size_t vertexCount;
 
-  GRK_GL_PrimitiveType m_indexType;
-  void *m_indices;
-  std::size_t m_indexCount;
+  GRK_GL_PrimitiveType vertexPrimitiveType;
+  void *indices;
+  std::size_t numIndices;
 
-  GRK_VertexArrayObject m_VAO; /**< VertexArrayObject descriptor
+  GRK_VertexArrayObject vertexArrayObject; /**< VertexArrayObject descriptor
                                            relates vertex buffer, vertex attributes,
                                            and element buffer in the OGL context*/
 
-  GRK_VertexBufferObject m_VBO; /**< VertexBufferObject descriptor
+  GRK_VertexBufferObject vertexBufferObject; /**< VertexBufferObject descriptor
                                             buffer in the OGL context (on the GPU)
-                                            that stores the verticies*/
+                                            that stores the vertices*/
 
-  GRK_ElementBufferObject m_EBO; /** ElementBufferObject
+  GRK_ElementBufferObject elementBufferObject; /** ElementBufferObject
                                              buffer in OGL context (on the GPU)
                                              that stores the order of the vertices in the VBO
                                              to be rendered in to draw triangles*/
 
-  std::size_t m_EBOOffset;
+  std::size_t elementBufferObjectOffset;
 
-  GRK_DrawFunction m_drawFunction;
+  GRK_DrawFunction drawFunctionType;
 
-  GRK_OpenGLPrimitive m_primitive;
+  GRK_OpenGLPrimitive drawingPrimitive;
 
-  Grok3d::ShaderManager::ShaderProgram m_shaderProgram;
+  Grok3d::ShaderManager::ShaderProgram shaderProgram;
 };
 }
 

@@ -61,8 +61,8 @@ class ChangeColorBehaviour : public GRK_GameBehaviourBase {
 
     // Convert running time into sinusoid.
     float greenValue = std::sin(2 * time) / 2.0f + .5f;
-    float redValue = std::cos(2*time) / 2.0f + .5f;
-    float blueValue = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
+    float redValue = std::cos(2 * time) / 2.0f + .5f;
+    float blueValue = std::sin(.5f * time) / 2.0f + .5f;
     shader.SetFirstUniformFloat(redValue, greenValue, blueValue);
   }
 
@@ -78,13 +78,13 @@ auto HelloChangingTriangleTest(char *args[]) -> void {
       [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
         auto triangleEntity = ecm.CreateEntity();
 
-        auto vertexes = std::make_unique<float>(9);
+        auto vertexes = std::make_unique<float[]>(9);
         std::copy(triangleFloats, &triangleFloats[9], vertexes.get());
 
         auto shaderProgram = FirstUniformShader(args[1], args[2], kFirstUniform);
 
         auto rc = GRK_RenderComponent(
-            std::move(vertexes),
+            vertexes,
             3,
             sizeof(float),
             GRK_GL_PrimitiveType::Unsigned_Int,

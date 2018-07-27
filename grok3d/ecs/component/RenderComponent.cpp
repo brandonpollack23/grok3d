@@ -14,8 +14,9 @@ using namespace Grok3d::ShaderManager;
 static constexpr unsigned int kDimensions = 3;
 
 // TODO clean
+// TODO pass a handle to the vertexes (returned from a factory that loads files/converts literals) instead of the vertexes themselves
 GRK_RenderComponent::GRK_RenderComponent(
-    std::unique_ptr<float> vertexes,
+    std::unique_ptr<float[]>& vertexes,
     std::size_t vertexCount,
     std::size_t vertexSize, //eg sizeof(float)
     GRK_GL_PrimitiveType indexType,
@@ -23,7 +24,6 @@ GRK_RenderComponent::GRK_RenderComponent(
     std::size_t numIndices,
     GRK_OpenGLPrimitive primitive,
     GRK_ShaderProgramID shaderProgramID) noexcept :
-    vertexes_(std::move(vertexes)), // TODO Create another constructor that uses already allocated ones, create alloc manager
     vertexBufferObjectOffset_(0),
     vertexCount_(vertexCount),
     vertexPrimitiveType_(indexType),
@@ -43,7 +43,7 @@ GRK_RenderComponent::GRK_RenderComponent(
 
   // TODO not always STATIC DRAW.
   // Bound type, size in bytes to copy (3 data per vertex X bytes per data), buffer to copy, data access pattern
-  glBufferData(GL_ARRAY_BUFFER, vertexCount_ * vertexSize * kDimensions, vertexes_.get(), GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, vertexCount_ * vertexSize * kDimensions, vertexes.get(), GL_STATIC_DRAW);
 
   // If we passed any indices_ we need to set up an Element Buffer Object
   // in order to tell OGL what order to draw the vertexes_ in to make triangles (this saves

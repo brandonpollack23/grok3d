@@ -39,7 +39,7 @@ enum class GRK_OpenGLPrimitive : GLenum {
 class GRK_RenderComponent {
  public:
   GRK_RenderComponent(
-      std::unique_ptr<float> vertexes,
+      std::unique_ptr<float[]>& vertexes,
       std::size_t vertexCount,
       std::size_t vertexSize,
       GRK_GL_PrimitiveType indexType,
@@ -95,7 +95,6 @@ class GRK_RenderComponent {
   }
 
  private:
-  std::unique_ptr<float> vertexes_;
   std::size_t vertexBufferObjectOffset_;
   std::size_t vertexCount_;
 

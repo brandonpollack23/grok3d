@@ -50,28 +50,28 @@ class GRK_RenderComponent {
 
 //  ~GRK_RenderComponent();
 
-  auto GetVAO() const { return vertexArrayObject; }
+  auto GetVAO() const { return vertexArrayObject_; }
 
-  auto GetVBOOffset() const { return vertexBufferObjectOffset; }
+  auto GetVBOOffset() const { return vertexBufferObjectOffset_; }
 
-  auto GetVertexCount() const { return vertexCount; }
+  auto GetVertexCount() const { return vertexCount_; }
 
-  auto GetVertexPrimitiveType() const { return vertexPrimitiveType; }
+  auto GetVertexPrimitiveType() const { return vertexPrimitiveType_; }
 
-  auto GetIndexCount() const { return numIndices; }
+  auto GetIndexCount() const { return numIndices_; }
 
   auto GetEBOOffset() const {
-    return reinterpret_cast<void *>(SizeOfIndexType() * elementBufferObjectOffset);
+    return reinterpret_cast<void *>(SizeOfIndexType() * elementBufferObjectOffset_);
   }
 
-  auto GetDrawFunction() const { return drawFunctionType; }
+  auto GetDrawFunction() const { return drawFunctionType_; }
 
-  auto GetPrimitive() const { return static_cast<GLenum>(drawingPrimitive); }
+  auto GetPrimitive() const { return static_cast<GLenum>(drawingPrimitive_); }
 
-  auto GetShaderProgram() const -> Grok3d::ShaderManager::ShaderProgram { return shaderProgram; }
+  auto GetShaderProgram() const -> Grok3d::ShaderManager::ShaderProgram { return shaderProgram_; }
 
   auto SizeOfIndexType() const -> std::size_t {
-    switch (vertexPrimitiveType) {
+    switch (vertexPrimitiveType_) {
       case GRK_GL_PrimitiveType::Unsigned_Int:return sizeof(unsigned int);
       case GRK_GL_PrimitiveType::Unsigned_Byte:return sizeof(unsigned char);
       case GRK_GL_PrimitiveType::Unsigned_Short:return sizeof(unsigned short);
@@ -83,40 +83,40 @@ class GRK_RenderComponent {
 
  private:
   auto IndexTypeIsValid() const -> bool {
-    return vertexPrimitiveType == GRK_GL_PrimitiveType::Unsigned_Int ||
-        vertexPrimitiveType == GRK_GL_PrimitiveType::Unsigned_Byte ||
-        vertexPrimitiveType == GRK_GL_PrimitiveType::Unsigned_Short;
+    return vertexPrimitiveType_ == GRK_GL_PrimitiveType::Unsigned_Int ||
+        vertexPrimitiveType_ == GRK_GL_PrimitiveType::Unsigned_Byte ||
+        vertexPrimitiveType_ == GRK_GL_PrimitiveType::Unsigned_Short;
   }
 
  private:
-  std::unique_ptr<float> vertexes;
-  std::size_t vertexBufferObjectOffset;
-  std::size_t vertexCount;
+  std::unique_ptr<float> vertexes_;
+  std::size_t vertexBufferObjectOffset_;
+  std::size_t vertexCount_;
 
-  GRK_GL_PrimitiveType vertexPrimitiveType;
-  void *indices;
-  std::size_t numIndices;
+  GRK_GL_PrimitiveType vertexPrimitiveType_;
+  void *indices_;
+  std::size_t numIndices_;
 
-  GRK_VertexArrayObject vertexArrayObject; /**< VertexArrayObject descriptor
+  GRK_VertexArrayObject vertexArrayObject_; /**< VertexArrayObject descriptor
                                            relates vertex buffer, vertex attributes,
                                            and element buffer in the OGL context*/
 
-  GRK_VertexBufferObject vertexBufferObject; /**< VertexBufferObject descriptor
+  GRK_VertexBufferObject vertexBufferObject_; /**< VertexBufferObject descriptor
                                             buffer in the OGL context (on the GPU)
                                             that stores the vertices*/
 
-  GRK_ElementBufferObject elementBufferObject; /** ElementBufferObject
+  GRK_ElementBufferObject elementBufferObject_; /** ElementBufferObject
                                              buffer in OGL context (on the GPU)
                                              that stores the order of the vertices in the VBO
                                              to be rendered in to draw triangles*/
 
-  std::size_t elementBufferObjectOffset;
+  std::size_t elementBufferObjectOffset_;
 
-  GRK_DrawFunction drawFunctionType;
+  GRK_DrawFunction drawFunctionType_;
 
-  GRK_OpenGLPrimitive drawingPrimitive;
+  GRK_OpenGLPrimitive drawingPrimitive_;
 
-  Grok3d::ShaderManager::ShaderProgram shaderProgram;
+  Grok3d::ShaderManager::ShaderProgram shaderProgram_;
 };
 }
 

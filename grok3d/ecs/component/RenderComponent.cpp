@@ -20,14 +20,13 @@ GRK_RenderComponent::GRK_RenderComponent(
     std::size_t vertexCount,
     std::size_t vertexSize, //eg sizeof(float)
     GRK_GL_PrimitiveType indexType,
-    void *indices,
+    unsigned int* indices,
     std::size_t numIndices,
     GRK_OpenGLPrimitive primitive,
     GRK_ShaderProgramID shaderProgramID) noexcept :
     vertexBufferObjectOffset_(0),
     vertexCount_(vertexCount),
     vertexPrimitiveType_(indexType),
-    indices_(indices),
     numIndices_(numIndices),
     elementBufferObject_(0), //overwrite later in constructor if necessary
     elementBufferObjectOffset_(0),
@@ -48,14 +47,14 @@ GRK_RenderComponent::GRK_RenderComponent(
   // If we passed any indices_ we need to set up an Element Buffer Object
   // in order to tell OGL what order to draw the vertexes_ in to make triangles (this saves
   // repeating vertexes_ in every triangle)
-  if (indices_ != nullptr && numIndices_ > 3 && IndexTypeIsValid()) {
+  if (indices != nullptr && numIndices_ > 3 && IndexTypeIsValid()) {
     //create EBO
     glGenBuffers(1, &elementBufferObject_);
 
     // Bind to context and copy index data
     // DO NOT unbind this while an VAO is bound, it is stored in that object
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferObject_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices_ * SizeOfIndexType(), indices_, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices_ * SizeOfIndexType(), indices, GL_STATIC_DRAW);
 
     drawFunctionType_ = GRK_DrawFunction::DrawElements;
   }

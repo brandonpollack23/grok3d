@@ -43,7 +43,7 @@ class GRK_RenderComponent {
       std::size_t vertexCount,
       std::size_t vertexSize,
       GRK_GL_PrimitiveType indexType,
-      void *indices,
+      unsigned int* indices,
       std::size_t numIndices,
       GRK_OpenGLPrimitive primitive,
       Grok3d::ShaderManager::GRK_ShaderProgramID shaderProgramID) noexcept;
@@ -99,7 +99,6 @@ class GRK_RenderComponent {
   std::size_t vertexCount_;
 
   GRK_GL_PrimitiveType vertexPrimitiveType_;
-  void *indices_;
   std::size_t numIndices_;
 
   GRK_VertexArrayObject vertexArrayObject_; /**< VertexArrayObject descriptor

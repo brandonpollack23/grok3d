@@ -62,6 +62,12 @@ unsigned int squareIndexes[] = {
  *  <li>Attaches the render component to the entity</li>
  *  <li>Returns the status (should be Ok)<li>
  * <ol>
+ * </p>
+ *
+ * <p>This may seem like a lot, but once there is a fileloader and the user no longer manually specifies vertices,
+ * this will just boil down to creating a RenderComponent and attaching it.  The details will be handled by the
+ * loader function of configuring the RenderComponent.</p>
+ *
  * @param args arguments passed from main contain the strings
  * @return status
  */

@@ -17,6 +17,7 @@ static float triangleFloats[] = {
     0.0f, 0.5f, 0.0
 };
 
+/** This is identical to the first triangle test, but now it removes it, this was written before unit testing was added.*/
 auto RemoveRenderComponentTest(char **args) -> void {
   auto engineInitialization =
       [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
@@ -37,7 +38,11 @@ auto RemoveRenderComponentTest(char **args) -> void {
             GRK_OpenGLPrimitive::GL_Triangles,
             shaderProgram.GetId());
 
-        return triangleEntity.AddComponent(std::move(rc));
+        triangleEntity.AddComponent(std::move(rc));
+
+        auto result = triangleEntity.RemoveComponent<GRK_RenderComponent>();
+
+        return result;
       };
 
   GRK_Engine engine(engineInitialization);

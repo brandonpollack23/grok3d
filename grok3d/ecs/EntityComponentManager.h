@@ -355,7 +355,7 @@ class GRK_EntityComponentManager__ {
       //m_deletedUncleanedComponents vector to iterate through
       //there may be some overlap with the entity removal pass so use .find(entity) and
       //check to be sure it is already out of the map
-      RemoveComponentHelper(entity, GetComponentTypeAccessIndex<ComponentType>());
+      return RemoveComponentHelper<ComponentType>(entity);
     } else {
       return GRK_Result::NoSuchElement;
     }

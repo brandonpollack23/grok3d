@@ -1,0 +1,1 @@
+This test shows how to remove a component from something, really it's just a test to make sure it works.

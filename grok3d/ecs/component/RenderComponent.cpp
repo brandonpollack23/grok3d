@@ -11,10 +11,8 @@ using namespace Grok3d;
 using namespace Grok3d::Components;
 using namespace Grok3d::ShaderManager;
 
-// TODO wrap counts in tuples
-// TODO builder
 // TODO should there only be one vertex buffer per shader?
-// TODO pass a handle to the vertexes (returned from a factory that loads files/converts literals) instead of the vertexes themselves.
+// TODO when you start using files, pass a handle to the vertexes (returned from a factory that loads files/converts literals) instead of the vertexes themselves.
 GRK_RenderComponent::GRK_RenderComponent(
     std::unique_ptr<float[]>& vertexes,
     std::size_t vertexCount,
@@ -94,13 +92,12 @@ void GRK_RenderComponent::freeGlPrimitives() {
   }
 }
 
-// TODO why isn't this trivially copyable?
 GRK_RenderComponent::GRK_RenderComponent(GRK_RenderComponent &&other) {
   std::memcpy(this, &other, sizeof(GRK_RenderComponent));
   std::memset(&other, 0, sizeof(GRK_RenderComponent));
 }
 
-GRK_RenderComponent &GRK_RenderComponent::operator=(GRK_RenderComponent &&other) {
+GRK_RenderComponent &GRK_RenderComponent::operator=(GRK_RenderComponent &&other) noexcept {
   std::memcpy(this, &other, sizeof(GRK_RenderComponent));
   std::memset(&other, 0, sizeof(GRK_RenderComponent));
   return *this;

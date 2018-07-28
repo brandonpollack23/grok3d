@@ -61,7 +61,7 @@ class GRK_RenderComponent {
 
   GRK_RenderComponent() = default;
   GRK_RenderComponent(GRK_RenderComponent&& other);
-  GRK_RenderComponent& operator=(GRK_RenderComponent&& other);
+  GRK_RenderComponent& operator=(GRK_RenderComponent&& other) noexcept;
 
   ~GRK_RenderComponent();
 

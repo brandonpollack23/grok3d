@@ -13,9 +13,10 @@ using namespace Grok3d;
 using namespace Grok3d::Components;
 
 auto HelloSquareTest(char *args[]) -> void;
-std::function<GRK_Result (GRK_EntityComponentManager&)> GetHelloSquareInitializationFunction(const char* const args[]);
-std::unique_ptr<float[]> LoadVertexes(size_t i) -> std::unique_ptr<float[]>;
-std::unique_ptr<unsigned int[]> LoadElementIndices();
+auto GetHelloSquareInitializationFunction(const char* const args[]) -> std::function<GRK_Result (GRK_EntityComponentManager&)>;
+auto LoadVertexes(size_t numVertexes) -> std::unique_ptr<float[]>;
+auto LoadElementIndices() -> std::unique_ptr<unsigned int[]>;
+auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[]>, GLsizei>;
 
 auto main(int argc, char *argv[]) -> int {
   if (argc < 3) {
@@ -76,8 +77,9 @@ GetHelloSquareInitializationFunction(const char *const *args) {
   return [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
     auto triangleEntity = ecm.CreateEntity();
 
-    auto vertexes = LoadVertexes(0);
+    auto vertexes = LoadVertexes(sizeof(squareFloats) / sizeof(float));
     auto indices = LoadElementIndices();
+    auto vertexAttributes = CreateVertexAttributes();
     auto shaderProgram = ShaderManager::ShaderProgram({args[1], args[2]});
 
     auto rc = GRK_RenderComponent(
@@ -88,10 +90,18 @@ GetHelloSquareInitializationFunction(const char *const *args) {
         indices.get(),
         6,
         GRK_OpenGLPrimitive::GL_Triangles,
-        shaderProgram.GetId());
+        shaderProgram.GetId(),
+        std::get<0>(vertexAttributes).get(),
+        std::get<1>(vertexAttributes));
 
     return triangleEntity.AddComponent(std::move(rc));
   };
+}
+
+auto LoadVertexes(size_t numVertexes) -> std::unique_ptr<float[]> {
+  auto vertexes = std::make_unique<float[]>(numVertexes);
+  std::copy(squareFloats, &squareFloats[numVertexes], vertexes.get());
+  return vertexes;
 }
 
 auto LoadElementIndices() -> std::unique_ptr<unsigned int[]> {
@@ -100,8 +110,18 @@ auto LoadElementIndices() -> std::unique_ptr<unsigned int[]> {
   return indices;
 }
 
-std::unique_ptr<float[]> LoadVertexes(size_t i) -> std::unique_ptr<float[]> {
-  auto vertexes = std::make_unique<float[]>(12);
-  std::copy(squareFloats, &squareFloats[12], vertexes.get());
-  return vertexes;
+auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[]>, GLsizei> {
+  GLsizei numAttributes = 1;
+  auto va = std::make_unique<GRK_VertexAttribute[]>(1);
+  va[0] = {
+      0, // index
+      3, // size
+      GL_FLOAT, // type
+      GL_FALSE, // normalize
+      numAttributes * kDimensions * sizeof(float), // stride
+      reinterpret_cast<void*>(0)
+  };
+
+  return std::make_tuple(std::move(va), numAttributes);
 }
+

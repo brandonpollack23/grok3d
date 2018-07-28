@@ -18,11 +18,11 @@ static constexpr auto kFirstUniformName = "ourColor";
 
 class FirstUniformShader;
 auto GetEngineInitializationFunction(char **args) -> std::function<GRK_Result (GRK_EntityComponentManager&)>;
-auto LoadVertices() -> std::unique_ptr<float[]>;
+auto LoadVertices(int numVertices) -> std::unique_ptr<float[]>;
 auto HelloChangingTriangleTest(char *args[]) -> void;;
-auto AddComponent(GRK_EntityHandle &triangleEntity,
-                  std::unique_ptr<float[]>& vertexes,
-                  const FirstUniformShader &shaderProgram) -> void;
+auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[]>, GLsizei>;
+auto AddSingleUniformRenderComponent(GRK_EntityHandle &triangleEntity, const FirstUniformShader &shaderProgram) -> void;
+auto AddDiscoLogicComponent(GRK_EntityHandle &triangleEntity, const FirstUniformShader &shaderProgram) -> void;
 
 /**
  * @class
@@ -113,8 +113,7 @@ auto main(int argc, char *argv[]) -> int {
 }
 
 auto HelloChangingTriangleTest(char **args) -> void {
-  auto engineInitialization = GetEngineInitializationFunction(args);
-  GRK_Engine engine(engineInitialization);
+  GRK_Engine engine(GetEngineInitializationFunction(args));
   engine.Run();
 }
 
@@ -122,37 +121,59 @@ auto GetEngineInitializationFunction(char *args[]) -> std::function<GRK_Result(G
   return [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
     auto triangleEntity = ecm.CreateEntity();
 
-    std::unique_ptr<float[]> vertexes = LoadVertices();
     auto shaderProgram = FirstUniformShader(args[1], args[2], kFirstUniformName);
-    AddComponent(triangleEntity, vertexes, shaderProgram);
 
-    GRK_GameLogicComponent glc;
-    glc.RegisterBehaviour(
-        std::make_unique<ChangeColorBehaviour>(triangleEntity, shaderProgram));
-
-    triangleEntity.AddComponent(std::move(glc));
+    AddSingleUniformRenderComponent(triangleEntity, shaderProgram);
+    AddDiscoLogicComponent(triangleEntity, shaderProgram);
 
     return GRK_Result::Ok;
   };
 }
 
-std::unique_ptr<float[]> LoadVertices() {
-  auto vertexes = std::make_unique<float[]>(9);
-  std::copy(triangleFloats, &triangleFloats[9], vertexes.get());
+void AddSingleUniformRenderComponent(GRK_EntityHandle &triangleEntity, const FirstUniformShader &shaderProgram) {
+  std::unique_ptr<float[]> vertexes = LoadVertices(sizeof(triangleFloats) / sizeof(float));
+  auto vertexAttributes = CreateVertexAttributes();
+
+  triangleEntity.AddComponent(
+        std::move(GRK_RenderComponent(
+            vertexes,
+            3,
+            sizeof(float),
+            GRK_GL_PrimitiveType::Unsigned_Int,
+            nullptr,
+            0,
+            GRK_OpenGLPrimitive::GL_Triangles,
+            shaderProgram.GetId(),
+            std::get<0>(vertexAttributes).get(),
+            std::get<1>(vertexAttributes))));
+}
+
+std::unique_ptr<float[]> LoadVertices(int numVertices) {
+  auto vertexes = std::make_unique<float[]>(static_cast<size_t>(numVertices));
+  std::copy(triangleFloats, &triangleFloats[numVertices], vertexes.get());
   return vertexes;
 }
 
-void AddComponent(GRK_EntityHandle &triangleEntity,
-                  std::unique_ptr<float[]> &vertexes,
-                  const FirstUniformShader &shaderProgram) {
-  triangleEntity.AddComponent(
-      std::move(GRK_RenderComponent(
-          vertexes,
-          3,
-          sizeof(float),
-          GRK_GL_PrimitiveType::Unsigned_Int,
-          nullptr,
-          0,
-          GRK_OpenGLPrimitive::GL_Triangles,
-          shaderProgram.GetId())));
+auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[]>, GLsizei> {
+  GLsizei numAttributes = 1;
+  auto va = std::make_unique<GRK_VertexAttribute[]>(1);
+  va[0] = {
+      0, // index
+      3, // size
+      GL_FLOAT, // type
+      GL_FALSE, // normalize
+      numAttributes * kDimensions * sizeof(float), // stride
+      reinterpret_cast<void*>(0)
+  };
+
+  return std::make_tuple(std::move(va), numAttributes);
 }
+
+void AddDiscoLogicComponent(GRK_EntityHandle &triangleEntity, const FirstUniformShader &shaderProgram) {
+  GRK_GameLogicComponent glc;
+  glc.RegisterBehaviour(
+      std::make_unique<ChangeColorBehaviour>(triangleEntity, shaderProgram));
+
+  triangleEntity.AddComponent(std::move(glc));
+}
+

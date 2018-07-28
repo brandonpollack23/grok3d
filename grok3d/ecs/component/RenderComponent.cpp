@@ -11,7 +11,7 @@ using namespace Grok3d;
 using namespace Grok3d::Components;
 using namespace Grok3d::ShaderManager;
 
-// TODO VertexAttributes and their count might want to be part of the ShaderProgram.
+// TODO wrap counts in tuples
 // TODO builder
 // TODO should there only be one vertex buffer per shader?
 // TODO pass a handle to the vertexes (returned from a factory that loads files/converts literals) instead of the vertexes themselves.

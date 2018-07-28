@@ -16,8 +16,11 @@ using namespace Grok3d::ShaderManager;
  * This time more than just the points of the triangle will be "loaded", the colors are stored, too.
  * We'll use the VertexAttributes to specify this "stride".
  */
-std::unique_ptr<float[]> LoadVertexes(size_t i);
+std::unique_ptr<float[]> LoadVertexes(GLuint numVertexes);
 auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[]>, GLsizei>;
+auto AddMultiVertexAttributeRenderComponent(char *const *args, GRK_EntityHandle &triangleEntity) -> GRK_Result;
+auto MultiVertexAttributeTest(char **args) -> void;
+
 
 float triangleVertexData[] = {
     // positions         // colors
@@ -26,20 +29,39 @@ float triangleVertexData[] = {
      0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top
 };
 
+auto main(int argc, char *argv[]) -> int {
+  if (argc < 3) {
+    std::cout << "Triangle test requires a vertex and frag shader passed as arguments 1 and 2" << std::endl;
+    return -1;
+  } else {
+    MultiVertexAttributeTest(argv);
+  }
+
+  return 0;
+}
+
 auto MultiVertexAttributeTest(char **args) -> void {
   auto engineInitialization =
       [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
-
         auto triangleEntity = ecm.CreateEntity();
+        return AddMultiVertexAttributeRenderComponent(args, triangleEntity);
+      };
 
-        auto numVertexes = sizeof(triangleVertexData) / sizeof(float);
-        std::unique_ptr<float[]> vertexes = LoadVertexes(numVertexes);
+  GRK_Engine engine(engineInitialization);
+  engine.Run();
+}
 
-        auto vertexAttributes = CreateVertexAttributes();
+GRK_Result AddMultiVertexAttributeRenderComponent(
+    char *const *args,
+    GRK_EntityHandle &triangleEntity) {
+  auto numVertexes = sizeof(triangleVertexData) / sizeof(float);
+  std::unique_ptr<float[]> vertexes = LoadVertexes(numVertexes);
 
-        auto shaderProgram = ShaderProgram(args[1], args[2]);
+  auto vertexAttributes = CreateVertexAttributes();
 
-        auto rc = GRK_RenderComponent(
+  auto shaderProgram = ShaderProgram(args[1], args[2]);
+
+  return triangleEntity.AddComponent(GRK_RenderComponent(
             vertexes,
             numVertexes,
             sizeof(float),
@@ -49,13 +71,7 @@ auto MultiVertexAttributeTest(char **args) -> void {
             GRK_OpenGLPrimitive::GL_Triangles,
             shaderProgram.GetId(),
             std::get<0>(vertexAttributes).get(),
-            std::get<1>(vertexAttributes));
-
-        return triangleEntity.AddComponent(std::move(rc));
-      };
-
-  GRK_Engine engine(engineInitialization);
-  engine.Run();
+            std::get<1>(vertexAttributes)));
 }
 
 auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[]>, GLsizei> {
@@ -81,20 +97,8 @@ auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[
 
   return std::make_tuple(std::move(attributes), numAttributes);
 }
-
-std::unique_ptr<float[]> LoadVertexes(size_t numVertexes) {
+std::unique_ptr<float[]> LoadVertexes(GLuint numVertexes) {
   auto vertexes = std::make_unique<float[]>(numVertexes);
   std::copy(triangleVertexData, &triangleVertexData[numVertexes], vertexes.get());
   return vertexes;
-}
-
-auto main(int argc, char *argv[]) -> int {
-  if (argc < 3) {
-    std::cout << "Triangle test requires a vertex and frag shader passed as arguments 1 and 2" << std::endl;
-    return -1;
-  } else {
-    MultiVertexAttributeTest(argv);
-  }
-
-  return 0;
 }

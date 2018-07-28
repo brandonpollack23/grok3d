@@ -11,6 +11,8 @@ using namespace Grok3d::Entities;
 using namespace Grok3d::Components;
 using namespace Grok3d::ShaderManager;
 
+auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[]>, GLsizei>;
+
 static float triangleFloats[] = {
     -0.5f, -0.5f, 0.0f,
     0.5f, -0.5f, 0.0f,
@@ -28,6 +30,8 @@ auto RemoveRenderComponentTest(char **args) -> void {
 
         auto shaderProgram = ShaderProgram(args[1], args[2]);
 
+        auto vertexAttributes = CreateVertexAttributes();
+
         auto rc = GRK_RenderComponent(
             vertexes,
             3,
@@ -36,7 +40,9 @@ auto RemoveRenderComponentTest(char **args) -> void {
             nullptr,
             0,
             GRK_OpenGLPrimitive::GL_Triangles,
-            shaderProgram.GetId());
+            shaderProgram.GetId(),
+            std::get<0>(vertexAttributes).get(),
+            std::get<1>(vertexAttributes));
 
         triangleEntity.AddComponent(std::move(rc));
 
@@ -58,4 +64,19 @@ auto main(int argc, char *argv[]) -> int {
   }
 
   return 0;
+}
+
+auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[]>, GLsizei> {
+  GLsizei numAttributes = 1;
+  auto va = std::make_unique<GRK_VertexAttribute[]>(1);
+  va[0] = {
+      0, // index
+      3, // size
+      GL_FLOAT, // type
+      GL_FALSE, // normalize
+      numAttributes * kDimensions * sizeof(float), // stride
+      reinterpret_cast<void*>(0)
+  };
+
+  return std::make_tuple(std::move(va), numAttributes);
 }

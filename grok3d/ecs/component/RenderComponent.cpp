@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
 * Contact @ grok3d@gmail.com
 * This file is available under the MIT license included in the project
 */
@@ -11,10 +11,10 @@ using namespace Grok3d;
 using namespace Grok3d::Components;
 using namespace Grok3d::ShaderManager;
 
-static constexpr unsigned int kDimensions = 3;
-
-// TODO clean
-// TODO pass a handle to the vertexes (returned from a factory that loads files/converts literals) instead of the vertexes themselves
+// TODO VertexAttributes and their count might want to be part of the ShaderProgram.
+// TODO builder
+// TODO should there only be one vertex buffer per shader?
+// TODO pass a handle to the vertexes (returned from a factory that loads files/converts literals) instead of the vertexes themselves.
 GRK_RenderComponent::GRK_RenderComponent(
     std::unique_ptr<float[]>& vertexes,
     std::size_t vertexCount,
@@ -23,7 +23,9 @@ GRK_RenderComponent::GRK_RenderComponent(
     unsigned int* indices,
     std::size_t numIndices,
     GRK_OpenGLPrimitive primitive,
-    GRK_ShaderProgramID shaderProgramID) noexcept :
+    GRK_ShaderProgramID shaderProgramID,
+    GRK_VertexAttribute vertexAttributes[],
+    GLsizei numVertexAttributes) noexcept :
     vertexBufferObjectOffset_(0),
     vertexCount_(vertexCount),
     vertexPrimitiveType_(indexType),
@@ -59,23 +61,23 @@ GRK_RenderComponent::GRK_RenderComponent(
     drawFunctionType_ = GRK_DrawFunction::DrawElements;
   }
 
-  // TODO make it so we can have more than one vertex attribute, make it so it they be set,
-  // removing vertices and these values from constuctor
-  // TODO make this configurable
-  // Set up vertex attributes for the 0 vertex
-  // Configure 0 vertex attribute
-  // Size is 3
-  // They are floats
-  // Do not normalize
-  // Stride is 3 floats between each vertex
-  // Offset of buffer where vertex data is is 0
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, kDimensions * sizeof(float), static_cast<void *>(nullptr));
-  glEnableVertexAttribArray(0);
+  // Configure vertex attributes
+  for (GLsizei i = 0; i < numVertexAttributes; i++) {
+    auto &attribute = vertexAttributes[i];
+    glVertexAttribPointer(
+        attribute.index,
+        attribute.size,
+        attribute.type,
+        attribute.normalize,
+        attribute.stride,
+        attribute.offset);
 
-  //we can unbind from array_buffer since the correct buffer is now stored in the VAO
+    glEnableVertexAttribArray(static_cast<GLuint>(i));
+  }
+
+  // Buffer already associated with VAO, no need to leave it bound.
   glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-  //unbind VAO just be safe and not change it somewhere later
+  // Unbind VAO to prevent further modification elsewhere.
   glBindVertexArray(0);
 }
 
@@ -92,6 +94,7 @@ void GRK_RenderComponent::freeGlPrimitives() {
   }
 }
 
+// TODO why isn't this trivially copyable?
 GRK_RenderComponent::GRK_RenderComponent(GRK_RenderComponent &&other) {
   std::memcpy(this, &other, sizeof(GRK_RenderComponent));
   std::memset(&other, 0, sizeof(GRK_RenderComponent));

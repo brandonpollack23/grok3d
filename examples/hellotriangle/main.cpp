@@ -17,7 +17,7 @@ static float triangleFloats[] = {
     0.0f, 0.5f, 0.0
 };
 
-auto RemoveRenderComponentTest(char **args) -> void {
+auto HelloTriangleTest(char **args) -> void {
   auto engineInitialization =
       [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
         auto triangleEntity = ecm.CreateEntity();
@@ -49,7 +49,7 @@ auto main(int argc, char *argv[]) -> int {
     std::cout << "Triangle test requires a vertex and frag shader passed as arguments 1 and 2" << std::endl;
     return -1;
   } else {
-    RemoveRenderComponentTest(argv);
+    HelloTriangleTest(argv);
   }
 
   return 0;

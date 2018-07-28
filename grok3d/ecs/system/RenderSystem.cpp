@@ -93,7 +93,7 @@ auto GRK_RenderSystem::CreateGLFWWindow() -> void {
                                  });
 
   //set up the viewport on the OGL context window
-  //this is what is used when transforming from normalized device coordinates to actual offset
+  //this is what is used when transforming from normalize device coordinates to actual offset
   glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 }
 
@@ -131,6 +131,7 @@ auto GRK_RenderSystem::RenderComponents() const -> void {
     // Specify shader program.
     glUseProgram(renderComponent.GetShaderProgramID());
 
+    // TODO for each rendercomponent there can be multiple vertex arrays...
     // Bind VAO (rules for how this vertex shader data is formatted).
     glBindVertexArray(renderComponent.GetVAO());
 

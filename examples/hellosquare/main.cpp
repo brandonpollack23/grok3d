@@ -14,7 +14,7 @@ using namespace Grok3d::Components;
 
 auto HelloSquareTest(char *args[]) -> void;
 std::function<GRK_Result (GRK_EntityComponentManager&)> GetHelloSquareInitializationFunction(const char* const args[]);
-auto LoadVertexes() -> std::unique_ptr<float[]>;
+std::unique_ptr<float[]> LoadVertexes(size_t i) -> std::unique_ptr<float[]>;
 std::unique_ptr<unsigned int[]> LoadElementIndices();
 
 auto main(int argc, char *argv[]) -> int {
@@ -76,7 +76,7 @@ GetHelloSquareInitializationFunction(const char *const *args) {
   return [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
     auto triangleEntity = ecm.CreateEntity();
 
-    auto vertexes = LoadVertexes();
+    auto vertexes = LoadVertexes(0);
     auto indices = LoadElementIndices();
     auto shaderProgram = ShaderManager::ShaderProgram({args[1], args[2]});
 
@@ -100,7 +100,7 @@ auto LoadElementIndices() -> std::unique_ptr<unsigned int[]> {
   return indices;
 }
 
-auto LoadVertexes() -> std::unique_ptr<float[]> {
+std::unique_ptr<float[]> LoadVertexes(size_t i) -> std::unique_ptr<float[]> {
   auto vertexes = std::make_unique<float[]>(12);
   std::copy(squareFloats, &squareFloats[12], vertexes.get());
   return vertexes;

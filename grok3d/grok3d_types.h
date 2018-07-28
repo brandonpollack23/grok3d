@@ -20,6 +20,9 @@
 /**constant (for now, future to make CVAR) that controls initial size of stores*/
 constexpr auto c_initial_entity_array_size = 1024;
 
+/** number of dimensions this engine is rendering.*/
+static constexpr unsigned int kDimensions = 3;
+
 //configure GLM
 #define GLM_PRECISION_HIGHP_FLOAT
 

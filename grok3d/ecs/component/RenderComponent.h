@@ -30,6 +30,15 @@ enum class GRK_OpenGLPrimitive : GLenum {
   GL_Triangles = GL_TRIANGLES
 };
 
+struct GRK_VertexAttribute {
+  GLuint index;
+  GLint size;
+  GLenum type;
+  GLboolean normalize;
+  GLsizei stride;
+  void* offset;
+};
+
 // TODO create a constructor that uses already created array/element buffer objects.
 // when this is created, use shared_ptr to reference count them, and move the freeing of those buffers to it's destructor
 // using shared_ptr will require overridding it's constructor/destructor to use OGL.
@@ -46,7 +55,9 @@ class GRK_RenderComponent {
       unsigned int* indices,
       std::size_t numIndices,
       GRK_OpenGLPrimitive primitive,
-      Grok3d::ShaderManager::GRK_ShaderProgramID shaderProgramID) noexcept;
+      Grok3d::ShaderManager::GRK_ShaderProgramID shaderProgramID,
+      Grok3d::Components::GRK_VertexAttribute vertexAttributes[],
+      GLsizei numVertexAttributes) noexcept;
 
   GRK_RenderComponent() = default;
   GRK_RenderComponent(GRK_RenderComponent&& other);

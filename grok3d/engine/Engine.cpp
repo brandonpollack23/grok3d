@@ -21,7 +21,7 @@ GRK_Engine::GRK_Engine() noexcept {
   m_systemManager.Initialize(&m_entityComponentManager);
 }
 
-GRK_Engine::GRK_Engine(std::function<GRK_Result(GRK_EntityComponentManager &)> initFunction) noexcept : GRK_Engine() {
+GRK_Engine::GRK_Engine(std::function<GRK_Result(GRK_EntityComponentManager&)> initFunction) noexcept : GRK_Engine() {
   m_initFunction = initFunction;
 }
 
@@ -90,7 +90,7 @@ auto GRK_Engine::RunGameLoop() -> void {
 }
 
 auto GRK_Engine::RunTicks(
-    SimulationTimeValues &simulationTimeValues,
+    SimulationTimeValues& simulationTimeValues,
     std::chrono::nanoseconds tickPeriod) -> void {
   using doubleConversion = std::chrono::duration<double>;
 
@@ -103,7 +103,7 @@ auto GRK_Engine::RunTicks(
 }
 
 auto GRK_Engine::InjectInitialization(
-    std::function<GRK_Result(GRK_EntityComponentManager &)> initFunction) -> GRK_Result {
+    std::function<GRK_Result(GRK_EntityComponentManager&)> initFunction) -> GRK_Result {
   m_initFunction = std::move(initFunction);
 
   return GRK_Result::Ok;

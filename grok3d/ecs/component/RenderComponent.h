@@ -78,7 +78,7 @@ class GRK_RenderComponent {
   auto GetIndexCount() const { return numIndices_; }
 
   auto GetEBOOffset() const {
-    return reinterpret_cast<void *>(SizeOfIndexType() * elementBufferObjectOffset_);
+    return reinterpret_cast<void*>(SizeOfIndexType() * elementBufferObjectOffset_);
   }
 
   auto GetDrawFunction() const { return drawFunctionType_; }

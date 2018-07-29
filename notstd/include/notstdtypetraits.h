@@ -35,7 +35,7 @@ struct MemberChecker {
   }
  public:
   template<class... MembersUnderTest>
-  constexpr auto operator()(MembersUnderTest &&...) {
+  constexpr auto operator()(MembersUnderTest&& ...) {
     return testValidity<MembersUnderTest...>(int());
   }
 };
@@ -44,7 +44,7 @@ struct MemberChecker {
  * members you need of a type, and returns an integral_type if they are all usable, this is all
  * for compile time introspection*/
 template<class TemplatedFunctor>
-constexpr auto is_valid(const TemplatedFunctor &&t) {
+constexpr auto is_valid(const TemplatedFunctor&& t) {
   //inject the TemplatedFunctor into the member checker
   //the MemberChecker (a meta Functor on it's own) () operator will then attempt to call
   //the TemplatedFunctor's application on the ClassUnderTest (template param for the application of MemberChecker)

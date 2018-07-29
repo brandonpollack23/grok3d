@@ -41,7 +41,7 @@ namespace Grok3d {
 template<class ECM>
 class GRK_EntityHandle__ {
  public:
-  GRK_EntityHandle__(ECM *entityComponentManager, GRK_Entity entity) noexcept :
+  GRK_EntityHandle__(ECM* entityComponentManager, GRK_Entity entity) noexcept :
       m_entity(entity),
       m_manager(entityComponentManager) {
   }
@@ -69,7 +69,7 @@ class GRK_EntityHandle__ {
    *
    * @tparam ComponentTypes the type of component to add, should be deduced by the compiler*/
   template<class ComponentType>
-  auto AddComponent(ComponentType &&component) -> GRK_Result {
+  auto AddComponent(ComponentType&& component) -> GRK_Result {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
         GRK_Result::Ok,
         return m_manager->template AddComponent<ComponentType>(m_entity, std::move(component)););
@@ -114,23 +114,23 @@ class GRK_EntityHandle__ {
             return ((components & componentBits) == componentBits));
   }
 
-  auto operator==(const GRK_EntityHandle &rhs) const -> bool {
+  auto operator==(const GRK_EntityHandle& rhs) const -> bool {
     return this->m_entity == rhs.m_entity;
   }
 
   template<class EntityComponentManager>
   friend auto
-  operator==(const int entity, const GRK_EntityHandle__<EntityComponentManager> &handle) -> bool;
+  operator==(const int entity, const GRK_EntityHandle__<EntityComponentManager>& handle) -> bool;
 
   template<class EntityComponentManager>
   friend auto
-  operator==(const GRK_EntityHandle__<EntityComponentManager> &handle, const int entity) -> bool;
+  operator==(const GRK_EntityHandle__<EntityComponentManager>& handle, const int entity) -> bool;
 
  private:
   friend ::std::hash<GRK_EntityHandle__<ECM>>;
 
   GRK_Entity m_entity; ///< The entiy ID this is the handle for
-  ECM *const m_manager;                  ///< the manager who created this handle
+  ECM* const m_manager;                  ///< the manager who created this handle
   ///< (@link GRK_EntityComponentManager__ GRK_EntityComponentManager__ @endlink)
 };
 }
@@ -142,17 +142,17 @@ class GRK_EntityHandle__ {
 template<class ECM>
 typename std::hash<Grok3d::GRK_EntityHandle__<ECM>>::result_type
 std::hash<Grok3d::GRK_EntityHandle__<ECM>>::operator()(
-    typename std::hash<Grok3d::GRK_EntityHandle__<ECM>>::argument_type const &e) const {
-  return hash<size_t> {}(e.m_entity);
+    typename std::hash<Grok3d::GRK_EntityHandle__<ECM>>::argument_type const& e) const {
+  return hash < size_t > {}(e.m_entity);
 }
 
 template<class ECM>
-auto operator==(const int entity, const Grok3d::GRK_EntityHandle__<ECM> &handle) -> bool {
+auto operator==(const int entity, const Grok3d::GRK_EntityHandle__<ECM>& handle) -> bool {
   return entity == handle.m_entity;
 }
 
 template<class ECM>
-auto operator==(const Grok3d::GRK_EntityHandle__<ECM> &handle, const int entity) -> bool {
+auto operator==(const Grok3d::GRK_EntityHandle__<ECM>& handle, const int entity) -> bool {
   return entity == handle.m_entity;
 }
 

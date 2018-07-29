@@ -14,7 +14,6 @@
 
 #include "GLFW/glfw3.h"
 
-
 namespace Grok3d {
 /**
  * @brief Opengl rendering system which initializes the window and draws
@@ -34,7 +33,7 @@ class GRK_RenderSystem {
 
   /**initialize m_renderComponents with the store of all render components from the @link
    * GRK_EntityComponentManager GRK_EntityComponentManager @endlink*/
-  auto Initialize(GRK_EntityComponentManager *ecm) -> GRK_Result;
+  auto Initialize(GRK_EntityComponentManager* ecm) -> GRK_Result;
 
  private:
   //TODO move this to input system
@@ -65,8 +64,8 @@ class GRK_RenderSystem {
  private:
   bool m_isInitialized; ///< Keeps track if class is initialized.
   const std::vector<GRK_RenderComponent>
-      *m_renderComponents; ///< The store of all rendercomponents for quick iterating
-  GLFWwindow *m_window; ///< GLFW window context.
+      * m_renderComponents; ///< The store of all rendercomponents for quick iterating
+  GLFWwindow* m_window; ///< GLFW window context.
 };
 }
 

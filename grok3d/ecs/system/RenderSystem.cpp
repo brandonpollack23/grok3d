@@ -22,7 +22,7 @@ GRK_RenderSystem::GRK_RenderSystem() noexcept :
     m_isInitialized(false) {
 }
 
-auto GRK_RenderSystem::Initialize(GRK_EntityComponentManager *ecm) -> GRK_Result {
+auto GRK_RenderSystem::Initialize(GRK_EntityComponentManager* ecm) -> GRK_Result {
   m_renderComponents = ecm->GetComponentStore<GRK_RenderComponent>();
 
   InitializeGLWindow();
@@ -50,7 +50,7 @@ auto GRK_RenderSystem::InitializeGLFW() const -> void {
 
 auto GRK_RenderSystem::SetGLFWErrorCallback() const -> void {
   glfwSetErrorCallback(
-      [](int error, const char *description) {
+      [](int error, const char* description) {
         std::cerr << "GLFW error 0x" << std::hex << error << " occured\n";
         std::cerr << description << std::endl;
         std::exit(-1);
@@ -86,7 +86,7 @@ auto GRK_RenderSystem::CreateGLFWWindow() -> void {
 
   //set up the callback to adjust viewport on window resize
   glfwSetFramebufferSizeCallback(m_window,
-                                 [](GLFWwindow *, int width, int height) {
+                                 [](GLFWwindow*, int width, int height) {
                                    glViewport(0, 0, width, height);
                                  });
 
@@ -125,7 +125,7 @@ auto GRK_RenderSystem::ClearBuffer() const -> void {
 }
 
 auto GRK_RenderSystem::RenderComponents() const -> void {
-  for (auto &renderComponent : *m_renderComponents) {
+  for (auto& renderComponent : *m_renderComponents) {
     // Specify shader program.
     glUseProgram(renderComponent.GetShaderProgramID());
 

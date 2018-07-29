@@ -18,9 +18,9 @@ static float triangleFloats[] = {
 };
 
 /** This is identical to the first triangle test, but now it removes it, this was written before unit testing was added.*/
-auto RemoveRenderComponentTest(char **args) -> void {
+auto RemoveRenderComponentTest(char** args) -> void {
   auto engineInitialization =
-      [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
+      [args](GRK_EntityComponentManager& ecm) -> GRK_Result {
         auto triangleEntity = ecm.CreateEntity();
 
         auto vertexes = std::make_unique<float[]>(9);
@@ -53,7 +53,7 @@ auto RemoveRenderComponentTest(char **args) -> void {
   engine.Run();
 }
 
-auto main(int argc, char *argv[]) -> int {
+auto main(int argc, char* argv[]) -> int {
   if (argc < 3) {
     std::cout << "Triangle test requires a vertex and frag shader passed as arguments 1 and 2" << std::endl;
     return -1;

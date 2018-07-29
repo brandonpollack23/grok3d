@@ -11,13 +11,14 @@
 
 using namespace Grok3d;
 
-auto HelloSquareTest(char *args[]) -> void;
-auto GetHelloSquareInitializationFunction(const char* const args[]) -> std::function<GRK_Result (GRK_EntityComponentManager&)>;
+auto HelloSquareTest(char* args[]) -> void;
+auto GetHelloSquareInitializationFunction(const char* const args[]) -> std::function<GRK_Result(
+    GRK_EntityComponentManager&)>;
 auto LoadVertexes(size_t numVertexes) -> std::unique_ptr<float[]>;
 auto LoadElementIndices() -> std::unique_ptr<unsigned int[]>;
 auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[]>, GLsizei>;
 
-auto main(int argc, char *argv[]) -> int {
+auto main(int argc, char* argv[]) -> int {
   if (argc < 3) {
     std::cout << "Triangle test requires a vertex and frag shader passed as arguments 1 and 2" << std::endl;
     return -1;
@@ -28,7 +29,7 @@ auto main(int argc, char *argv[]) -> int {
   return 0;
 }
 
-auto HelloSquareTest(char **args) -> void {
+auto HelloSquareTest(char** args) -> void {
   GRK_Engine engine(GetHelloSquareInitializationFunction(args));
   engine.Run();
 }
@@ -71,9 +72,9 @@ unsigned int squareIndexes[] = {
  * @param args arguments passed from main contain the strings
  * @return status
  */
-std::function<GRK_Result (GRK_EntityComponentManager&)>
-GetHelloSquareInitializationFunction(const char *const *args) {
-  return [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
+std::function<GRK_Result(GRK_EntityComponentManager&)>
+GetHelloSquareInitializationFunction(const char* const* args) {
+  return [args](GRK_EntityComponentManager& ecm) -> GRK_Result {
     auto triangleEntity = ecm.CreateEntity();
 
     auto vertexes = LoadVertexes(sizeof(squareFloats) / sizeof(float));

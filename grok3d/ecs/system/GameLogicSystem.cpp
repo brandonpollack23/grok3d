@@ -11,7 +11,7 @@ GRK_GameLogicSystem::GRK_GameLogicSystem() noexcept : GRK_System() {
 }
 
 auto GRK_GameLogicSystem::UpdateInternal(const double dt) -> GRK_Result {
-  for (const auto &entity : m_trackedEntities) {
+  for (const auto& entity : m_trackedEntities) {
     auto logicComponent = entity.GetComponent<GRK_GameLogicComponent>();
     logicComponent->Update(dt);
   }

@@ -11,7 +11,7 @@
 
 using namespace Grok3d;
 
-auto CreateAndRegisterMoveTestEntity(GRK_EntityComponentManager &ecm) -> GRK_Result {
+auto CreateAndRegisterMoveTestEntity(GRK_EntityComponentManager& ecm) -> GRK_Result {
   auto pointEntity = ecm.CreateEntity();
 
   auto moveBehaviour = std::make_unique<MoveBackAndForthBehaviour>(pointEntity);
@@ -23,7 +23,7 @@ auto CreateAndRegisterMoveTestEntity(GRK_EntityComponentManager &ecm) -> GRK_Res
 }
 
 auto CreationMovementDeleteTest() -> void {
-  auto engineInitialization = [](GRK_EntityComponentManager &ecm) -> GRK_Result {
+  auto engineInitialization = [](GRK_EntityComponentManager& ecm) -> GRK_Result {
     for (int i = 0; i < 5; i++) {
       auto result = CreateAndRegisterMoveTestEntity(ecm);
       if (result != GRK_Result::Ok) {
@@ -38,7 +38,7 @@ auto CreationMovementDeleteTest() -> void {
   engine.Run();
 }
 
-auto main(int argc, char *argv[]) -> int {
+auto main(int argc, char* argv[]) -> int {
   CreationMovementDeleteTest();
   return 0;
 }

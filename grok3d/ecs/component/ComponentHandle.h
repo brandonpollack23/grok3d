@@ -32,8 +32,8 @@ class GRK_ComponentHandle {
    * location in the GRK_EntityComponentManager__::m_componentStores tuple of vectors
    * @param[in] owner The @link GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong*/
   GRK_ComponentHandle(
-      const ECM *entityComponentManager,
-      const ComponentType *component,
+      const ECM* entityComponentManager,
+      const ComponentType* component,
       const GRK_Entity owner) noexcept :
       m_owner(owner),
       m_component(component),
@@ -54,9 +54,9 @@ class GRK_ComponentHandle {
   }
 
   /**dereferences and fowards to internal ComponentType*/
-  auto operator->() -> ComponentType * {
+  auto operator->() -> ComponentType* {
     if (IsHandleValid()) {
-      return const_cast<ComponentType *>(m_component);
+      return const_cast<ComponentType*>(m_component);
     } else {
       return nullptr;
     }
@@ -70,12 +70,12 @@ class GRK_ComponentHandle {
  private:
   const GRK_Entity
       m_owner; ///< The @link GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong
-  const ComponentType *m_component;           /**< @brief The raw component pointer, points directly
+  const ComponentType* m_component;           /**< @brief The raw component pointer, points directly
                                                          to the component's location in the 
                                                          @link GRK_EntityComponentManager__::m_componentStores
                                                          GRK_EntityComponentManager__::m_componentStores @endlink tuple of vectors*/
   const ECM
-      *m_manager;                       ///< The manager which created this handle, passed in as "this" on construction
+      * m_manager;                       ///< The manager which created this handle, passed in as "this" on construction
 };
 }
 

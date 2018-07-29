@@ -47,10 +47,10 @@ class GRK_System {
   /**Function to register an entity based on if it's owned components contain at least
    * everything in @link GRK_System::GetComponentsBitMask
    * GetComponentsBitMask @endlink*/
-  auto UpdateSystemEntities(const GRK_EntityHandle &entity) -> GRK_Result;
+  auto UpdateSystemEntities(const GRK_EntityHandle& entity) -> GRK_Result;
 
   /**Queue an entity to be removed from the system's update queue*/
-  auto UnregisterEntity(const GRK_EntityHandle &entity) -> GRK_Result;
+  auto UnregisterEntity(const GRK_EntityHandle& entity) -> GRK_Result;
 
  protected:
   /**Virtual function to override for each system that returns a mask of all the ComponetTypes

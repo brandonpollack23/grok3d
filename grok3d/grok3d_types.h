@@ -57,7 +57,7 @@ inline auto operator|(GRK_Result lhs, GRK_Result rhs) -> GRK_Result {
   return (GRK_Result) (static_cast<UT_GRK_Result>(lhs) | static_cast<UT_GRK_Result>(rhs));
 }
 
-inline auto operator|=(GRK_Result &lhs, GRK_Result rhs) -> GRK_Result & {
+inline auto operator|=(GRK_Result& lhs, GRK_Result rhs) -> GRK_Result& {
   lhs = (GRK_Result) (static_cast<UT_GRK_Result>(lhs) | static_cast<UT_GRK_Result>(rhs));
   return lhs;
 }
@@ -140,7 +140,7 @@ struct hash<Grok3d::GRK_EntityHandle__<ECM>> {
   using argument_type = Grok3d::GRK_EntityHandle__<ECM>;
   using result_type = std::size_t;
 
-  auto operator()(argument_type const &e) const -> result_type;
+  auto operator()(argument_type const& e) const -> result_type;
 };
 }
 

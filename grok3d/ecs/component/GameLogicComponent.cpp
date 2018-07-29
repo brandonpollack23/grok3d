@@ -12,14 +12,14 @@ GRK_GameLogicComponent::GRK_GameLogicComponent() noexcept :
     m_behaviours(std::vector<std::unique_ptr<GRK_GameBehaviourBase>>()) {
 }
 
-GRK_GameLogicComponent::GRK_GameLogicComponent(GRK_GameLogicComponent &&glc) noexcept {
+GRK_GameLogicComponent::GRK_GameLogicComponent(GRK_GameLogicComponent&& glc) noexcept {
   if (&glc != this) {
     m_behaviours = std::move(glc.m_behaviours);
     m_behaviourIndexMap = std::move(glc.m_behaviourIndexMap);
   }
 }
 
-auto GRK_GameLogicComponent::operator=(GRK_GameLogicComponent &&rhs) noexcept -> GRK_GameLogicComponent & {
+auto GRK_GameLogicComponent::operator=(GRK_GameLogicComponent&& rhs) noexcept -> GRK_GameLogicComponent& {
   m_behaviours = std::move(rhs.m_behaviours);
   m_behaviourIndexMap = std::move(rhs.m_behaviourIndexMap);
   return *this;
@@ -27,13 +27,13 @@ auto GRK_GameLogicComponent::operator=(GRK_GameLogicComponent &&rhs) noexcept ->
 
 auto GRK_GameLogicComponent::Update(double dt) -> void {
   if (m_behavioursToRemove.size() > 0) {
-    for (const auto &behaviour : m_behavioursToRemove) {
+    for (const auto& behaviour : m_behavioursToRemove) {
       UnregisterBehaviour(behaviour);
     }
 
     m_behavioursToRemove.clear();
   }
-  for (const auto &behaviour : m_behaviours) {
+  for (const auto& behaviour : m_behaviours) {
     behaviour->Update(dt);
   }
 }

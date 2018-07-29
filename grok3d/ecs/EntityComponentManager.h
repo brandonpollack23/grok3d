@@ -94,7 +94,7 @@ class GRK_EntityComponentManager__ {
    * @link GRK_Result::Ok Ok @endlink
    * @link GRK_Result::EntityAlreadyDeleted EntityAlreadyDeleted @endlink
    * @link GRK_Result::ComponentAlreadyAdded ComponentAlreadyAdded @endlink*/
-  auto Initialize(GRK_SystemManager *systemManager) -> GRK_Result {
+  auto Initialize(GRK_SystemManager* systemManager) -> GRK_Result {
     m_systemManager = systemManager;
     m_isInitialized = true;
 
@@ -165,7 +165,7 @@ class GRK_EntityComponentManager__ {
   }
 
   /**A function that returns the vector of entities that are queued for GarbageCollection but not yet cleaned*/
-  auto GetDeletedUncleanedEntities() -> std::vector<GRK_Entity> & {
+  auto GetDeletedUncleanedEntities() -> std::vector<GRK_Entity>& {
     return m_deletedUncleanedEntities;
   }
 
@@ -207,7 +207,7 @@ class GRK_EntityComponentManager__ {
    *  @link GRK_Result::EntityAlreadyDeleted EntityAlreadyDeleted @endlink
    *  @link GRK_Result::ComponentAlreadyAdded ComponentAlreadyAdded @endlink*/
   template<class ComponentType>
-  auto AddComponent(GRK_Entity entity, ComponentType &&newComponent) -> GRK_Result {
+  auto AddComponent(GRK_Entity entity, ComponentType&& newComponent) -> GRK_Result {
     static_assert(notstd::param_pack_has_type<ComponentType, ComponentTypes...>::value,
                   "AddComponent Function requires ComponentType be one of the template params of GRK_EntityComponentManager__");
 
@@ -220,7 +220,7 @@ class GRK_EntityComponentManager__ {
     //only add a component if one doesnt exist
     if ((m_entityComponentsBitMaskMap[entity] & IndexToMask(componentTypeIndex)) == 0) {
       // TODO should be ref but will be updated soon
-      auto &componentTypeVector =
+      auto& componentTypeVector =
           std::get<std::vector<ComponentType>>(m_componentStores);
 
       if (componentTypeVector.size() == componentTypeVector.max_size()) {
@@ -239,7 +239,7 @@ class GRK_EntityComponentManager__ {
         //add the component to the end our vector
         componentTypeVector.push_back(std::move(newComponent));
 
-        auto &entityInstanceMap = m_entityComponentIndexMaps.at(componentTypeIndex);
+        auto& entityInstanceMap = m_entityComponentIndexMaps.at(componentTypeIndex);
 
         //the new size - 1 is the index of the vector the element is stored at
         entityInstanceMap.put(entity, static_cast<ComponentInstance>(componentTypeVector.size() - 1));
@@ -282,16 +282,16 @@ class GRK_EntityComponentManager__ {
     } else if ((m_entityComponentsBitMaskMap.at(entity) & componentMask) == componentMask) {
       //this is a vector of the type we are trying to remove
       // TODO should be ref but will be changed soon
-      const auto &componentTypeVector =
+      const auto& componentTypeVector =
           std::get<std::vector<ComponentType>>(m_componentStores);
 
-      const auto &entityInstanceMap = m_entityComponentIndexMaps.at(componentTypeIndex);
+      const auto& entityInstanceMap = m_entityComponentIndexMaps.at(componentTypeIndex);
 
       //get the instance (index in our vector) from teh entityInstanceMap
       const auto instance = entityInstanceMap.at(entity);
 
       //use the instance to index the array of that componenttype
-      const auto *const componentPointer = &(componentTypeVector.at(instance));
+      const auto* const componentPointer = &(componentTypeVector.at(instance));
 
       //return it in a handle
       return GRK_ComponentHandle<ComponentType>(this, componentPointer, entity);
@@ -309,7 +309,7 @@ class GRK_EntityComponentManager__ {
    *
    * @tparam ComponentType the type of component store vector you'd like to get a refernce of*/
   template<class ComponentType>
-  auto GetComponentStore() const -> const std::vector<ComponentType> * {
+  auto GetComponentStore() const -> const std::vector<ComponentType>* {
     return &std::get<std::vector<ComponentType>>(m_componentStores);
   }
 
@@ -370,10 +370,10 @@ class GRK_EntityComponentManager__ {
 
     const auto componentAccessIndex = GetComponentTypeAccessIndex<ComponentType>();
     //this is a vector of the type we are trying to remove
-    auto &componentTypeVector = std::get<std::vector<ComponentType>>(m_componentStores);
+    auto& componentTypeVector = std::get<std::vector<ComponentType>>(m_componentStores);
 
     //this is the map of entity to components for this type
-    auto &entityInstanceMap = m_entityComponentIndexMaps.at(componentAccessIndex);
+    auto& entityInstanceMap = m_entityComponentIndexMaps.at(componentAccessIndex);
 
     //check if the elment is in the map
     //and do what we need to if it is not
@@ -392,7 +392,7 @@ class GRK_EntityComponentManager__ {
       // if element is not last then we move last into this one's place
       if (lastElementEntity != entity) {
         // Element we are moving into it's old place
-        auto &lastElement = componentTypeVector.back();
+        auto& lastElement = componentTypeVector.back();
 
         //use std::move so we cannibilize any allocated components and dont copy them
         componentTypeVector[removeIndex] = std::move(lastElement);
@@ -436,8 +436,8 @@ class GRK_EntityComponentManager__ {
      *
      * @param ecm refernce to this
      * @param t the tuple member of ecm being initialized*/
-    auto operator()(GRK_EntityComponentManager &ecm, std::tuple<Ts...> &t) -> void {
-      auto &elem = std::get<index>(t);
+    auto operator()(GRK_EntityComponentManager& ecm, std::tuple<Ts...>& t) -> void {
+      auto& elem = std::get<index>(t);
       elem.reserve(c_initial_entity_array_size);
       ecm.m_entityComponentIndexMaps.push_back(
           notstd::unordered_bidir_map<GRK_Entity, ComponentInstance>(c_initial_entity_array_size));
@@ -448,7 +448,7 @@ class GRK_EntityComponentManager__ {
   /**@overload*/
   template<class... Ts>
   struct setup_component_stores_impl<-1, Ts...> {
-    auto operator()(GRK_EntityComponentManager &ecm, std::tuple<Ts...> &t) -> void {}
+    auto operator()(GRK_EntityComponentManager& ecm, std::tuple<Ts...>& t) -> void {}
   };
 
   /**Meta convenience function to call the setup_component_stores meta function
@@ -458,7 +458,7 @@ class GRK_EntityComponentManager__ {
    *
    * @tparam Ts deduced from the tuple that is passed to this function*/
   template<class... Ts>
-  auto setup_component_stores(GRK_EntityComponentManager &ecm, std::tuple<Ts...> &t) -> void {
+  auto setup_component_stores(GRK_EntityComponentManager& ecm, std::tuple<Ts...>& t) -> void {
     const auto size = sizeof...(Ts);
     setup_component_stores_impl<size - 1, Ts...>{}(ecm, t);
   }
@@ -478,8 +478,8 @@ class GRK_EntityComponentManager__ {
   template<int ComponentIndex, class... Ts>
   struct garbage_collect_iter_impl {
     /** The applicitive operator of the meta function*/
-    auto operator()(GRK_EntityComponentManager &ecm) -> void {
-      for (auto &entity : ecm.m_deletedUncleanedEntities) {
+    auto operator()(GRK_EntityComponentManager& ecm) -> void {
+      for (auto& entity : ecm.m_deletedUncleanedEntities) {
         using ComponentType = typename notstd::index_to_type<ComponentIndex, Ts...>::type;
         if ((ecm.m_entityComponentsBitMaskMap[entity] & IndexToMask(ComponentIndex)) > 0) {
           ecm.template RemoveComponentHelper<ComponentType>(entity);
@@ -493,7 +493,7 @@ class GRK_EntityComponentManager__ {
   /**@overload*/
   template<class... Ts>
   struct garbage_collect_iter_impl<-1, Ts...> {
-    auto operator()(GRK_EntityComponentManager &ecm) -> void {}
+    auto operator()(GRK_EntityComponentManager& ecm) -> void {}
   };
 
   /**Meta convenience function to call the garbage_collect_iter_impl meta function*/
@@ -507,7 +507,7 @@ class GRK_EntityComponentManager__ {
   bool m_isInitialized = false;                       ///< Simple bool t be sure we have a valid m_systemManager
 
   GRK_SystemManager
-      *m_systemManager;                 ///< The system manager that handles updating the state stored here
+      * m_systemManager;                 ///< The system manager that handles updating the state stored here
 
   ComponentStoreTuple m_componentStores;              ///< The tuple of vectors which store each component type
 

@@ -40,9 +40,9 @@ class GRK_GameLogicComponent {
  public:
   GRK_GameLogicComponent() noexcept;
 
-  GRK_GameLogicComponent(GRK_GameLogicComponent &&glc) noexcept;
+  GRK_GameLogicComponent(GRK_GameLogicComponent&& glc) noexcept;
 
-  GRK_GameLogicComponent &operator=(GRK_GameLogicComponent &&rhs) noexcept;
+  GRK_GameLogicComponent& operator=(GRK_GameLogicComponent&& rhs) noexcept;
 
   /**
    * @brief Update function which takes a change in time since the last update, this then calls all the behaviours with

@@ -37,7 +37,8 @@ GRK_RenderComponent::GRK_RenderComponent(
   glGenBuffers(1, &vertexBufferObject_); // Create OGL buffer to store vertex data.
 
   glBindVertexArray(vertexArrayObject_); // Bind this Vertex Array Object to the context.
-  glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject_); // Bind current Vertex Buffer Object to context's Array Buffer attribute.
+  glBindBuffer(GL_ARRAY_BUFFER,
+               vertexBufferObject_); // Bind current Vertex Buffer Object to context's Array Buffer attribute.
 
   // TODO not always STATIC DRAW.
   // Bound type, size in bytes to copy (3 data per vertex X bytes per data), buffer to copy, data access pattern
@@ -60,7 +61,7 @@ GRK_RenderComponent::GRK_RenderComponent(
 
   // Configure vertex attributes
   for (GLsizei i = 0; i < numVertexAttributes; i++) {
-    auto &attribute = vertexAttributes[i];
+    auto& attribute = vertexAttributes[i];
     glVertexAttribPointer(
         attribute.index,
         attribute.size,
@@ -91,12 +92,12 @@ void GRK_RenderComponent::freeGlPrimitives() {
   }
 }
 
-GRK_RenderComponent::GRK_RenderComponent(GRK_RenderComponent &&other) {
+GRK_RenderComponent::GRK_RenderComponent(GRK_RenderComponent&& other) {
   std::memcpy(this, &other, sizeof(GRK_RenderComponent));
   std::memset(&other, 0, sizeof(GRK_RenderComponent));
 }
 
-GRK_RenderComponent &GRK_RenderComponent::operator=(GRK_RenderComponent &&other) noexcept {
+GRK_RenderComponent& GRK_RenderComponent::operator=(GRK_RenderComponent&& other) noexcept {
   std::memcpy(this, &other, sizeof(GRK_RenderComponent));
   std::memset(&other, 0, sizeof(GRK_RenderComponent));
   return *this;

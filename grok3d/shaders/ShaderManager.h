@@ -29,16 +29,16 @@ using GRK_ShaderProgramID = GLuint;
 class ShaderProgram {
  public:
   ShaderProgram(const char* vertexShader, const char* fragmentShader);
-  auto GetId() const -> GRK_ShaderProgramID ;
+  auto GetId() const -> GRK_ShaderProgramID;
  protected:
   GRK_ShaderProgramID shaderProgramId;
 };
 
 /** compiles the source of a shader program, and returns a handle*/
-auto GRK_LoadShader(const char *const shaderSource, ShaderType type) -> GRK_ShaderID;
+auto GRK_LoadShader(const char* const shaderSource, ShaderType type) -> GRK_ShaderID;
 
 /** compiles shader using a file as the source*/
-auto GRK_LoadShaderFile(const char *const shaderFile, ShaderType type) -> GRK_ShaderID;
+auto GRK_LoadShaderFile(const char* const shaderFile, ShaderType type) -> GRK_ShaderID;
 
 /** Unloads a shader and frees the memory
  * @detail

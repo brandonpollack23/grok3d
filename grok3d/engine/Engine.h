@@ -48,7 +48,7 @@ class GRK_Engine {
    * This works the same as calling the default constructor and subsequently calling
    * @link GRK_Engine::InjectInitialization InjectInitialization @endlink and
    * @link GRK_Engine::Initialize Initialize @endlink*/
-  explicit GRK_Engine(std::function<GRK_Result(GRK_EntityComponentManager &)> initFunction) noexcept;
+  explicit GRK_Engine(std::function<GRK_Result(GRK_EntityComponentManager&)> initFunction) noexcept;
 
   //TODO overload initialize based on markup file
   /**Run the internally function inserted with
@@ -70,14 +70,14 @@ class GRK_Engine {
 
   /**Insert an intialzation function to set up the scene*/
   auto InjectInitialization(
-      std::function<GRK_Result(GRK_EntityComponentManager &)> initFunction) -> GRK_Result;
+      std::function<GRK_Result(GRK_EntityComponentManager&)> initFunction) -> GRK_Result;
 
  private:
   auto EnsureInitialized() -> void;
 
   auto RunGameLoop() -> void;
 
-  auto RunTicks(SimulationTimeValues &simulationTimeValues, std::chrono::nanoseconds tickPeriod) -> void;
+  auto RunTicks(SimulationTimeValues& simulationTimeValues, std::chrono::nanoseconds tickPeriod) -> void;
 
  private:
   GRK_EntityComponentManager m_entityComponentManager;
@@ -86,7 +86,7 @@ class GRK_Engine {
   /**An init function that sets up the scene by creating entities and adding components
    * using the @link GRK_EntityComponentManager GRK_EntityComponentManager @endlink
    * for an initial state*/
-  std::function<GRK_Result(GRK_EntityComponentManager &)> m_initFunction;
+  std::function<GRK_Result(GRK_EntityComponentManager&)> m_initFunction;
 };
 } /*Grok3d*/
 

@@ -44,19 +44,19 @@ class GRK_TransformComponent {
    * on the new parent
    *
    * @param[in] newParent the parent that AttachChild will be called on*/
-  auto SetParent(GRK_TransformComponent *newParent) -> void;
+  auto SetParent(GRK_TransformComponent* newParent) -> void;
 
   /**
    * @brief Attaches a child to this parent
    *
    * @param[in] newChild the child that will become relative to this parent*/
-  auto AttachChild(GRK_TransformComponent *newChild) -> void;
+  auto AttachChild(GRK_TransformComponent* newChild) -> void;
 
   /**
    * @brief tests if this class is the child of another TransformComponent
    *
    * param[in] possibleParent The TransformComponent to test if we are the child of*/
-  auto IsChildOf(const GRK_TransformComponent *const possibleParent) const -> bool;
+  auto IsChildOf(const GRK_TransformComponent* const possibleParent) const -> bool;
 
   /**Find the index you are in the parents pool of children*/
   auto GetSiblingIndex() -> std::size_t; //use parent and iterate through the list looking for me
@@ -66,7 +66,7 @@ class GRK_TransformComponent {
    * @param[in] possibleChild the child your are indexing, possible that it is not a child
    * at all
    * @return the index of the child from 0, -1 if it is not a child*/
-  auto GetChildIndex(const GRK_TransformComponent *possibleChild) const -> std::size_t;
+  auto GetChildIndex(const GRK_TransformComponent* possibleChild) const -> std::size_t;
 
   /**Returns number of children who are positioned relative to this*/
   auto ChildCount() -> int;
@@ -111,12 +111,12 @@ class GRK_TransformComponent {
   auto DetachChildren() -> void;
 
   /**Get a child by index*/
-  auto GetChild(unsigned int index) const -> GRK_TransformComponent *;
+  auto GetChild(unsigned int index) const -> GRK_TransformComponent*;
 
  private:
-  GRK_TransformComponent *m_parent;                ///< The parent of this TransformComponent
+  GRK_TransformComponent* m_parent;                ///< The parent of this TransformComponent
 
-  std::vector<GRK_TransformComponent *>
+  std::vector<GRK_TransformComponent*>
       m_children; ///< The vector of children who are positioned relative to this TransformComponent
 
   //TODO rotation as quaternion

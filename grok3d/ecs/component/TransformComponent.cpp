@@ -10,21 +10,21 @@ using namespace Grok3d;
 
 GRK_TransformComponent::GRK_TransformComponent() noexcept :
     m_parent(nullptr),
-    m_children(std::vector<GRK_TransformComponent *>()),
+    m_children(std::vector<GRK_TransformComponent*>()),
     m_localPosition(glm::dvec3(0)),
     m_localScale(glm::dvec3(0)) {
 }
 
-auto GRK_TransformComponent::SetParent(GRK_TransformComponent *newParent) -> void {
+auto GRK_TransformComponent::SetParent(GRK_TransformComponent* newParent) -> void {
   m_parent = newParent;
   m_parent->AttachChild(this);
 }
 
-auto GRK_TransformComponent::AttachChild(GRK_TransformComponent *newChild) -> void {
+auto GRK_TransformComponent::AttachChild(GRK_TransformComponent* newChild) -> void {
   this->m_children.push_back(newChild);
 }
 
-auto GRK_TransformComponent::IsChildOf(const GRK_TransformComponent *const possibleParent) const -> bool {
+auto GRK_TransformComponent::IsChildOf(const GRK_TransformComponent* const possibleParent) const -> bool {
   return possibleParent == m_parent;
 }
 
@@ -33,7 +33,7 @@ auto GRK_TransformComponent::GetSiblingIndex() -> std::size_t //use parent and i
   return m_parent->GetChildIndex(this);
 }
 
-auto GRK_TransformComponent::GetChildIndex(const GRK_TransformComponent *const possibleChild) const -> std::size_t {
+auto GRK_TransformComponent::GetChildIndex(const GRK_TransformComponent* const possibleChild) const -> std::size_t {
   for (size_t i = 0; i < m_children.size(); ++i) {
     if (m_children[i] == possibleChild) {
       return i;
@@ -119,7 +119,7 @@ auto GRK_TransformComponent::DetachChildren() -> void {
   m_children.clear();
 }
 
-auto GRK_TransformComponent::GetChild(const unsigned int index) const -> GRK_TransformComponent * {
+auto GRK_TransformComponent::GetChild(const unsigned int index) const -> GRK_TransformComponent* {
   return (index < m_children.size() && index > 0) ? m_children[index] : nullptr;
 }
 

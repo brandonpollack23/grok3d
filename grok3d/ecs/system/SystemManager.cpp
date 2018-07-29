@@ -15,7 +15,7 @@ GRK_SystemManager::GRK_SystemManager() noexcept :
 }
 
 //TODO fail if not initialized?
-auto GRK_SystemManager::Initialize(GRK_EntityComponentManager *ecm) -> GRK_Result {
+auto GRK_SystemManager::Initialize(GRK_EntityComponentManager* ecm) -> GRK_Result {
   //save reference to ecm
   m_ecm = ecm;
 
@@ -27,17 +27,17 @@ auto GRK_SystemManager::Initialize(GRK_EntityComponentManager *ecm) -> GRK_Resul
   return GRK_Result::Ok;
 }
 
-auto GRK_SystemManager::UpdateSystemEntities(const GRK_EntityHandle &entity) -> GRK_Result {
+auto GRK_SystemManager::UpdateSystemEntities(const GRK_EntityHandle& entity) -> GRK_Result {
   auto result = GRK_Result::Ok;
 
-  for (const auto &system : m_systems) {
+  for (const auto& system : m_systems) {
     result |= system->UpdateSystemEntities(entity);
   }
 
   return result;
 }
 
-auto GRK_SystemManager::UnregisterEntity(const GRK_EntityHandle &entity) -> GRK_Result {
+auto GRK_SystemManager::UnregisterEntity(const GRK_EntityHandle& entity) -> GRK_Result {
   auto result = GRK_Result::Ok;
 
   for (auto system : m_systems) {
@@ -49,7 +49,7 @@ auto GRK_SystemManager::UnregisterEntity(const GRK_EntityHandle &entity) -> GRK_
 
 auto GRK_SystemManager::UpdateSystems(const double dt) -> GRK_Result {
   auto result = GRK_Result::Ok;
-  for (const auto &system : m_systems) {
+  for (const auto& system : m_systems) {
     result |= system->Update(dt);
   }
 

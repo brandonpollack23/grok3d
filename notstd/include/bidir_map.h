@@ -41,11 +41,11 @@ class bidir_map {
 
   /**constructor that takes in non default hasher, predicate, allocator, and size*/
   bidir_map(size_t n,
-            const typename MapType_t::hasher &hf = typename MapType_t::hasher{},
-            const typename MapType_t::key_equal &eql = typename MapType_t::key_equal{},
-            const typename MapType_t::allocator_type &alloc = typename MapType_t::allocator_type{}) :
+            const typename MapType_t::hasher& hf = typename MapType_t::hasher{},
+            const typename MapType_t::key_equal& eql = typename MapType_t::key_equal{},
+            const typename MapType_t::allocator_type& alloc = typename MapType_t::allocator_type{}) :
       m_forwardMap(MapType_t(n, hf, eql, alloc)) {
-    static auto hasNeededMembers = is_valid([](auto &&t) -> decltype(
+    static auto hasNeededMembers = is_valid([](auto&& t) -> decltype(
     t.size(),
         t.max_size(),
         t.begin(),
@@ -59,7 +59,8 @@ class bidir_map {
         t.erase(std::declval<const Key>()),
         t.clear()) {});
 
-    static_assert(decltype(hasNeededMembers(m_forwardMap))::value, "MapType backing bidir_map does not have all the needed member functions");
+    static_assert(decltype(hasNeededMembers(m_forwardMap))::value,
+                  "MapType backing bidir_map does not have all the needed member functions");
     m_reverseMap = MapType_r_t(n, hf, eql, alloc);
   }
 
@@ -101,36 +102,36 @@ class bidir_map {
   }
 
   // Access
-  const T &at(const Key &k) const {
+  const T& at(const Key& k) const {
     return m_forwardMap.at(k);
   }
-  const Key &reverse_at(const T &v) const {
+  const Key& reverse_at(const T& v) const {
     return m_reverseMap.at(v);
   }
-  auto find(const Key &k) {
+  auto find(const Key& k) {
     return m_forwardMap.find(k);
   }
-  auto find(const Key &k) const {
+  auto find(const Key& k) const {
     return m_forwardMap.find(k);
   }
-  auto reverse_find(const T &v) {
+  auto reverse_find(const T& v) {
     return m_reverseMap.find(v);
   }
-  auto reverse_find(const T &v) const {
+  auto reverse_find(const T& v) const {
     return m_reverseMap.find(v);
   }
 
   // Modification
-  void put(const Key &k, const T &v) {
+  void put(const Key& k, const T& v) {
     m_forwardMap[k] = v;
     m_reverseMap[v] = k;
   }
-  void erase(const Key &k) {
+  void erase(const Key& k) {
     auto v = m_forwardMap[k];
     m_forwardMap.erase(k);
     m_reverseMap.erase(v);
   }
-  void reverse_erase(const T &v) {
+  void reverse_erase(const T& v) {
     auto k = m_reverseMap[v];
     m_forwardMap.erase(k);
     m_reverseMap.erase(v);

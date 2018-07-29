@@ -15,12 +15,12 @@ using namespace Grok3d::ShaderManager;
 static constexpr auto kFirstUniformName = "ourColor";
 
 class FirstUniformShader;
-auto GetEngineInitializationFunction(char **args) -> std::function<GRK_Result (GRK_EntityComponentManager&)>;
+auto GetEngineInitializationFunction(char** args) -> std::function<GRK_Result(GRK_EntityComponentManager&)>;
 auto LoadVertices(int numVertices) -> std::unique_ptr<float[]>;
-auto HelloChangingTriangleTest(char *args[]) -> void;;
+auto HelloChangingTriangleTest(char* args[]) -> void;;
 auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[]>, GLsizei>;
-auto AddSingleUniformRenderComponent(GRK_EntityHandle &triangleEntity, const FirstUniformShader &shaderProgram) -> void;
-auto AddDiscoLogicComponent(GRK_EntityHandle &triangleEntity, const FirstUniformShader &shaderProgram) -> void;
+auto AddSingleUniformRenderComponent(GRK_EntityHandle& triangleEntity, const FirstUniformShader& shaderProgram) -> void;
+auto AddDiscoLogicComponent(GRK_EntityHandle& triangleEntity, const FirstUniformShader& shaderProgram) -> void;
 
 /**
  * @class
@@ -36,9 +36,9 @@ auto AddDiscoLogicComponent(GRK_EntityHandle &triangleEntity, const FirstUniform
 class FirstUniformShader : public ShaderProgram {
  public:
   FirstUniformShader(
-      const char * const vertexShader,
-      const char * const fragmentShader,
-      const char * const uniform) : ShaderProgram(vertexShader, fragmentShader) {
+      const char* const vertexShader,
+      const char* const fragmentShader,
+      const char* const uniform) : ShaderProgram(vertexShader, fragmentShader) {
     theUniform_ = static_cast<GRK_UniformID>(glGetUniformLocation(shaderProgramId, uniform));
     if (theUniform_ < 0) {
       std::cout << "Error getting uniform \"" << uniform << "\" from shaders: "
@@ -99,7 +99,7 @@ static float triangleFloats[] = {
     0.0f, 0.5f, 0.0
 };
 
-auto main(int argc, char *argv[]) -> int {
+auto main(int argc, char* argv[]) -> int {
   if (argc < 3) {
     std::cout << "Triangle test requires a vertex and frag shader passed as arguments 1 and 2" << std::endl;
     return -1;
@@ -110,13 +110,13 @@ auto main(int argc, char *argv[]) -> int {
   return 0;
 }
 
-auto HelloChangingTriangleTest(char **args) -> void {
+auto HelloChangingTriangleTest(char** args) -> void {
   GRK_Engine engine(GetEngineInitializationFunction(args));
   engine.Run();
 }
 
-auto GetEngineInitializationFunction(char *args[]) -> std::function<GRK_Result(GRK_EntityComponentManager &)> {
-  return [args](GRK_EntityComponentManager &ecm) -> GRK_Result {
+auto GetEngineInitializationFunction(char* args[]) -> std::function<GRK_Result(GRK_EntityComponentManager&)> {
+  return [args](GRK_EntityComponentManager& ecm) -> GRK_Result {
     auto triangleEntity = ecm.CreateEntity();
 
     auto shaderProgram = FirstUniformShader(args[1], args[2], kFirstUniformName);
@@ -128,22 +128,22 @@ auto GetEngineInitializationFunction(char *args[]) -> std::function<GRK_Result(G
   };
 }
 
-void AddSingleUniformRenderComponent(GRK_EntityHandle &triangleEntity, const FirstUniformShader &shaderProgram) {
+void AddSingleUniformRenderComponent(GRK_EntityHandle& triangleEntity, const FirstUniformShader& shaderProgram) {
   std::unique_ptr<float[]> vertexes = LoadVertices(sizeof(triangleFloats) / sizeof(float));
   auto vertexAttributes = CreateVertexAttributes();
 
   triangleEntity.AddComponent(
-        GRK_RenderComponent(
-            vertexes,
-            3,
-            sizeof(float),
-            GRK_GL_PrimitiveType::Unsigned_Int,
-            nullptr,
-            0,
-            GRK_OpenGLPrimitive::GL_Triangles,
-            shaderProgram.GetId(),
-            std::get<0>(vertexAttributes).get(),
-            std::get<1>(vertexAttributes)));
+      GRK_RenderComponent(
+          vertexes,
+          3,
+          sizeof(float),
+          GRK_GL_PrimitiveType::Unsigned_Int,
+          nullptr,
+          0,
+          GRK_OpenGLPrimitive::GL_Triangles,
+          shaderProgram.GetId(),
+          std::get<0>(vertexAttributes).get(),
+          std::get<1>(vertexAttributes)));
 }
 
 std::unique_ptr<float[]> LoadVertices(int numVertices) {
@@ -167,7 +167,7 @@ auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[
   return std::make_tuple(std::move(va), numAttributes);
 }
 
-auto AddDiscoLogicComponent(GRK_EntityHandle &triangleEntity, const FirstUniformShader &shaderProgram) -> void {
+auto AddDiscoLogicComponent(GRK_EntityHandle& triangleEntity, const FirstUniformShader& shaderProgram) -> void {
   GRK_GameLogicComponent glc;
   glc.RegisterBehaviour(
       std::make_unique<ChangeColorBehaviour>(triangleEntity, shaderProgram));

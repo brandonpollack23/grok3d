@@ -4,8 +4,8 @@
 */
 
 /** @file
- * contains definitions for both @link Grok3d::GRK_GameLogicComponent
- * GRK_GameLogicComponent @endlink and @link Grok3d::GRK_GameBehaviourBase
+ * contains definitions for both @link GRK_GameLogicComponent
+ * GRK_GameLogicComponent @endlink and @link GRK_GameBehaviourBase
  * GRK_GameBehaviourBase @endlink*/
 
 #ifndef __GAMELOGICCOMPONENT__H
@@ -29,11 +29,11 @@ namespace Grok3d {
  * @details
  * This class acts as a data container for a list of unique "behaviours" which act as the
  * implementation of game level logic.  These are classes act as a specialized functor by
- * extending @link Grok3d::GRK_GameBehaviourBase GRK_GameBehaviourBase @endlink.*/
+ * extending @link GRK_GameBehaviourBase GRK_GameBehaviourBase @endlink.*/
 class GRK_GameLogicComponent {
  public:
   /**A handle to a behaviour, it is an integer that works much like a file descriptor, it
-   * is your key into the @link Grok3d::GRK_GameLogicComponent
+   * is your key into the @link GRK_GameLogicComponent
    * GRK_GameLogicComponent @endlink to access your behaviour, usually for removal*/
   typedef size_t BehaviourHandle;
 
@@ -74,7 +74,7 @@ class GRK_GameLogicComponent {
    * done with iterating through them, we update the container and clean up.
    *
    * @param[in] handle a token for modifying and removing later*/
-  auto EnqueueBehaviourRemoval(BehaviourHandle handle) -> Grok3d::GRK_Result;
+  auto EnqueueBehaviourRemoval(BehaviourHandle handle) -> GRK_Result;
 
  protected:
   /**
@@ -85,7 +85,7 @@ class GRK_GameLogicComponent {
    * which runs later and actually frees the memory and takes it out of the queue
    *
    * @param[in] handle the behaviour handle to be removed*/
-  auto UnregisterBehaviour(BehaviourHandle handle) -> Grok3d::GRK_Result;
+  auto UnregisterBehaviour(BehaviourHandle handle) -> GRK_Result;
 
  protected:
   typedef size_t BehaviourIndex; ///< the index into m_behaviours that corresponds to a behaviour
@@ -110,9 +110,9 @@ class GRK_GameBehaviourBase {
  public:
   /**
    * @param[in] owningEntity often enough every single gamelogic component needs to add/remove/modify
-   * components, they can do that with this @link Grok3d::GRK_EntityHandle
+   * components, they can do that with this @link GRK_EntityHandle
    * GRK_EntityHandle @endlink*/
-  GRK_GameBehaviourBase(Grok3d::GRK_EntityHandle owningEntity) noexcept;
+  GRK_GameBehaviourBase(GRK_EntityHandle owningEntity) noexcept;
 
   /**
    * @brief function you override that updates the owning entity with included behaviour
@@ -128,18 +128,18 @@ class GRK_GameBehaviourBase {
   virtual void Update(double dt) = 0;
 
  protected:
-  /**Convenience function that calls @link Grok3d::GRK_GameLogicComponent::EnqueueBehaviourRemoval
+  /**Convenience function that calls @link GRK_GameLogicComponent::EnqueueBehaviourRemoval
    * EnqueueBehaviourRemoval @endlink for you*/
-  Grok3d::GRK_Result UnregisterThisBehaviour();
+  GRK_Result UnregisterThisBehaviour();
 
  protected:
   friend class GRK_GameLogicComponent;
 
-  Grok3d::GRK_EntityHandle m_owningEntity;         ///< the entity that this behaviour applies to
+  GRK_EntityHandle m_owningEntity;         ///< the entity that this behaviour applies to
 
   GRK_GameLogicComponent::BehaviourHandle m_behaviourHandle; /**<
                                                                     * the handle to the behaviour,
-                                                                    * used by @link Grok3d::GRK_GameBehaviourBase::UnregisterThisBehaviour
+                                                                    * used by @link GRK_GameBehaviourBase::UnregisterThisBehaviour
                                                                     * UnregisterThisBehaviour @endlink*/
 };
 }

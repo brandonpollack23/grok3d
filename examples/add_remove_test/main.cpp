@@ -7,7 +7,7 @@
 #include <iostream>
 
 using namespace Grok3d;
-using namespace Grok3d::ShaderManager;
+using namespace ShaderManager;
 
 auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[]>, GLsizei>;
 
@@ -72,7 +72,7 @@ auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[
       3, // size
       GL_FLOAT, // type
       GL_FALSE, // normalize
-      numAttributes * kDimensions * sizeof(float), // stride
+      numAttributes * static_cast<GLsizei>(kDimensions) * static_cast<GLsizei>(sizeof(float)), // stride
       reinterpret_cast<void*>(0)
   };
 

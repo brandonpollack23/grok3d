@@ -55,8 +55,8 @@ class GRK_RenderComponent {
       unsigned int* indices,
       std::size_t numIndices,
       GRK_OpenGLPrimitive primitive,
-      Grok3d::ShaderManager::GRK_ShaderProgramID shaderProgramID,
-      Grok3d::GRK_VertexAttribute vertexAttributes[],
+      ShaderManager::GRK_ShaderProgramID shaderProgramID,
+      GRK_VertexAttribute vertexAttributes[],
       GLsizei numVertexAttributes) noexcept;
 
   GRK_RenderComponent() = default;
@@ -85,7 +85,7 @@ class GRK_RenderComponent {
 
   auto GetPrimitive() const { return static_cast<GLenum>(drawingPrimitive_); }
 
-  auto GetShaderProgramID() const -> Grok3d::ShaderManager::GRK_ShaderProgramID { return shaderProgramID_; }
+  auto GetShaderProgramID() const -> ShaderManager::GRK_ShaderProgramID { return shaderProgramID_; }
 
   auto SizeOfIndexType() const -> std::size_t {
     switch (vertexPrimitiveType_) {
@@ -131,7 +131,7 @@ class GRK_RenderComponent {
 
   GRK_OpenGLPrimitive drawingPrimitive_;
 
-  Grok3d::ShaderManager::GRK_ShaderProgramID shaderProgramID_;
+  ShaderManager::GRK_ShaderProgramID shaderProgramID_;
 };
 }
 

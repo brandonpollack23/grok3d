@@ -27,7 +27,7 @@ class GRK_System {
   GRK_System() noexcept;
 
   /**
-   * @brief Runs @link Grok3d::GRK_System::UpdateInternal UpdateInternal @endlink
+   * @brief Runs @link GRK_System::UpdateInternal UpdateInternal @endlink
    * function as well as other houskeeping
    *
    * @details
@@ -45,26 +45,26 @@ class GRK_System {
   virtual GRK_Result UpdateInternal(double dt) = 0;
 
   /**Function to register an entity based on if it's owned components contain at least
-   * everything in @link Grok3d::GRK_System::GetComponentsBitMask
+   * everything in @link GRK_System::GetComponentsBitMask
    * GetComponentsBitMask @endlink*/
-  auto UpdateSystemEntities(const Grok3d::GRK_EntityHandle &entity) -> Grok3d::GRK_Result;
+  auto UpdateSystemEntities(const GRK_EntityHandle &entity) -> GRK_Result;
 
   /**Queue an entity to be removed from the system's update queue*/
-  auto UnregisterEntity(const Grok3d::GRK_EntityHandle &entity) -> Grok3d::GRK_Result;
+  auto UnregisterEntity(const GRK_EntityHandle &entity) -> GRK_Result;
 
  protected:
   /**Virtual function to override for each system that returns a mask of all the ComponetTypes
    * they are concerned with*/
-  virtual auto GetComponentsBitMask() const -> Grok3d::GRK_ComponentBitMask = 0;
+  virtual auto GetComponentsBitMask() const -> GRK_ComponentBitMask = 0;
 
  private:
   /**Seperate function that completes unregistration since we cant modify a iterable
    * while it's being iterated through*/
-  auto CompleteUnregisterEntities() -> Grok3d::GRK_Result;
+  auto CompleteUnregisterEntities() -> GRK_Result;
 
  protected:
-  std::unordered_set<Grok3d::GRK_EntityHandle> m_trackedEntities; ///< entities this system will update
-  std::vector<Grok3d::GRK_EntityHandle>
+  std::unordered_set<GRK_EntityHandle> m_trackedEntities; ///< entities this system will update
+  std::vector<GRK_EntityHandle>
       m_entitiesToUnregister;   ///< entities that will be removed after updating
 };
 }

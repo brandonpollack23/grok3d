@@ -15,7 +15,7 @@ namespace Grok3d {
  *  @brief A handle to a Component for convenient management
  *
  *  @details
- *  This class template stores a reference to the creating @link Grok3d::GRK_EntityComponentManager
+ *  This class template stores a reference to the creating @link GRK_EntityComponentManager
  *  GRK_EntityComponentManager @endlink and makes management of the lifetime,
  *  getting related properties, and usage of a component safer and easier to read
  *
@@ -30,11 +30,11 @@ class GRK_ComponentHandle {
    * "this" on construction
    * @param[in] component The raw component pointer, points directly to the component's
    * location in the GRK_EntityComponentManager__::m_componentStores tuple of vectors
-   * @param[in] owner The @link Grok3d::GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong*/
+   * @param[in] owner The @link GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong*/
   GRK_ComponentHandle(
       const ECM *entityComponentManager,
       const ComponentType *component,
-      const Grok3d::GRK_Entity owner) noexcept :
+      const GRK_Entity owner) noexcept :
       m_owner(owner),
       m_component(component),
       m_manager(entityComponentManager) {
@@ -63,16 +63,16 @@ class GRK_ComponentHandle {
   }
 
   /**forwards a call to the manager to remove this component from owning entity*/
-  auto Destroy() const -> Grok3d::GRK_Result {
+  auto Destroy() const -> GRK_Result {
     return m_manager->template RemoveComponent<ComponentType>(m_owner);
   }
 
  private:
-  const Grok3d::GRK_Entity
-      m_owner; ///< The @link Grok3d::GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong
+  const GRK_Entity
+      m_owner; ///< The @link GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong
   const ComponentType *m_component;           /**< @brief The raw component pointer, points directly
                                                          to the component's location in the 
-                                                         @link Grok3d::GRK_EntityComponentManager__::m_componentStores 
+                                                         @link GRK_EntityComponentManager__::m_componentStores
                                                          GRK_EntityComponentManager__::m_componentStores @endlink tuple of vectors*/
   const ECM
       *m_manager;                       ///< The manager which created this handle, passed in as "this" on construction

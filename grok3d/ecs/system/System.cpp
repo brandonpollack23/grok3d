@@ -39,7 +39,7 @@ auto GRK_System::UnregisterEntity(const GRK_EntityHandle &entity) -> GRK_Result 
   return GRK_Result::Ok;
 }
 
-auto GRK_System::CompleteUnregisterEntities() -> Grok3d::GRK_Result {
+auto GRK_System::CompleteUnregisterEntities() -> GRK_Result {
   //TODO move from end to make more efficent
   GRK_Result result = GRK_Result::Ok;
   for (auto &entity : m_entitiesToUnregister) {

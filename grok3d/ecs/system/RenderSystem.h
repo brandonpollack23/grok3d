@@ -30,10 +30,10 @@ class GRK_RenderSystem {
   GRK_RenderSystem() noexcept;
 
   /**Have do all rendering work and have GLFW swap buffers*/
-  auto Render() const -> Grok3d::GRK_Result;
+  auto Render() const -> GRK_Result;
 
   /**initialize m_renderComponents with the store of all render components from the @link
-   * Grok3d::GRK_EntityComponentManager GRK_EntityComponentManager @endlink*/
+   * GRK_EntityComponentManager GRK_EntityComponentManager @endlink*/
   auto Initialize(GRK_EntityComponentManager *ecm) -> GRK_Result;
 
  private:
@@ -64,7 +64,7 @@ class GRK_RenderSystem {
 
  private:
   bool m_isInitialized; ///< Keeps track if class is initialized.
-  const std::vector<Grok3d::GRK_RenderComponent>
+  const std::vector<GRK_RenderComponent>
       *m_renderComponents; ///< The store of all rendercomponents for quick iterating
   GLFWwindow *m_window; ///< GLFW window context.
 };

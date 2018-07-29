@@ -29,9 +29,9 @@ struct SimulationTimeValues {
  *
  * @details
  * This is the class that contains the
- * @link Grok3d::GRK_EntityComponentManager GRK_EntityComponentManager @endlink
+ * @link GRK_EntityComponentManager GRK_EntityComponentManager @endlink
  * and
- * @link Grok3d::GRK_SystemManager GRK_SystemManager @endlink
+ * @link GRK_SystemManager GRK_SystemManager @endlink
  *
  * It works through a relatively simple process:
  * 1) You intialize the state by passing a function that uses a reference to the internal
@@ -46,14 +46,14 @@ class GRK_Engine {
    *
    * @details
    * This works the same as calling the default constructor and subsequently calling
-   * @link Grok3d::GRK_Engine::InjectInitialization InjectInitialization @endlink and
-   * @link Grok3d::GRK_Engine::Initialize Initialize @endlink*/
-  explicit GRK_Engine(std::function<GRK_Result(Grok3d::GRK_EntityComponentManager &)> initFunction) noexcept;
+   * @link GRK_Engine::InjectInitialization InjectInitialization @endlink and
+   * @link GRK_Engine::Initialize Initialize @endlink*/
+  explicit GRK_Engine(std::function<GRK_Result(GRK_EntityComponentManager &)> initFunction) noexcept;
 
   //TODO overload initialize based on markup file
   /**Run the internally function inserted with
-   * @link Grok3d::GRK_Engine::InjectInitialization InjectInitialization @endlink*/
-  auto Initialize() -> Grok3d::GRK_Result;
+   * @link GRK_Engine::InjectInitialization InjectInitialization @endlink*/
+  auto Initialize() -> GRK_Result;
 
   /**Update all of the systems and advance the simulation forward one step of time
    * @param[in] dt the amount of time to step forward the simulation*/
@@ -70,7 +70,7 @@ class GRK_Engine {
 
   /**Insert an intialzation function to set up the scene*/
   auto InjectInitialization(
-      std::function<Grok3d::GRK_Result(Grok3d::GRK_EntityComponentManager &)> initFunction) -> Grok3d::GRK_Result;
+      std::function<GRK_Result(GRK_EntityComponentManager &)> initFunction) -> GRK_Result;
 
  private:
   auto EnsureInitialized() -> void;
@@ -80,13 +80,13 @@ class GRK_Engine {
   auto RunTicks(SimulationTimeValues &simulationTimeValues, std::chrono::nanoseconds tickPeriod) -> void;
 
  private:
-  Grok3d::GRK_EntityComponentManager m_entityComponentManager;
-  Grok3d::GRK_SystemManager m_systemManager;
+  GRK_EntityComponentManager m_entityComponentManager;
+  GRK_SystemManager m_systemManager;
 
   /**An init function that sets up the scene by creating entities and adding components
-   * using the @link Grok3d::GRK_EntityComponentManager GRK_EntityComponentManager @endlink
+   * using the @link GRK_EntityComponentManager GRK_EntityComponentManager @endlink
    * for an initial state*/
-  std::function<Grok3d::GRK_Result(Grok3d::GRK_EntityComponentManager &)> m_initFunction;
+  std::function<GRK_Result(GRK_EntityComponentManager &)> m_initFunction;
 };
 } /*Grok3d*/
 

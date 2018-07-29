@@ -32,7 +32,7 @@ namespace Grok3d {
  * @brief the handle to an entity.  From a consumer outside the engine, this is used for all
  * interaction with the and it's state
  *
- * @details This essentially is a bundle of the @link Grok3d::GRK_Entity GRK_Entity
+ * @details This essentially is a bundle of the @link GRK_Entity GRK_Entity
  * @endlink and pointer to the owning GRK_EntityComponentManager__.  all calls are forwarded to
  * the owning GRK_EntityComponentManager__
  *
@@ -51,7 +51,7 @@ class GRK_EntityHandle__ {
   }
 
   /**Destroys the entity and all it's attached components, setting the internal
-   * @link Grok3d::GRK_Entity GRK_Entity @endlink to 0*/
+   * @link GRK_Entity GRK_Entity @endlink to 0*/
   auto Destroy() -> GRK_Result {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
         GRK_Result::NoSuchEntity,
@@ -65,26 +65,26 @@ class GRK_EntityHandle__ {
   }
 
   /**Adds component to the entity by moving it into the
-   * @link Grok3d::GRK_EntityComponentManager__ GRK_EntityComponentManager__ @endlink
+   * @link GRK_EntityComponentManager__ GRK_EntityComponentManager__ @endlink
    *
    * @tparam ComponentTypes the type of component to add, should be deduced by the compiler*/
   template<class ComponentType>
-  auto AddComponent(ComponentType &&component) -> Grok3d::GRK_Result {
+  auto AddComponent(ComponentType &&component) -> GRK_Result {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
-        Grok3d::GRK_Result::Ok,
+        GRK_Result::Ok,
         return m_manager->template AddComponent<ComponentType>(m_entity, std::move(component)););
   }
 
   /**Adds component to the entity by specifying the type,
-   * @link Grok3d::GRK_EntityComponentManager__ GRK_EntityComponentManager__ @endlink
+   * @link GRK_EntityComponentManager__ GRK_EntityComponentManager__ @endlink
    *
    * @tparam ComponentType The type of component to remove, must be specified
    *
-   * @returns returns @link Grok3d::GRK_Result::NoSuchEntity NoSuchEntity @endlink
-   * if entity does not exist anymore or @link Grok3d::GRK_Result::NoSuchElement NoSuchElement
+   * @returns returns @link GRK_Result::NoSuchEntity NoSuchEntity @endlink
+   * if entity does not exist anymore or @link GRK_Result::NoSuchElement NoSuchElement
    * @endlink if it doesn't have the necessary component*/
   template<class ComponentType>
-  auto RemoveComponent() -> Grok3d::GRK_Result {
+  auto RemoveComponent() -> GRK_Result {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
         GRK_Result::NoSuchEntity,
         return m_manager->template RemoveComponent<ComponentType>(m_entity););
@@ -94,18 +94,18 @@ class GRK_EntityHandle__ {
    *
    * @tparam ComponentType The type of componet you are trying to get, must be specified
    *
-   * @returns returns @link Grok3d::GRK_Result::NoSuchEntity NoSuchEntity @endlink
-   * if entity does not exist anymore or @link Grok3d::GRK_Result::NoSuchElement NoSuchElement
+   * @returns returns @link GRK_Result::NoSuchEntity NoSuchEntity @endlink
+   * if entity does not exist anymore or @link GRK_Result::NoSuchElement NoSuchElement
    * @endlink if it doesn't have the necessary component*/
   template<class ComponentType>
-  auto GetComponent() const -> Grok3d::GRK_ComponentHandle<ComponentType> {
+  auto GetComponent() const -> GRK_ComponentHandle<ComponentType> {
     return m_manager->template GetComponent<ComponentType>(m_entity);
   }
 
   /**Check if this entity has the specified components
    *
    * @param componentBits a bitmask consisting of the components constructed by OR'ing
-   * Grok3d::IndexToMask on @link Grok3d::GRK_EntityComponentManager__::GetComponentTypeAccessIndex
+   * IndexToMask on @link GRK_EntityComponentManager__::GetComponentTypeAccessIndex
    * GetComponentTypeAccessIndex @endlink of the necessary component types*/
   auto HasComponents(const GRK_ComponentBitMask componentBits) const -> bool {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
@@ -114,28 +114,28 @@ class GRK_EntityHandle__ {
             return ((components & componentBits) == componentBits));
   }
 
-  auto operator==(const Grok3d::GRK_EntityHandle &rhs) const -> bool {
+  auto operator==(const GRK_EntityHandle &rhs) const -> bool {
     return this->m_entity == rhs.m_entity;
   }
 
   template<class EntityComponentManager>
   friend auto
-  operator==(const int entity, const Grok3d::GRK_EntityHandle__<EntityComponentManager> &handle) -> bool;
+  operator==(const int entity, const GRK_EntityHandle__<EntityComponentManager> &handle) -> bool;
 
   template<class EntityComponentManager>
   friend auto
-  operator==(const Grok3d::GRK_EntityHandle__<EntityComponentManager> &handle, const int entity) -> bool;
+  operator==(const GRK_EntityHandle__<EntityComponentManager> &handle, const int entity) -> bool;
 
  private:
   friend ::std::hash<GRK_EntityHandle__<ECM>>;
 
-  Grok3d::GRK_Entity m_entity; ///< The entiy ID this is the handle for
+  GRK_Entity m_entity; ///< The entiy ID this is the handle for
   ECM *const m_manager;                  ///< the manager who created this handle
-  ///< (@link Grok3d::GRK_EntityComponentManager__ GRK_EntityComponentManager__ @endlink)
+  ///< (@link GRK_EntityComponentManager__ GRK_EntityComponentManager__ @endlink)
 };
 }
 
-/**A hash algorithm for @link Grok3d::GRK_EntityHandle__ GRK_EntityHandle__ @endlink
+/**A hash algorithm for @link GRK_EntityHandle__ GRK_EntityHandle__ @endlink
  *
  * @details
  * This just forwards the hash to size_t's implementation on the internal entity ID*/

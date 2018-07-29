@@ -38,7 +38,7 @@ namespace Grok3d {
  *     entities, their components, and those components individual state.  Essentially this is
  *     like you froze time and said "what does my game world look like right now"
  *     2. Update -- all game engines have rules for how that state will change over time.  This
- *     is what Systems and @link Grok3d::GRK_SystemManager GRK_SystemManager @endlink,
+ *     is what Systems and @link GRK_SystemManager GRK_SystemManager @endlink,
  *     the other core component of the game engine is responsible for.  The next state can be
  *     seen as a function of the current state plus some other factors.  These other factors are
  *     the systems they include things like:
@@ -54,19 +54,11 @@ namespace Grok3d {
  * @tparam ComponentTypes This is a variadic template (thank you c++11!!!) list of all the types
  * of components that this class can manage.  The order in this list determines their unique
  * type ID as well as their bit in the @link
- * Grok3d::GRK_EntityComponentManager__::GRK_ComponentBitMask GRK_ComponentBitMask @endlink
+ * GRK_EntityComponentManager__::GRK_ComponentBitMask GRK_ComponentBitMask @endlink
  * for querying purposes*/
 template<class... ComponentTypes>
 class GRK_EntityComponentManager__ {
  private:
-  using GRK_Entity = Grok3d::GRK_Entity;
-  using GRK_EntityHandle = Grok3d::GRK_EntityHandle;
-  using GRK_Component = Grok3d::GRK_Component;
-  template<class ComponentType>
-  using GRK_ComponentHandle = Grok3d::GRK_ComponentHandle<ComponentType>;
-  using GRK_ComponentBitMask = Grok3d::GRK_ComponentBitMask;
-  using GRK_SystemManager = Grok3d::GRK_SystemManager;
-
   /**A tuple containing all the types in ComponentTypes*/
   using ComponentTuple = std::tuple<ComponentTypes...>;
   /**A tuple of vectors of each ComponentType**/
@@ -95,13 +87,13 @@ class GRK_EntityComponentManager__ {
    * the system half of the engine of important changes to state and register an entity with a
    * new system that is pertinent to it
    *
-   * @param[in] systemManager the @link Grok3d::GRK_SystemManager GRK_SystemManager
+   * @param[in] systemManager the @link GRK_SystemManager GRK_SystemManager
    * @endlink that will manage updating the state
    *
    * @returns
-   * @link Grok3d::GRK_Result::Ok Ok @endlink
-   * @link Grok3d::GRK_Result::EntityAlreadyDeleted EntityAlreadyDeleted @endlink
-   * @link Grok3d::GRK_Result::ComponentAlreadyAdded ComponentAlreadyAdded @endlink*/
+   * @link GRK_Result::Ok Ok @endlink
+   * @link GRK_Result::EntityAlreadyDeleted EntityAlreadyDeleted @endlink
+   * @link GRK_Result::ComponentAlreadyAdded ComponentAlreadyAdded @endlink*/
   auto Initialize(GRK_SystemManager *systemManager) -> GRK_Result {
     m_systemManager = systemManager;
     m_isInitialized = true;
@@ -125,7 +117,7 @@ class GRK_EntityComponentManager__ {
 
     m_entityComponentsBitMaskMap[id] = 0;
 
-    this->AddComponent(id, Grok3d::GRK_TransformComponent());
+    this->AddComponent(id, GRK_TransformComponent());
 
     return GRK_EntityHandle(this, id);
   }
@@ -134,7 +126,7 @@ class GRK_EntityComponentManager__ {
    * @brief Get the bitmask that describes all components that are a member of this entity
    *
    * @details
-   * This bitmask is of type @link Grok3d::GRK_EntityComponentManager__::GRK_ComponentBitMask
+   * This bitmask is of type @link GRK_EntityComponentManager__::GRK_ComponentBitMask
    * GRK_ComponentBitMask @endlink and each set bit represents one ComponentType.
    *
    * @param[in] entity The entity you want the component information for
@@ -156,8 +148,8 @@ class GRK_EntityComponentManager__ {
    *
    * param[in] entity the entity to remove
    * @returns
-   * @link Grok3d::GRK_Result::Ok Ok @endlink
-   * @link Grok3d::GRK_Result::EntityAlreadyDeleted EntityAlreadyDeleted @endlink*/
+   * @link GRK_Result::Ok Ok @endlink
+   * @link GRK_Result::EntityAlreadyDeleted EntityAlreadyDeleted @endlink*/
   auto DeleteEntity(GRK_Entity entity) -> GRK_Result {
     if (entity == 0) {
       return GRK_Result::EntityAlreadyDeleted;
@@ -199,7 +191,7 @@ class GRK_EntityComponentManager__ {
    *      -# Determining if the entity has that component (only one of each component type is
    *      allowed, it doesnt make sense to have two rigid bodies or two models does it)
    *      -# Updating the map of entities to indexes of the appropriate @link
-   *      Grok3d::GRK_EntityComponentManager__::m_componentStores m_componentStores @endlink vector
+   *      GRK_EntityComponentManager__::m_componentStores m_componentStores @endlink vector
    *      -# Adding the component to that vector
    *      -# Informing the systemmanager of the change so each system can begin acting on any
    *      entities that have the correct components as appropriate
@@ -211,9 +203,9 @@ class GRK_EntityComponentManager__ {
    *  from the argument
    *
    *  @returns
-   *  @link Grok3d::GRK_Result::Ok Ok @endlink
-   *  @link Grok3d::GRK_Result::EntityAlreadyDeleted EntityAlreadyDeleted @endlink
-   *  @link Grok3d::GRK_Result::ComponentAlreadyAdded ComponentAlreadyAdded @endlink*/
+   *  @link GRK_Result::Ok Ok @endlink
+   *  @link GRK_Result::EntityAlreadyDeleted EntityAlreadyDeleted @endlink
+   *  @link GRK_Result::ComponentAlreadyAdded ComponentAlreadyAdded @endlink*/
   template<class ComponentType>
   auto AddComponent(GRK_Entity entity, ComponentType &&newComponent) -> GRK_Result {
     static_assert(notstd::param_pack_has_type<ComponentType, ComponentTypes...>::value,
@@ -369,7 +361,7 @@ class GRK_EntityComponentManager__ {
 
  private:
   /**This function does most of the nitty gritty work of @link
-   * Grok3d::GRK_EntityComponentManager__::RemoveComponent RemoveComponent but is broken out
+   * GRK_EntityComponentManager__::RemoveComponent RemoveComponent but is broken out
    * for convenience and reuse in other scenarios such as GarbageCollection*/
   template<class ComponentType>
   auto RemoveComponentHelper(GRK_Entity entity) -> GRK_Result {
@@ -427,7 +419,7 @@ class GRK_EntityComponentManager__ {
  private:
   /** @fn
    * @brief Meta function which sets up component store vectors stored in the
-   * @link Grok3d::GRK_EntityComponentManager__::m_componentStores m_componentStores tuple
+   * @link GRK_EntityComponentManager__::m_componentStores m_componentStores tuple
    * @endlink
    *
    * @details
@@ -477,7 +469,7 @@ class GRK_EntityComponentManager__ {
    * @details
    * This function iterates through each of the types of Components and checks if that
    * component type is contained in a deleted entity that is being garbage collected, if so it
-   * runs the @link Grok3d::GRK_EntityComponentManager__::RemoveComponentHelper
+   * runs the @link GRK_EntityComponentManager__::RemoveComponentHelper
    * RemoveComponentHelper @endlink function on it
    *
    * @tparam ComponentIndex the index in Ts we are checking for removal

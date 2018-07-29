@@ -8,7 +8,7 @@
 #include <tuple>
 
 using namespace Grok3d;
-using namespace Grok3d::ShaderManager;
+using namespace ShaderManager;
 
 /**
  * This time more than just the points of the triangle will be "loaded", the colors are stored, too.

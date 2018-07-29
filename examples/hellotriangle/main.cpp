@@ -7,7 +7,7 @@
 #include <iostream>
 
 using namespace Grok3d;
-using namespace ShaderManager;
+using namespace Grok3d::ShaderManager;
 
 auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[]>, GLsizei>;
 

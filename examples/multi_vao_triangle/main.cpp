@@ -8,7 +8,7 @@
 #include <tuple>
 
 using namespace Grok3d;
-using namespace ShaderManager;
+using namespace Grok3d::ShaderManager;
 
 /**
  * This time more than just the points of the triangle will be "loaded", the colors are stored, too.
@@ -76,12 +76,17 @@ auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[
   GLsizei numAttributes = 2;
   auto attributes = std::make_unique<GRK_VertexAttribute[]>(2);
 
+  GLsizei stride =
+      numAttributes
+      * static_cast<GLsizei>(kDimensions)
+      * static_cast<GLsizei>(sizeof(float));
+;
   attributes[0] = {
       0, // index
       3, // size
       GL_FLOAT, // type
       GL_FALSE, // normalize
-      numAttributes * kDimensions * sizeof(float), // stride
+      stride, // stride
       reinterpret_cast<void*>(0)
   };
   attributes[1] = {
@@ -89,7 +94,7 @@ auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[
       3, // size
       GL_FLOAT, // type
       GL_FALSE, // normalize
-      numAttributes * kDimensions * sizeof(float), // stride
+      stride, // stride
       reinterpret_cast<void*>(kDimensions * sizeof(float))
   };
 

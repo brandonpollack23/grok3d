@@ -10,7 +10,7 @@
 #include <iostream>
 
 using namespace Grok3d;
-using namespace ShaderManager;
+using namespace Grok3d::ShaderManager;
 
 static constexpr auto kFirstUniformName = "ourColor";
 

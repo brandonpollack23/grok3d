@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
 * Contact @ grok3dengine@gmail.com
 * This file is available under the MIT license included in the project
 */
@@ -14,7 +14,6 @@
 using namespace std::chrono_literals;
 
 using namespace Grok3d;
-using namespace Grok3d::Systems;
 
 GRK_Engine::GRK_Engine() noexcept {
   //Inject dependency references so we can update the systems from ECM and set up systems with ECM

@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
 * Contact @ grok3d@gmail.com
 * This file is available under the MIT license included in the project
 */
@@ -10,7 +10,6 @@
 #include <iostream>
 
 using namespace Grok3d;
-using namespace Grok3d::Components;
 
 auto HelloSquareTest(char *args[]) -> void;
 auto GetHelloSquareInitializationFunction(const char* const args[]) -> std::function<GRK_Result (GRK_EntityComponentManager&)>;

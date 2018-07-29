@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
 * Contact @ grok3dengine@gmail.com
 * This file is available under the MIT license included in the project
 */
@@ -27,12 +27,12 @@
         } \
     } while(0)
 
-namespace Grok3d::Entities {
+namespace Grok3d {
 /**
  * @brief the handle to an entity.  From a consumer outside the engine, this is used for all
  * interaction with the and it's state
  *
- * @details This essentially is a bundle of the @link Grok3d::Entities::GRK_Entity GRK_Entity
+ * @details This essentially is a bundle of the @link Grok3d::GRK_Entity GRK_Entity
  * @endlink and pointer to the owning GRK_EntityComponentManager__.  all calls are forwarded to
  * the owning GRK_EntityComponentManager__
  *
@@ -51,7 +51,7 @@ class GRK_EntityHandle__ {
   }
 
   /**Destroys the entity and all it's attached components, setting the internal
-   * @link Grok3d::Entities::GRK_Entity GRK_Entity @endlink to 0*/
+   * @link Grok3d::GRK_Entity GRK_Entity @endlink to 0*/
   auto Destroy() -> GRK_Result {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
         GRK_Result::NoSuchEntity,
@@ -98,7 +98,7 @@ class GRK_EntityHandle__ {
    * if entity does not exist anymore or @link Grok3d::GRK_Result::NoSuchElement NoSuchElement
    * @endlink if it doesn't have the necessary component*/
   template<class ComponentType>
-  auto GetComponent() const -> Grok3d::Components::GRK_ComponentHandle<ComponentType> {
+  auto GetComponent() const -> Grok3d::GRK_ComponentHandle<ComponentType> {
     return m_manager->template GetComponent<ComponentType>(m_entity);
   }
 
@@ -107,52 +107,52 @@ class GRK_EntityHandle__ {
    * @param componentBits a bitmask consisting of the components constructed by OR'ing
    * Grok3d::IndexToMask on @link Grok3d::GRK_EntityComponentManager__::GetComponentTypeAccessIndex
    * GetComponentTypeAccessIndex @endlink of the necessary component types*/
-  auto HasComponents(const Grok3d::Components::GRK_ComponentBitMask componentBits) const -> bool {
+  auto HasComponents(const GRK_ComponentBitMask componentBits) const -> bool {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
         false,
-        Components::GRK_ComponentBitMask components = m_manager->GetEntityComponentsBitMask(m_entity);
+        GRK_ComponentBitMask components = m_manager->GetEntityComponentsBitMask(m_entity);
             return ((components & componentBits) == componentBits));
   }
 
-  auto operator==(const Grok3d::Entities::GRK_EntityHandle &rhs) const -> bool {
+  auto operator==(const Grok3d::GRK_EntityHandle &rhs) const -> bool {
     return this->m_entity == rhs.m_entity;
   }
 
   template<class EntityComponentManager>
   friend auto
-  operator==(const int entity, const Grok3d::Entities::GRK_EntityHandle__<EntityComponentManager> &handle) -> bool;
+  operator==(const int entity, const Grok3d::GRK_EntityHandle__<EntityComponentManager> &handle) -> bool;
 
   template<class EntityComponentManager>
   friend auto
-  operator==(const Grok3d::Entities::GRK_EntityHandle__<EntityComponentManager> &handle, const int entity) -> bool;
+  operator==(const Grok3d::GRK_EntityHandle__<EntityComponentManager> &handle, const int entity) -> bool;
 
  private:
   friend ::std::hash<GRK_EntityHandle__<ECM>>;
 
-  Grok3d::Entities::GRK_Entity m_entity; ///< The entiy ID this is the handle for
+  Grok3d::GRK_Entity m_entity; ///< The entiy ID this is the handle for
   ECM *const m_manager;                  ///< the manager who created this handle
   ///< (@link Grok3d::GRK_EntityComponentManager__ GRK_EntityComponentManager__ @endlink)
 };
 }
 
-/**A hash algorithm for @link Grok3d::Entities::GRK_EntityHandle__ GRK_EntityHandle__ @endlink
+/**A hash algorithm for @link Grok3d::GRK_EntityHandle__ GRK_EntityHandle__ @endlink
  *
  * @details
  * This just forwards the hash to size_t's implementation on the internal entity ID*/
 template<class ECM>
-typename std::hash<Grok3d::Entities::GRK_EntityHandle__<ECM>>::result_type
-std::hash<Grok3d::Entities::GRK_EntityHandle__<ECM>>::operator()(
-    typename std::hash<Grok3d::Entities::GRK_EntityHandle__<ECM>>::argument_type const &e) const {
+typename std::hash<Grok3d::GRK_EntityHandle__<ECM>>::result_type
+std::hash<Grok3d::GRK_EntityHandle__<ECM>>::operator()(
+    typename std::hash<Grok3d::GRK_EntityHandle__<ECM>>::argument_type const &e) const {
   return hash<size_t> {}(e.m_entity);
 }
 
 template<class ECM>
-auto operator==(const int entity, const Grok3d::Entities::GRK_EntityHandle__<ECM> &handle) -> bool {
+auto operator==(const int entity, const Grok3d::GRK_EntityHandle__<ECM> &handle) -> bool {
   return entity == handle.m_entity;
 }
 
 template<class ECM>
-auto operator==(const Grok3d::Entities::GRK_EntityHandle__<ECM> &handle, const int entity) -> bool {
+auto operator==(const Grok3d::GRK_EntityHandle__<ECM> &handle, const int entity) -> bool {
   return entity == handle.m_entity;
 }
 

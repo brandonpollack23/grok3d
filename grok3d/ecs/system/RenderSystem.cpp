@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
  * * Contact @ grok3d@gmail.com
  * * This file is available under the MIT license included in the project
  * */
@@ -14,8 +14,6 @@
 #include "grok3d/ecs/EntityComponentManager.h"
 
 using namespace Grok3d;
-using namespace Grok3d::Systems;
-using namespace Grok3d::Components;
 
 constexpr int kWindowHeight = 600;
 constexpr int kWindowWidth = 800;

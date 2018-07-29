@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
 * Contact @ grok3d@gmail.com
 * This file is available under the MIT license included in the project
 */
@@ -20,7 +20,7 @@
 #include <vector>
 #include <memory>
 
-namespace Grok3d::Components {
+namespace Grok3d {
 enum class GRK_DrawFunction {
   DrawArrays, ///< Use glDrawArrays to draw this, it is just a list of vertices
   DrawElements ///< Use glDrawElements to draw this, it is an EBO indexed vertex object
@@ -56,7 +56,7 @@ class GRK_RenderComponent {
       std::size_t numIndices,
       GRK_OpenGLPrimitive primitive,
       Grok3d::ShaderManager::GRK_ShaderProgramID shaderProgramID,
-      Grok3d::Components::GRK_VertexAttribute vertexAttributes[],
+      Grok3d::GRK_VertexAttribute vertexAttributes[],
       GLsizei numVertexAttributes) noexcept;
 
   GRK_RenderComponent() = default;

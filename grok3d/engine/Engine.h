@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
 * Contact @ grok3dengine@gmail.com
 * This file is available under the MIT license included in the project
 */
@@ -31,7 +31,7 @@ struct SimulationTimeValues {
  * This is the class that contains the
  * @link Grok3d::GRK_EntityComponentManager GRK_EntityComponentManager @endlink
  * and
- * @link Grok3d::Systems::GRK_SystemManager GRK_SystemManager @endlink
+ * @link Grok3d::GRK_SystemManager GRK_SystemManager @endlink
  *
  * It works through a relatively simple process:
  * 1) You intialize the state by passing a function that uses a reference to the internal
@@ -81,7 +81,7 @@ class GRK_Engine {
 
  private:
   Grok3d::GRK_EntityComponentManager m_entityComponentManager;
-  Grok3d::Systems::GRK_SystemManager m_systemManager;
+  Grok3d::GRK_SystemManager m_systemManager;
 
   /**An init function that sets up the scene by creating entities and adding components
    * using the @link Grok3d::GRK_EntityComponentManager GRK_EntityComponentManager @endlink

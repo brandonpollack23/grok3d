@@ -1,12 +1,10 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
 * Contact @ grok3dengine@gmail.com
 * This file is available under the MIT license included in the project
 */
 #include "grok3d/ecs/component/GameLogicComponent.h"
 
 using namespace Grok3d;
-using namespace Grok3d::Entities;
-using namespace Grok3d::Components;
 
 GRK_GameLogicComponent::BehaviourHandle GRK_GameLogicComponent::s_nextHandle = 1;
 

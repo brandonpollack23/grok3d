@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
 * Contact @ grok3dengine@gmail.com
 * This file is available under the MIT license included in the project
 */
@@ -15,7 +15,7 @@
 
 #include <array>
 
-namespace Grok3d::Systems {
+namespace Grok3d {
 /**
  * @brief the manager for all systems to generalize interaction and act as a location for
  * storage of all the system classes*/
@@ -29,10 +29,10 @@ class GRK_SystemManager {
 
   /**Forward the entity to all systems, they check if the bit mask of that entity mask that of
    * the system's requirments, if so they are added to the queue to be updated every frame*/
-  auto UpdateSystemEntities(const Grok3d::Entities::GRK_EntityHandle &entity) -> Grok3d::GRK_Result;
+  auto UpdateSystemEntities(const Grok3d::GRK_EntityHandle &entity) -> Grok3d::GRK_Result;
 
   /**Unregisters the entity from all systems, if it is registered*/
-  auto UnregisterEntity(const Grok3d::Entities::GRK_EntityHandle &entity) -> Grok3d::GRK_Result;
+  auto UnregisterEntity(const Grok3d::GRK_EntityHandle &entity) -> Grok3d::GRK_Result;
 
   /**Iterate through all systems and run their update functions*/
   auto UpdateSystems(double dt) -> Grok3d::GRK_Result;

@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
 * Contact @ grok3dengine@gmail.com
 * This file is available under the MIT license included in the project
 */
@@ -16,12 +16,12 @@
 #include <string>
 #include <vector>
 
-namespace Grok3d::Components {
+namespace Grok3d {
 /**
  * @brief The component that all entities have that determines their position in the game world.
  *
  * @details
- * All entities are required to have a Grok3d::Components::GRK_TransformComponent.  It is
+ * All entities are required to have a Grok3d::GRK_TransformComponent.  It is
  * created for an entity when the entity is created, and removing it is not allowed.
  * Semantically, it doesn't make sense to not have a position in a world, and you should not be
  * a game entity if you do not.  There will be other means to run worldwide scripts and keep
@@ -40,7 +40,7 @@ class GRK_TransformComponent {
   /**
    * @brief Attaches this TransformComponent to a new parent to be relative to.
    * @details
-   * calls @link Grok3d::Components::GRK_TransformComponent::AttachChild AttachChild @endlink
+   * calls @link Grok3d::GRK_TransformComponent::AttachChild AttachChild @endlink
    * on the new parent
    *
    * @param[in] newParent the parent that AttachChild will be called on*/

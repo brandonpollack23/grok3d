@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
 * Contact @ grok3d@gmail.com
 * This file is available under the MIT license included in the project
 */
@@ -25,11 +25,6 @@ namespace Grok3d::ShaderManager {
 using GRK_ShaderID = GLuint;
 using GRK_UniformID = GLuint;
 using GRK_ShaderProgramID = GLuint;
-
-enum class ShaderType : GLenum {
-  VertexShader = GL_VERTEX_SHADER,
-  FragmentShader = GL_FRAGMENT_SHADER
-};
 
 class ShaderProgram {
  public:

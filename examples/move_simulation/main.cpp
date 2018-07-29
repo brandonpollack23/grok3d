@@ -10,7 +10,6 @@
 #include <iostream>
 
 using namespace Grok3d;
-using namespace Grok3d::Components;
 
 auto CreateAndRegisterMoveTestEntity(GRK_EntityComponentManager &ecm) -> GRK_Result {
   auto pointEntity = ecm.CreateEntity();

@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
  * * Contact @ grok3d@gmail.com
  * * This file is available under the MIT license included in the project
  * */
@@ -15,7 +15,7 @@
 #include "GLFW/glfw3.h"
 
 
-namespace Grok3d::Systems {
+namespace Grok3d {
 /**
  * @brief Opengl rendering system which initializes the window and draws
  *
@@ -64,7 +64,7 @@ class GRK_RenderSystem {
 
  private:
   bool m_isInitialized; ///< Keeps track if class is initialized.
-  const std::vector<Grok3d::Components::GRK_RenderComponent>
+  const std::vector<Grok3d::GRK_RenderComponent>
       *m_renderComponents; ///< The store of all rendercomponents for quick iterating
   GLFWwindow *m_window; ///< GLFW window context.
 };

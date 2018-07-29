@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
 * Contact @ grok3dengine@gmail.com
 * This file is available under the MIT license included in the project
 */
@@ -38,7 +38,7 @@ namespace Grok3d {
  *     entities, their components, and those components individual state.  Essentially this is
  *     like you froze time and said "what does my game world look like right now"
  *     2. Update -- all game engines have rules for how that state will change over time.  This
- *     is what Systems and @link Grok3d::Systems::GRK_SystemManager GRK_SystemManager @endlink,
+ *     is what Systems and @link Grok3d::GRK_SystemManager GRK_SystemManager @endlink,
  *     the other core component of the game engine is responsible for.  The next state can be
  *     seen as a function of the current state plus some other factors.  These other factors are
  *     the systems they include things like:
@@ -59,13 +59,13 @@ namespace Grok3d {
 template<class... ComponentTypes>
 class GRK_EntityComponentManager__ {
  private:
-  using GRK_Entity = Grok3d::Entities::GRK_Entity;
-  using GRK_EntityHandle = Grok3d::Entities::GRK_EntityHandle;
-  using GRK_Component = Grok3d::Components::GRK_Component;
+  using GRK_Entity = Grok3d::GRK_Entity;
+  using GRK_EntityHandle = Grok3d::GRK_EntityHandle;
+  using GRK_Component = Grok3d::GRK_Component;
   template<class ComponentType>
-  using GRK_ComponentHandle = Grok3d::Components::GRK_ComponentHandle<ComponentType>;
-  using GRK_ComponentBitMask = Grok3d::Components::GRK_ComponentBitMask;
-  using GRK_SystemManager = Grok3d::Systems::GRK_SystemManager;
+  using GRK_ComponentHandle = Grok3d::GRK_ComponentHandle<ComponentType>;
+  using GRK_ComponentBitMask = Grok3d::GRK_ComponentBitMask;
+  using GRK_SystemManager = Grok3d::GRK_SystemManager;
 
   /**A tuple containing all the types in ComponentTypes*/
   using ComponentTuple = std::tuple<ComponentTypes...>;
@@ -95,7 +95,7 @@ class GRK_EntityComponentManager__ {
    * the system half of the engine of important changes to state and register an entity with a
    * new system that is pertinent to it
    *
-   * @param[in] systemManager the @link Grok3d::Systems::GRK_SystemManager GRK_SystemManager
+   * @param[in] systemManager the @link Grok3d::GRK_SystemManager GRK_SystemManager
    * @endlink that will manage updating the state
    *
    * @returns
@@ -125,7 +125,7 @@ class GRK_EntityComponentManager__ {
 
     m_entityComponentsBitMaskMap[id] = 0;
 
-    this->AddComponent(id, Grok3d::Components::GRK_TransformComponent());
+    this->AddComponent(id, Grok3d::GRK_TransformComponent());
 
     return GRK_EntityHandle(this, id);
   }

@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Brandon Pollack
+/* Copyright (c) 2018 Brandon Pollack
 * Contact @ grok3dengine@gmail.com
 * This file is available under the MIT license included in the project
 */
@@ -10,7 +10,7 @@
 
 #include "grok3d/grok3d_types.h"
 
-namespace Grok3d::Components {
+namespace Grok3d {
 /**
  *  @brief A handle to a Component for convenient management
  *
@@ -30,18 +30,18 @@ class GRK_ComponentHandle {
    * "this" on construction
    * @param[in] component The raw component pointer, points directly to the component's
    * location in the GRK_EntityComponentManager__::m_componentStores tuple of vectors
-   * @param[in] owner The @link Grok3d::Entities::GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong*/
+   * @param[in] owner The @link Grok3d::GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong*/
   GRK_ComponentHandle(
       const ECM *entityComponentManager,
       const ComponentType *component,
-      const Grok3d::Entities::GRK_Entity owner) noexcept :
+      const Grok3d::GRK_Entity owner) noexcept :
       m_owner(owner),
       m_component(component),
       m_manager(entityComponentManager) {
   }
 
   /**Returns the owning entity member*/
-  auto GetOwningEntity() const -> const Grok3d::Entities::GRK_Entity {
+  auto GetOwningEntity() const -> const GRK_Entity {
     return m_owner;
   }
 
@@ -68,8 +68,8 @@ class GRK_ComponentHandle {
   }
 
  private:
-  const Grok3d::Entities::GRK_Entity
-      m_owner; ///< The @link Grok3d::Entities::GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong
+  const Grok3d::GRK_Entity
+      m_owner; ///< The @link Grok3d::GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong
   const ComponentType *m_component;           /**< @brief The raw component pointer, points directly
                                                          to the component's location in the 
                                                          @link Grok3d::GRK_EntityComponentManager__::m_componentStores 

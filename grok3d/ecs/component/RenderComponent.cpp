@@ -8,7 +8,6 @@
 #include "grok3d/ecs/component/RenderComponent.h"
 
 using namespace Grok3d;
-using namespace Grok3d::Components;
 using namespace Grok3d::ShaderManager;
 
 // TODO should there only be one vertex buffer per shader?

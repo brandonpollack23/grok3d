@@ -10,8 +10,6 @@
 #include <iostream>
 
 using namespace Grok3d;
-using namespace Grok3d::Entities;
-using namespace Grok3d::Components;
 
 class MoveBackAndForthBehaviour : public GRK_GameBehaviourBase {
  public:

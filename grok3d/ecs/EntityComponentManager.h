@@ -436,7 +436,7 @@ class GRK_EntityComponentManager__ {
      *
      * @param ecm refernce to this
      * @param t the tuple member of ecm being initialized*/
-    auto operator()(GRK_EntityComponentManager& ecm, std::tuple<Ts...>& t) -> void {
+    auto operator()(GRK_EntityComponentManager__& ecm, std::tuple<Ts...>& t) -> void {
       auto& elem = std::get<index>(t);
       elem.reserve(c_initial_entity_array_size);
       ecm.entityComponentIndexMaps_.push_back(
@@ -448,7 +448,7 @@ class GRK_EntityComponentManager__ {
   /**@overload*/
   template<class... Ts>
   struct setup_component_stores_impl<-1, Ts...> {
-    auto operator()(GRK_EntityComponentManager& ecm, std::tuple<Ts...>& t) -> void {}
+    auto operator()(GRK_EntityComponentManager__& ecm, std::tuple<Ts...>& t) -> void {}
   };
 
   /**Meta convenience function to call the setup_component_stores meta function
@@ -458,7 +458,7 @@ class GRK_EntityComponentManager__ {
    *
    * @tparam Ts deduced from the tuple that is passed to this function*/
   template<class... Ts>
-  auto setup_component_stores(GRK_EntityComponentManager& ecm, std::tuple<Ts...>& t) -> void {
+  auto setup_component_stores(GRK_EntityComponentManager__& ecm, std::tuple<Ts...>& t) -> void {
     const auto size = sizeof...(Ts);
     setup_component_stores_impl<size - 1, Ts...>{}(ecm, t);
   }
@@ -478,7 +478,7 @@ class GRK_EntityComponentManager__ {
   template<int ComponentIndex, class... Ts>
   struct garbage_collect_iter_impl {
     /** The applicitive operator of the meta function*/
-    auto operator()(GRK_EntityComponentManager& ecm) -> void {
+    auto operator()(GRK_EntityComponentManager__& ecm) -> void {
       for (auto& entity : ecm.deletedUncleanedEntities_) {
         using ComponentType = typename notstd::index_to_type<ComponentIndex, Ts...>::type;
         if ((ecm.entityComponentsBitMaskMap_[entity] & IndexToMask(ComponentIndex)) > 0) {
@@ -493,7 +493,7 @@ class GRK_EntityComponentManager__ {
   /**@overload*/
   template<class... Ts>
   struct garbage_collect_iter_impl<-1, Ts...> {
-    auto operator()(GRK_EntityComponentManager& ecm) -> void {}
+    auto operator()(GRK_EntityComponentManager__& ecm) -> void {}
   };
 
   /**Meta convenience function to call the garbage_collect_iter_impl meta function*/

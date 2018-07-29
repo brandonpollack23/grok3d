@@ -17,8 +17,8 @@ using namespace Grok3d;
 using namespace Grok3d::Systems;
 using namespace Grok3d::Components;
 
-constexpr int WINDOW_HEIGHT = 600;
-constexpr int WINDOW_WIDTH = 800;
+constexpr int kWindowHeight = 600;
+constexpr int kWindowWidth = 800;
 
 GRK_RenderSystem::GRK_RenderSystem() noexcept :
     m_isInitialized(false) {
@@ -72,7 +72,7 @@ auto GRK_RenderSystem::SetGLFWWindowHints() const -> void {
 auto GRK_RenderSystem::CreateGLFWWindow() -> void {
   // TODO CVAR configure width/height/name/fullscreen/etc.
   // Second to last param is nullptr, this is for monitor, we need this when we do fullscreen.
-  m_window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Grok3d Game", nullptr, nullptr);
+  m_window = glfwCreateWindow(kWindowWidth, kWindowHeight, "Grok3d Game", nullptr, nullptr);
   if (m_window == nullptr) {
     std::cerr << "Failed to create GLFW window" << std::endl;
     std::exit(-1);
@@ -94,7 +94,7 @@ auto GRK_RenderSystem::CreateGLFWWindow() -> void {
 
   //set up the viewport on the OGL context window
   //this is what is used when transforming from normalize device coordinates to actual offset
-  glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+  glViewport(0, 0, kWindowWidth, kWindowHeight);
 }
 
 auto GRK_RenderSystem::Render() const -> GRK_Result {

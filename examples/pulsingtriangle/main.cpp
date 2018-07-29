@@ -135,7 +135,7 @@ void AddSingleUniformRenderComponent(GRK_EntityHandle &triangleEntity, const Fir
   auto vertexAttributes = CreateVertexAttributes();
 
   triangleEntity.AddComponent(
-        std::move(GRK_RenderComponent(
+        GRK_RenderComponent(
             vertexes,
             3,
             sizeof(float),
@@ -145,7 +145,7 @@ void AddSingleUniformRenderComponent(GRK_EntityHandle &triangleEntity, const Fir
             GRK_OpenGLPrimitive::GL_Triangles,
             shaderProgram.GetId(),
             std::get<0>(vertexAttributes).get(),
-            std::get<1>(vertexAttributes))));
+            std::get<1>(vertexAttributes)));
 }
 
 std::unique_ptr<float[]> LoadVertices(int numVertices) {
@@ -169,7 +169,7 @@ auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[
   return std::make_tuple(std::move(va), numAttributes);
 }
 
-void AddDiscoLogicComponent(GRK_EntityHandle &triangleEntity, const FirstUniformShader &shaderProgram) {
+auto AddDiscoLogicComponent(GRK_EntityHandle &triangleEntity, const FirstUniformShader &shaderProgram) -> void {
   GRK_GameLogicComponent glc;
   glc.RegisterBehaviour(
       std::make_unique<ChangeColorBehaviour>(triangleEntity, shaderProgram));

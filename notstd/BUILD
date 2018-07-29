@@ -1,9 +1,8 @@
-licenses=["notice"]
+licenses = ["notice"]
 
 cc_library(
     name = "notstd",
-    hdrs = glob(["include/*.h"]),
+    hdrs = glob(["*.h"]),
     include_prefix = "notstd",
-    strip_include_prefix = "include",
     visibility = ["//visibility:public"],
 )

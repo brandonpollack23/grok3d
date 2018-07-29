@@ -42,12 +42,12 @@ template<class ECM>
 class GRK_EntityHandle__ {
  public:
   GRK_EntityHandle__(ECM* entityComponentManager, GRK_Entity entity) noexcept :
-      m_entity(entity),
-      m_manager(entityComponentManager) {
+      entity_(entity),
+      manager_(entityComponentManager) {
   }
 
   operator GRK_Entity() const {
-    return m_entity;
+    return entity_;
   }
 
   /**Destroys the entity and all it's attached components, setting the internal
@@ -55,13 +55,13 @@ class GRK_EntityHandle__ {
   auto Destroy() -> GRK_Result {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
         GRK_Result::NoSuchEntity,
-        return m_manager->DeleteEntity(m_entity);
-            m_entity = 0;);
+        return manager_->DeleteEntity(entity_);
+            entity_ = 0;);
   }
 
   /**Checks if the entity is destroyed (it has an ID of 0 if it is destroyed)*/
   auto inline IsDestroyed() const -> bool {
-    return m_entity == 0;
+    return entity_ == 0;
   }
 
   /**Adds component to the entity by moving it into the
@@ -72,7 +72,7 @@ class GRK_EntityHandle__ {
   auto AddComponent(ComponentType&& component) -> GRK_Result {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
         GRK_Result::Ok,
-        return m_manager->template AddComponent<ComponentType>(m_entity, std::move(component)););
+        return manager_->template AddComponent<ComponentType>(entity_, std::move(component)););
   }
 
   /**Adds component to the entity by specifying the type,
@@ -87,7 +87,7 @@ class GRK_EntityHandle__ {
   auto RemoveComponent() -> GRK_Result {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
         GRK_Result::NoSuchEntity,
-        return m_manager->template RemoveComponent<ComponentType>(m_entity););
+        return manager_->template RemoveComponent<ComponentType>(entity_););
   }
 
   /**Gets the specified componenet by type
@@ -99,7 +99,7 @@ class GRK_EntityHandle__ {
    * @endlink if it doesn't have the necessary component*/
   template<class ComponentType>
   auto GetComponent() const -> GRK_ComponentHandle<ComponentType> {
-    return m_manager->template GetComponent<ComponentType>(m_entity);
+    return manager_->template GetComponent<ComponentType>(entity_);
   }
 
   /**Check if this entity has the specified components
@@ -110,12 +110,12 @@ class GRK_EntityHandle__ {
   auto HasComponents(const GRK_ComponentBitMask componentBits) const -> bool {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
         false,
-        GRK_ComponentBitMask components = m_manager->GetEntityComponentsBitMask(m_entity);
+        GRK_ComponentBitMask components = manager_->GetEntityComponentsBitMask(entity_);
             return ((components & componentBits) == componentBits));
   }
 
   auto operator==(const GRK_EntityHandle& rhs) const -> bool {
-    return this->m_entity == rhs.m_entity;
+    return this->entity_ == rhs.entity_;
   }
 
   template<class EntityComponentManager>
@@ -129,8 +129,8 @@ class GRK_EntityHandle__ {
  private:
   friend ::std::hash<GRK_EntityHandle__<ECM>>;
 
-  GRK_Entity m_entity; ///< The entiy ID this is the handle for
-  ECM* const m_manager;                  ///< the manager who created this handle
+  GRK_Entity entity_; ///< The entiy ID this is the handle for
+  ECM* const manager_;                  ///< the manager who created this handle
   ///< (@link GRK_EntityComponentManager__ GRK_EntityComponentManager__ @endlink)
 };
 }
@@ -143,17 +143,17 @@ template<class ECM>
 typename std::hash<Grok3d::GRK_EntityHandle__<ECM>>::result_type
 std::hash<Grok3d::GRK_EntityHandle__<ECM>>::operator()(
     typename std::hash<Grok3d::GRK_EntityHandle__<ECM>>::argument_type const& e) const {
-  return hash < size_t > {}(e.m_entity);
+  return hash < size_t > {}(e.entity_);
 }
 
 template<class ECM>
 auto operator==(const int entity, const Grok3d::GRK_EntityHandle__<ECM>& handle) -> bool {
-  return entity == handle.m_entity;
+  return entity == handle.entity_;
 }
 
 template<class ECM>
 auto operator==(const Grok3d::GRK_EntityHandle__<ECM>& handle, const int entity) -> bool {
-  return entity == handle.m_entity;
+  return entity == handle.entity_;
 }
 
 #endif

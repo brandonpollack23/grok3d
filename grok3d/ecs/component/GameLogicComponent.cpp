@@ -9,67 +9,67 @@ using namespace Grok3d;
 GRK_GameLogicComponent::BehaviourHandle GRK_GameLogicComponent::s_nextHandle = 1;
 
 GRK_GameLogicComponent::GRK_GameLogicComponent() noexcept :
-    m_behaviours(std::vector<std::unique_ptr<GRK_GameBehaviourBase>>()) {
+    behaviours_(std::vector<std::unique_ptr<GRK_GameBehaviourBase>>()) {
 }
 
 GRK_GameLogicComponent::GRK_GameLogicComponent(GRK_GameLogicComponent&& glc) noexcept {
   if (&glc != this) {
-    m_behaviours = std::move(glc.m_behaviours);
-    m_behaviourIndexMap = std::move(glc.m_behaviourIndexMap);
+    behaviours_ = std::move(glc.behaviours_);
+    behaviourIndexMap_ = std::move(glc.behaviourIndexMap_);
   }
 }
 
 auto GRK_GameLogicComponent::operator=(GRK_GameLogicComponent&& rhs) noexcept -> GRK_GameLogicComponent& {
-  m_behaviours = std::move(rhs.m_behaviours);
-  m_behaviourIndexMap = std::move(rhs.m_behaviourIndexMap);
+  behaviours_ = std::move(rhs.behaviours_);
+  behaviourIndexMap_ = std::move(rhs.behaviourIndexMap_);
   return *this;
 }
 
 auto GRK_GameLogicComponent::Update(double dt) -> void {
-  if (m_behavioursToRemove.size() > 0) {
-    for (const auto& behaviour : m_behavioursToRemove) {
+  if (behavioursToRemove_.size() > 0) {
+    for (const auto& behaviour : behavioursToRemove_) {
       UnregisterBehaviour(behaviour);
     }
 
-    m_behavioursToRemove.clear();
+    behavioursToRemove_.clear();
   }
-  for (const auto& behaviour : m_behaviours) {
+  for (const auto& behaviour : behaviours_) {
     behaviour->Update(dt);
   }
 }
 
 auto GRK_GameLogicComponent::RegisterBehaviour(
     std::unique_ptr<GRK_GameBehaviourBase> behaviour) -> GRK_GameLogicComponent::BehaviourHandle {
-  behaviour->m_behaviourHandle = s_nextHandle;
-  m_behaviours.push_back(std::move(behaviour));
-  m_behaviourIndexMap.put(s_nextHandle, (m_behaviours.size() - 1));
+  behaviour->behaviourHandle_ = s_nextHandle;
+  behaviours_.push_back(std::move(behaviour));
+  behaviourIndexMap_.put(s_nextHandle, (behaviours_.size() - 1));
   return s_nextHandle++;
 }
 
 auto
 GRK_GameLogicComponent::EnqueueBehaviourRemoval(const GRK_GameLogicComponent::BehaviourHandle handle) -> GRK_Result {
-  m_behavioursToRemove.push_back(handle);
+  behavioursToRemove_.push_back(handle);
 
   return GRK_Result::Ok;
 }
 
 auto GRK_GameLogicComponent::UnregisterBehaviour(const BehaviourHandle handle) -> GRK_Result {
-  if (m_behaviourIndexMap.find(handle) == m_behaviourIndexMap.end()) {
+  if (behaviourIndexMap_.find(handle) == behaviourIndexMap_.end()) {
     return GRK_Result::NoSuchElement;
   } else {
-    auto removeIndex = m_behaviourIndexMap.at(handle);
+    auto removeIndex = behaviourIndexMap_.at(handle);
 
-    auto backHandle = m_behaviourIndexMap.reverse_at(m_behaviours.size() - 1);
+    auto backHandle = behaviourIndexMap_.reverse_at(behaviours_.size() - 1);
 
-    m_behaviours[removeIndex] = std::move(m_behaviours.back());
-    m_behaviours.pop_back();
+    behaviours_[removeIndex] = std::move(behaviours_.back());
+    behaviours_.pop_back();
 
-    m_behaviourIndexMap.erase(handle);
+    behaviourIndexMap_.erase(handle);
 
-    // If there is nothing in m_behaviours we just erased the last element, so no need to update map
-    if (m_behaviours.size() > 0) {
-      m_behaviourIndexMap.reverse_erase(m_behaviours.size());
-      m_behaviourIndexMap.put(backHandle, removeIndex);
+    // If there is nothing in behaviours_ we just erased the last element, so no need to update map
+    if (behaviours_.size() > 0) {
+      behaviourIndexMap_.reverse_erase(behaviours_.size());
+      behaviourIndexMap_.put(backHandle, removeIndex);
     }
 
     return GRK_Result::Ok;
@@ -77,9 +77,9 @@ auto GRK_GameLogicComponent::UnregisterBehaviour(const BehaviourHandle handle) -
 }
 
 GRK_GameBehaviourBase::GRK_GameBehaviourBase(GRK_EntityHandle owningEntity) noexcept :
-    m_owningEntity(owningEntity) {
+    owningEntity_(owningEntity) {
 }
 
 auto GRK_GameBehaviourBase::UnregisterThisBehaviour() -> GRK_Result {
-  return m_owningEntity.GetComponent<GRK_GameLogicComponent>()->EnqueueBehaviourRemoval(m_behaviourHandle);
+  return owningEntity_.GetComponent<GRK_GameLogicComponent>()->EnqueueBehaviourRemoval(behaviourHandle_);
 }

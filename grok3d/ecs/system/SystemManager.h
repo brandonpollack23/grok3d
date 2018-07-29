@@ -41,13 +41,13 @@ class GRK_SystemManager {
   auto Render() const -> GRK_Result;
 
  private:
-  bool m_isInitialized;
+  bool isInitialized_;
 
-  GRK_EntityComponentManager* m_ecm;
+  GRK_EntityComponentManager* ecm_;
 
-  std::array<GRK_System*, 1> m_systems; ///< An array for easy iteration of all systems, initialized on construction.
-  GRK_GameLogicSystem m_gls; ///< The game logic system.
-  GRK_RenderSystem m_rs; ///< The rendering system.
+  std::array<GRK_System*, 1> systems_; ///< An array for easy iteration of all systems, initialized on construction.
+  GRK_GameLogicSystem gls_; ///< The game logic system.
+  GRK_RenderSystem rs_; ///< The rendering system.
 };
 }
 

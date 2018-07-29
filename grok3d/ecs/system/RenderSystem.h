@@ -31,7 +31,7 @@ class GRK_RenderSystem {
   /**Have do all rendering work and have GLFW swap buffers*/
   auto Render() const -> GRK_Result;
 
-  /**initialize m_renderComponents with the store of all render components from the @link
+  /**initialize renderComponents_ with the store of all render components from the @link
    * GRK_EntityComponentManager GRK_EntityComponentManager @endlink*/
   auto Initialize(GRK_EntityComponentManager* ecm) -> GRK_Result;
 
@@ -62,10 +62,10 @@ class GRK_RenderSystem {
   auto CloseRenderingWindow() const -> GRK_Result;
 
  private:
-  bool m_isInitialized; ///< Keeps track if class is initialized.
+  bool isInitialized_; ///< Keeps track if class is initialized.
   const std::vector<GRK_RenderComponent>
-      * m_renderComponents; ///< The store of all rendercomponents for quick iterating
-  GLFWwindow* m_window; ///< GLFW window context.
+      * renderComponents_; ///< The store of all rendercomponents for quick iterating
+  GLFWwindow* window_; ///< GLFW window context.
 };
 }
 

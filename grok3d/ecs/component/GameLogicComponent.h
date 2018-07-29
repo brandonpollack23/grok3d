@@ -88,16 +88,16 @@ class GRK_GameLogicComponent {
   auto UnregisterBehaviour(BehaviourHandle handle) -> GRK_Result;
 
  protected:
-  typedef size_t BehaviourIndex; ///< the index into m_behaviours that corresponds to a behaviour
+  typedef size_t BehaviourIndex; ///< the index into behaviours_ that corresponds to a behaviour
 
   static BehaviourHandle s_nextHandle; ///< a static counter that makes every BehaviourHandle unique (enough)
 
   notstd::unordered_bidir_map<BehaviourHandle, BehaviourIndex>
-      m_behaviourIndexMap; ///< an internal bidirectional mapping of handles to indexes into m_behaviours
+      behaviourIndexMap_; ///< an internal bidirectional mapping of handles to indexes into behaviours_
   std::vector<std::unique_ptr<GRK_GameBehaviourBase>>
-      m_behaviours; ///< the actual store of behaviours, stored as unique_ptr for lifetime management
+      behaviours_; ///< the actual store of behaviours, stored as unique_ptr for lifetime management
 
-  std::vector<BehaviourHandle> m_behavioursToRemove; ///< the queue of behaviours to remove after done updating
+  std::vector<BehaviourHandle> behavioursToRemove_; ///< the queue of behaviours to remove after done updating
 };
 
 /**
@@ -135,9 +135,9 @@ class GRK_GameBehaviourBase {
  protected:
   friend class GRK_GameLogicComponent;
 
-  GRK_EntityHandle m_owningEntity;         ///< the entity that this behaviour applies to
+  GRK_EntityHandle owningEntity_;         ///< the entity that this behaviour applies to
 
-  GRK_GameLogicComponent::BehaviourHandle m_behaviourHandle; /**<
+  GRK_GameLogicComponent::BehaviourHandle behaviourHandle_; /**<
                                                                     * the handle to the behaviour,
                                                                     * used by @link GRK_GameBehaviourBase::UnregisterThisBehaviour
                                                                     * UnregisterThisBehaviour @endlink*/

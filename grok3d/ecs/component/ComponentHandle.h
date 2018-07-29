@@ -29,34 +29,34 @@ class GRK_ComponentHandle {
    * @param[in] entityComponentManager The manager which created this handle, passed in as
    * "this" on construction
    * @param[in] component The raw component pointer, points directly to the component's
-   * location in the GRK_EntityComponentManager__::m_componentStores tuple of vectors
+   * location in the GRK_EntityComponentManager__::componentStores_ tuple of vectors
    * @param[in] owner The @link GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong*/
   GRK_ComponentHandle(
       const ECM* entityComponentManager,
       const ComponentType* component,
       const GRK_Entity owner) noexcept :
-      m_owner(owner),
-      m_component(component),
-      m_manager(entityComponentManager) {
+      owner_(owner),
+      component_(component),
+      manager_(entityComponentManager) {
   }
 
   /**Returns the owning entity member*/
   auto GetOwningEntity() const -> const GRK_Entity {
-    return m_owner;
+    return owner_;
   }
 
   /**Uses ECM to find the Variadic index of this ComponentType, and affirms that the owning
    * entity has a component of this type*/
   auto IsHandleValid() const -> bool {
     auto thisComponentBitMask = IndexToMask(ECM::template GetComponentTypeAccessIndex<ComponentType>());
-    auto components = m_manager->GetEntityComponentsBitMask(m_owner);
+    auto components = manager_->GetEntityComponentsBitMask(owner_);
     return ((components & thisComponentBitMask) == thisComponentBitMask);
   }
 
   /**dereferences and fowards to internal ComponentType*/
   auto operator->() -> ComponentType* {
     if (IsHandleValid()) {
-      return const_cast<ComponentType*>(m_component);
+      return const_cast<ComponentType*>(component_);
     } else {
       return nullptr;
     }
@@ -64,18 +64,18 @@ class GRK_ComponentHandle {
 
   /**forwards a call to the manager to remove this component from owning entity*/
   auto Destroy() const -> GRK_Result {
-    return m_manager->template RemoveComponent<ComponentType>(m_owner);
+    return manager_->template RemoveComponent<ComponentType>(owner_);
   }
 
  private:
   const GRK_Entity
-      m_owner; ///< The @link GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong
-  const ComponentType* m_component;           /**< @brief The raw component pointer, points directly
+      owner_; ///< The @link GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong
+  const ComponentType* component_;           /**< @brief The raw component pointer, points directly
                                                          to the component's location in the 
-                                                         @link GRK_EntityComponentManager__::m_componentStores
-                                                         GRK_EntityComponentManager__::m_componentStores @endlink tuple of vectors*/
+                                                         @link GRK_EntityComponentManager__::componentStores_
+                                                         GRK_EntityComponentManager__::componentStores_ @endlink tuple of vectors*/
   const ECM
-      * m_manager;                       ///< The manager which created this handle, passed in as "this" on construction
+      * manager_;                       ///< The manager which created this handle, passed in as "this" on construction
 };
 }
 

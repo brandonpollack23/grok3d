@@ -80,13 +80,13 @@ class GRK_Engine {
   auto RunTicks(SimulationTimeValues& simulationTimeValues, std::chrono::nanoseconds tickPeriod) -> void;
 
  private:
-  GRK_EntityComponentManager m_entityComponentManager;
-  GRK_SystemManager m_systemManager;
+  GRK_EntityComponentManager entityComponentManager_;
+  GRK_SystemManager systemManager_;
 
   /**An init function that sets up the scene by creating entities and adding components
    * using the @link GRK_EntityComponentManager GRK_EntityComponentManager @endlink
    * for an initial state*/
-  std::function<GRK_Result(GRK_EntityComponentManager&)> m_initFunction;
+  std::function<GRK_Result(GRK_EntityComponentManager&)> initFunction_;
 };
 } /*Grok3d*/
 

@@ -7,7 +7,7 @@
 using namespace Grok3d;
 
 GRK_System::GRK_System() noexcept {
-  m_trackedEntities = std::unordered_set<GRK_EntityHandle>(c_initial_entity_array_size);
+  trackedEntities_ = std::unordered_set<GRK_EntityHandle>(c_initial_entity_array_size);
 }
 
 auto GRK_System::Update(double dt) -> GRK_Result {
@@ -22,11 +22,11 @@ auto GRK_System::UpdateSystemEntities(const GRK_EntityHandle& entity) -> GRK_Res
 
   //if mask has all components I need
   if (entity.HasComponents(myMask)) {
-    m_trackedEntities.insert(entity);
+    trackedEntities_.insert(entity);
   } else {
-    auto itRemove = m_trackedEntities.find(entity);
-    if (itRemove != m_trackedEntities.end()) {
-      m_trackedEntities.erase(entity);
+    auto itRemove = trackedEntities_.find(entity);
+    if (itRemove != trackedEntities_.end()) {
+      trackedEntities_.erase(entity);
     }
   }
 
@@ -34,7 +34,7 @@ auto GRK_System::UpdateSystemEntities(const GRK_EntityHandle& entity) -> GRK_Res
 }
 
 auto GRK_System::UnregisterEntity(const GRK_EntityHandle& entity) -> GRK_Result {
-  m_entitiesToUnregister.push_back(entity);
+  entitiesToUnregister_.push_back(entity);
 
   return GRK_Result::Ok;
 }
@@ -42,16 +42,16 @@ auto GRK_System::UnregisterEntity(const GRK_EntityHandle& entity) -> GRK_Result 
 auto GRK_System::CompleteUnregisterEntities() -> GRK_Result {
   //TODO move from end to make more efficent
   GRK_Result result = GRK_Result::Ok;
-  for (auto& entity : m_entitiesToUnregister) {
-    auto entityIt = m_trackedEntities.find(entity);
-    if (entityIt != m_trackedEntities.end()) {
-      m_trackedEntities.erase(entityIt);
+  for (auto& entity : entitiesToUnregister_) {
+    auto entityIt = trackedEntities_.find(entity);
+    if (entityIt != trackedEntities_.end()) {
+      trackedEntities_.erase(entityIt);
     } else {
       result = GRK_Result::NoSuchEntity;
     }
   }
 
-  m_entitiesToUnregister.clear();
+  entitiesToUnregister_.clear();
 
   return result;
 }

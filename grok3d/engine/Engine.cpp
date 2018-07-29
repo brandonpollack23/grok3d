@@ -17,33 +17,33 @@ using namespace Grok3d;
 
 GRK_Engine::GRK_Engine() noexcept {
   //Inject dependency references so we can update the systems from ECM and set up systems with ECM
-  m_entityComponentManager.Initialize(&m_systemManager);
-  m_systemManager.Initialize(&m_entityComponentManager);
+  entityComponentManager_.Initialize(&systemManager_);
+  systemManager_.Initialize(&entityComponentManager_);
 }
 
 GRK_Engine::GRK_Engine(std::function<GRK_Result(GRK_EntityComponentManager&)> initFunction) noexcept : GRK_Engine() {
-  m_initFunction = initFunction;
+  initFunction_ = initFunction;
 }
 
 auto GRK_Engine::Initialize() -> GRK_Result {
-  if (m_initFunction) {
+  if (initFunction_) {
     std::cout << "Initializing..." << std::endl;
-    return m_initFunction(m_entityComponentManager);
+    return initFunction_(entityComponentManager_);
   } else {
     return GRK_Result::EngineFailureNoInitialState;
   }
 }
 
 auto GRK_Engine::Update(double dt) -> void {
-  m_systemManager.UpdateSystems(dt);
+  systemManager_.UpdateSystems(dt);
 }
 
 auto GRK_Engine::Render() const -> GRK_Result {
-  return m_systemManager.Render();
+  return systemManager_.Render();
 }
 
 auto GRK_Engine::GarbageCollect() -> void {
-  m_entityComponentManager.GarbageCollect();
+  entityComponentManager_.GarbageCollect();
 }
 
 auto GRK_Engine::Run() -> void {
@@ -104,7 +104,7 @@ auto GRK_Engine::RunTicks(
 
 auto GRK_Engine::InjectInitialization(
     std::function<GRK_Result(GRK_EntityComponentManager&)> initFunction) -> GRK_Result {
-  m_initFunction = std::move(initFunction);
+  initFunction_ = std::move(initFunction);
 
   return GRK_Result::Ok;
 }

@@ -63,9 +63,9 @@ class GRK_System {
   auto CompleteUnregisterEntities() -> GRK_Result;
 
  protected:
-  std::unordered_set<GRK_EntityHandle> m_trackedEntities; ///< entities this system will update
+  std::unordered_set<GRK_EntityHandle> trackedEntities_; ///< entities this system will update
   std::vector<GRK_EntityHandle>
-      m_entitiesToUnregister;   ///< entities that will be removed after updating
+      entitiesToUnregister_;   ///< entities that will be removed after updating
 };
 }
 

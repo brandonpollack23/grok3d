@@ -19,15 +19,15 @@ constexpr int kWindowHeight = 600;
 constexpr int kWindowWidth = 800;
 
 GRK_RenderSystem::GRK_RenderSystem() noexcept :
-    m_isInitialized(false) {
+    isInitialized_(false) {
 }
 
 auto GRK_RenderSystem::Initialize(GRK_EntityComponentManager* ecm) -> GRK_Result {
-  m_renderComponents = ecm->GetComponentStore<GRK_RenderComponent>();
+  renderComponents_ = ecm->GetComponentStore<GRK_RenderComponent>();
 
   InitializeGLWindow();
 
-  m_isInitialized = true;
+  isInitialized_ = true;
 
   return GRK_Result::Ok;
 }
@@ -70,13 +70,13 @@ auto GRK_RenderSystem::SetGLFWWindowHints() const -> void {
 auto GRK_RenderSystem::CreateGLFWWindow() -> void {
   // TODO CVAR configure width/height/name/fullscreen/etc.
   // Second to last param is nullptr, this is for monitor, we need this when we do fullscreen.
-  m_window = glfwCreateWindow(kWindowWidth, kWindowHeight, "Grok3d Game", nullptr, nullptr);
-  if (m_window == nullptr) {
+  window_ = glfwCreateWindow(kWindowWidth, kWindowHeight, "Grok3d Game", nullptr, nullptr);
+  if (window_ == nullptr) {
     std::cerr << "Failed to create GLFW window" << std::endl;
     std::exit(-1);
   }
 
-  glfwMakeContextCurrent(m_window);
+  glfwMakeContextCurrent(window_);
 
   //Initialize GLAD (OGL function loader)
   if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
@@ -85,7 +85,7 @@ auto GRK_RenderSystem::CreateGLFWWindow() -> void {
   }
 
   //set up the callback to adjust viewport on window resize
-  glfwSetFramebufferSizeCallback(m_window,
+  glfwSetFramebufferSizeCallback(window_,
                                  [](GLFWwindow*, int width, int height) {
                                    glViewport(0, 0, width, height);
                                  });
@@ -111,11 +111,11 @@ auto GRK_RenderSystem::Render() const -> GRK_Result {
   }
 }
 
-auto GRK_RenderSystem::ShouldCloseWindow() const -> int { return glfwWindowShouldClose(m_window); }
+auto GRK_RenderSystem::ShouldCloseWindow() const -> int { return glfwWindowShouldClose(window_); }
 
 auto GRK_RenderSystem::ProcessInput() const -> void {
-  if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-    glfwSetWindowShouldClose(m_window, true);
+  if (glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    glfwSetWindowShouldClose(window_, true);
   }
 }
 
@@ -125,7 +125,7 @@ auto GRK_RenderSystem::ClearBuffer() const -> void {
 }
 
 auto GRK_RenderSystem::RenderComponents() const -> void {
-  for (auto& renderComponent : *m_renderComponents) {
+  for (auto& renderComponent : *renderComponents_) {
     // Specify shader program.
     glUseProgram(renderComponent.GetShaderProgramID());
 
@@ -159,7 +159,7 @@ auto GRK_RenderSystem::RenderComponents() const -> void {
  * <p>There is an implicit flush that takes place in openGL before swap is done.</p>
  */
 auto GRK_RenderSystem::Swap() const -> void {
-  glfwSwapBuffers(m_window);
+  glfwSwapBuffers(window_);
 }
 
 auto GRK_RenderSystem::PollWindowEvents() const -> void {

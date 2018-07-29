@@ -9,33 +9,33 @@
 using namespace Grok3d;
 
 GRK_TransformComponent::GRK_TransformComponent() noexcept :
-    m_parent(nullptr),
-    m_children(std::vector<GRK_TransformComponent*>()),
-    m_localPosition(glm::dvec3(0)),
-    m_localScale(glm::dvec3(0)) {
+    parent_(nullptr),
+    children_(std::vector<GRK_TransformComponent*>()),
+    localPosition_(glm::dvec3(0)),
+    localScale_(glm::dvec3(0)) {
 }
 
 auto GRK_TransformComponent::SetParent(GRK_TransformComponent* newParent) -> void {
-  m_parent = newParent;
-  m_parent->AttachChild(this);
+  parent_ = newParent;
+  parent_->AttachChild(this);
 }
 
 auto GRK_TransformComponent::AttachChild(GRK_TransformComponent* newChild) -> void {
-  this->m_children.push_back(newChild);
+  this->children_.push_back(newChild);
 }
 
 auto GRK_TransformComponent::IsChildOf(const GRK_TransformComponent* const possibleParent) const -> bool {
-  return possibleParent == m_parent;
+  return possibleParent == parent_;
 }
 
 auto GRK_TransformComponent::GetSiblingIndex() -> std::size_t //use parent and iterate through the list looking for me
 {
-  return m_parent->GetChildIndex(this);
+  return parent_->GetChildIndex(this);
 }
 
 auto GRK_TransformComponent::GetChildIndex(const GRK_TransformComponent* const possibleChild) const -> std::size_t {
-  for (size_t i = 0; i < m_children.size(); ++i) {
-    if (m_children[i] == possibleChild) {
+  for (size_t i = 0; i < children_.size(); ++i) {
+    if (children_[i] == possibleChild) {
       return i;
     }
   }
@@ -43,49 +43,49 @@ auto GRK_TransformComponent::GetChildIndex(const GRK_TransformComponent* const p
 }
 
 auto GRK_TransformComponent::ChildCount() -> int {
-  return static_cast<int>(this->m_children.size());
+  return static_cast<int>(this->children_.size());
 }
 
 auto GRK_TransformComponent::GetWorldPosition() const -> glm::dvec3 {
   //if i have no parent, my position is world position
   //otherwise my position concatonated with my parents' world position (recursive) is my actual position
-  if (m_parent == nullptr) {
-    return m_localPosition;
+  if (parent_ == nullptr) {
+    return localPosition_;
   } else {
-    return m_localPosition + m_parent->GetWorldPosition();
+    return localPosition_ + parent_->GetWorldPosition();
   }
 }
 
 auto GRK_TransformComponent::SetWorldPosition(glm::dvec3 v) -> void {
   //if no parent, setting world position is setting my position
   //otherwise it is these coordinates subtracted from my parent's position recursively
-  if (m_parent == nullptr) {
-    m_localPosition = v;
+  if (parent_ == nullptr) {
+    localPosition_ = v;
   } else {
-    m_localPosition = v - m_parent->GetWorldPosition();
+    localPosition_ = v - parent_->GetWorldPosition();
   }
 }
 
 auto GRK_TransformComponent::SetWorldPosition(const double x, const double y, const double z) -> void {
   //if no parent, setting world position is setting my position
   //otherwise it is these coordinates subtracted from my parent's position recursively
-  if (m_parent == nullptr) {
-    m_localPosition.x = x;
-    m_localPosition.y = y;
-    m_localPosition.z = z;
+  if (parent_ == nullptr) {
+    localPosition_.x = x;
+    localPosition_.y = y;
+    localPosition_.z = z;
   } else {
-    m_localPosition.x = x - m_parent->GetWorldPosition().x;
-    m_localPosition.y = y - m_parent->GetWorldPosition().y;
-    m_localPosition.z = z - m_parent->GetWorldPosition().z;
+    localPosition_.x = x - parent_->GetWorldPosition().x;
+    localPosition_.y = y - parent_->GetWorldPosition().y;
+    localPosition_.z = z - parent_->GetWorldPosition().z;
   }
 }
 
 auto GRK_TransformComponent::GetLocalPosition() const -> glm::dvec3 {
-  return m_localPosition;
+  return localPosition_;
 }
 
 auto GRK_TransformComponent::GetLocalPosition(glm::dvec3 v) -> void {
-  this->m_localPosition = v;
+  this->localPosition_ = v;
 }
 
 auto GRK_TransformComponent::TranslateLocal(glm::dvec3 v) -> void {
@@ -93,34 +93,34 @@ auto GRK_TransformComponent::TranslateLocal(glm::dvec3 v) -> void {
 }
 
 auto GRK_TransformComponent::TranslateLocal(const double x, const double y, const double z) -> void {
-  m_localPosition.x += x;
-  m_localPosition.y += y;
-  m_localPosition.z += z;
+  localPosition_.x += x;
+  localPosition_.y += y;
+  localPosition_.z += z;
 }
 
 auto GRK_TransformComponent::GetLocalScale() const -> glm::dvec3 {
-  return m_localScale;
+  return localScale_;
 }
 
 auto GRK_TransformComponent::SetLocalScale(glm::dvec3 v) -> void {
-  m_localScale = v;
+  localScale_ = v;
 }
 
 auto GRK_TransformComponent::SetLocalScale(const double x, const double y, const double z) -> void {
-  m_localScale.x = x;
-  m_localScale.y = y;
-  m_localScale.z = z;
+  localScale_.x = x;
+  localScale_.y = y;
+  localScale_.z = z;
 }
 
 auto GRK_TransformComponent::DetachChildren() -> void {
-  for (auto child : m_children) {
+  for (auto child : children_) {
     child->SetParent(nullptr);
   }
-  m_children.clear();
+  children_.clear();
 }
 
 auto GRK_TransformComponent::GetChild(const unsigned int index) const -> GRK_TransformComponent* {
-  return (index < m_children.size() && index > 0) ? m_children[index] : nullptr;
+  return (index < children_.size() && index > 0) ? children_[index] : nullptr;
 }
 
 //template specialization for GRK_TransformComponent

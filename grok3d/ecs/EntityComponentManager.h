@@ -66,16 +66,16 @@ class GRK_EntityComponentManager__ {
 
  public:
   GRK_EntityComponentManager__() noexcept :
-      m_nextEntityId(1),
-      m_deletedUncleanedEntities(std::vector<GRK_Entity>()),
-      m_entityComponentsBitMaskMap(std::unordered_map<GRK_Entity, GRK_ComponentBitMask>(c_initial_entity_array_size)),
-      m_entityComponentIndexMaps(std::vector<notstd::unordered_bidir_map<GRK_Entity, ComponentInstance>>()) {
+      nextEntityId_(1),
+      deletedUncleanedEntities_(std::vector<GRK_Entity>()),
+      entityComponentsBitMaskMap_(std::unordered_map<GRK_Entity, GRK_ComponentBitMask>(c_initial_entity_array_size)),
+      entityComponentIndexMaps_(std::vector<notstd::unordered_bidir_map<GRK_Entity, ComponentInstance>>()) {
     static_assert(notstd::ensure_parameter_pack_unique<ComponentTypes...>::value,
                   "The template arguments to GRK_EntityComponentManager__ must all be unique");
 
-    m_deletedUncleanedEntities.reserve(c_initial_entity_array_size / 4);
+    deletedUncleanedEntities_.reserve(c_initial_entity_array_size / 4);
 
-    setup_component_stores(*this, m_componentStores);
+    setup_component_stores(*this, componentStores_);
   }
 
   /**
@@ -95,8 +95,8 @@ class GRK_EntityComponentManager__ {
    * @link GRK_Result::EntityAlreadyDeleted EntityAlreadyDeleted @endlink
    * @link GRK_Result::ComponentAlreadyAdded ComponentAlreadyAdded @endlink*/
   auto Initialize(GRK_SystemManager* systemManager) -> GRK_Result {
-    m_systemManager = systemManager;
-    m_isInitialized = true;
+    systemManager_ = systemManager;
+    isInitialized_ = true;
 
     return GRK_Result::Ok;
   }
@@ -113,9 +113,9 @@ class GRK_EntityComponentManager__ {
    * @returns A handle to the newly created entity*/
   auto CreateEntity() -> GRK_EntityHandle {
     //I could do a check here to see if we overflowed to 0 but that's just inconceivable that we'd have that many (2^32) entities
-    auto id = m_nextEntityId++;
+    auto id = nextEntityId_++;
 
-    m_entityComponentsBitMaskMap[id] = 0;
+    entityComponentsBitMaskMap_[id] = 0;
 
     this->AddComponent(id, GRK_TransformComponent());
 
@@ -134,7 +134,7 @@ class GRK_EntityComponentManager__ {
    * @returns The bit mask of all the components the entity has*/
   auto GetEntityComponentsBitMask(const GRK_Entity entity) const -> GRK_ComponentBitMask {
     if (entity != 0) {
-      return m_entityComponentsBitMaskMap.at(entity);
+      return entityComponentsBitMaskMap_.at(entity);
     } else {
       return 0;
     }
@@ -156,17 +156,17 @@ class GRK_EntityComponentManager__ {
     }
 
     //ComponentManager's deleting their components is handled by GarbageCollection
-    m_deletedUncleanedEntities.push_back(entity);
+    deletedUncleanedEntities_.push_back(entity);
 
     // send a component bit mask of 0 to all Systems, no components means any system will unregister
-    m_systemManager->UnregisterEntity(GRK_EntityHandle(this, entity));
+    systemManager_->UnregisterEntity(GRK_EntityHandle(this, entity));
 
     return GRK_Result::Ok;
   }
 
   /**A function that returns the vector of entities that are queued for GarbageCollection but not yet cleaned*/
   auto GetDeletedUncleanedEntities() -> std::vector<GRK_Entity>& {
-    return m_deletedUncleanedEntities;
+    return deletedUncleanedEntities_;
   }
 
   /**
@@ -191,7 +191,7 @@ class GRK_EntityComponentManager__ {
    *      -# Determining if the entity has that component (only one of each component type is
    *      allowed, it doesnt make sense to have two rigid bodies or two models does it)
    *      -# Updating the map of entities to indexes of the appropriate @link
-   *      GRK_EntityComponentManager__::m_componentStores m_componentStores @endlink vector
+   *      GRK_EntityComponentManager__::componentStores_ componentStores_ @endlink vector
    *      -# Adding the component to that vector
    *      -# Informing the systemmanager of the change so each system can begin acting on any
    *      entities that have the correct components as appropriate
@@ -218,10 +218,10 @@ class GRK_EntityComponentManager__ {
     auto componentTypeIndex = GetComponentTypeAccessIndex<ComponentType>();
 
     //only add a component if one doesnt exist
-    if ((m_entityComponentsBitMaskMap[entity] & IndexToMask(componentTypeIndex)) == 0) {
+    if ((entityComponentsBitMaskMap_[entity] & IndexToMask(componentTypeIndex)) == 0) {
       // TODO should be ref but will be updated soon
       auto& componentTypeVector =
-          std::get<std::vector<ComponentType>>(m_componentStores);
+          std::get<std::vector<ComponentType>>(componentStores_);
 
       if (componentTypeVector.size() == componentTypeVector.max_size()) {
         return GRK_Result::NoSpaceRemaining;
@@ -239,16 +239,16 @@ class GRK_EntityComponentManager__ {
         //add the component to the end our vector
         componentTypeVector.push_back(std::move(newComponent));
 
-        auto& entityInstanceMap = m_entityComponentIndexMaps.at(componentTypeIndex);
+        auto& entityInstanceMap = entityComponentIndexMaps_.at(componentTypeIndex);
 
         //the new size - 1 is the index of the vector the element is stored at
         entityInstanceMap.put(entity, static_cast<ComponentInstance>(componentTypeVector.size() - 1));
 
-        m_entityComponentsBitMaskMap[entity] |=
+        entityComponentsBitMaskMap_[entity] |=
             IndexToMask(componentTypeIndex);
 
         //inform all systems of new component added to this entity
-        m_systemManager->UpdateSystemEntities(GRK_EntityHandle(this, entity));
+        systemManager_->UpdateSystemEntities(GRK_EntityHandle(this, entity));
 
         return GRK_Result::Ok;
       }
@@ -277,15 +277,15 @@ class GRK_EntityComponentManager__ {
     const GRK_ComponentBitMask componentMask =
         static_cast<GRK_ComponentBitMask>(IndexToMask(componentTypeIndex));
 
-    if (entity == 0 || (m_entityComponentsBitMaskMap.at(entity) & componentMask) == 0) {
+    if (entity == 0 || (entityComponentsBitMaskMap_.at(entity) & componentMask) == 0) {
       return GRK_ComponentHandle<ComponentType>(nullptr, nullptr, -1);
-    } else if ((m_entityComponentsBitMaskMap.at(entity) & componentMask) == componentMask) {
+    } else if ((entityComponentsBitMaskMap_.at(entity) & componentMask) == componentMask) {
       //this is a vector of the type we are trying to remove
       // TODO should be ref but will be changed soon
       const auto& componentTypeVector =
-          std::get<std::vector<ComponentType>>(m_componentStores);
+          std::get<std::vector<ComponentType>>(componentStores_);
 
-      const auto& entityInstanceMap = m_entityComponentIndexMaps.at(componentTypeIndex);
+      const auto& entityInstanceMap = entityComponentIndexMaps_.at(componentTypeIndex);
 
       //get the instance (index in our vector) from teh entityInstanceMap
       const auto instance = entityInstanceMap.at(entity);
@@ -310,7 +310,7 @@ class GRK_EntityComponentManager__ {
    * @tparam ComponentType the type of component store vector you'd like to get a refernce of*/
   template<class ComponentType>
   auto GetComponentStore() const -> const std::vector<ComponentType>* {
-    return &std::get<std::vector<ComponentType>>(m_componentStores);
+    return &std::get<std::vector<ComponentType>>(componentStores_);
   }
 
   /**
@@ -341,10 +341,10 @@ class GRK_EntityComponentManager__ {
       return GRK_Result::EntityAlreadyDeleted;
     }
 
-    if ((m_entityComponentsBitMaskMap[entity] & componentMask) > 0) {
+    if ((entityComponentsBitMaskMap_[entity] & componentMask) > 0) {
       //TODO GC this as well, when you remove component you should just remove it from
       //entity mask and store the actual component from the store's ComponentInstance in a
-      //m_deletedUncleanedComponents vector to iterate through
+      //deletedUncleanedComponents_ vector to iterate through
       //there may be some overlap with the entity removal pass so use .find(entity) and
       //check to be sure it is already out of the map
       return RemoveComponentHelper<ComponentType>(entity);
@@ -370,10 +370,10 @@ class GRK_EntityComponentManager__ {
 
     const auto componentAccessIndex = GetComponentTypeAccessIndex<ComponentType>();
     //this is a vector of the type we are trying to remove
-    auto& componentTypeVector = std::get<std::vector<ComponentType>>(m_componentStores);
+    auto& componentTypeVector = std::get<std::vector<ComponentType>>(componentStores_);
 
     //this is the map of entity to components for this type
-    auto& entityInstanceMap = m_entityComponentIndexMaps.at(componentAccessIndex);
+    auto& entityInstanceMap = entityComponentIndexMaps_.at(componentAccessIndex);
 
     //check if the elment is in the map
     //and do what we need to if it is not
@@ -410,7 +410,7 @@ class GRK_EntityComponentManager__ {
       }
 
       //remove it from bitmask
-      m_entityComponentsBitMaskMap[entity] &= ~(IndexToMask(componentAccessIndex));
+      entityComponentsBitMaskMap_[entity] &= ~(IndexToMask(componentAccessIndex));
 
       return GRK_Result::Ok;
     }
@@ -419,7 +419,7 @@ class GRK_EntityComponentManager__ {
  private:
   /** @fn
    * @brief Meta function which sets up component store vectors stored in the
-   * @link GRK_EntityComponentManager__::m_componentStores m_componentStores tuple
+   * @link GRK_EntityComponentManager__::componentStores_ componentStores_ tuple
    * @endlink
    *
    * @details
@@ -439,7 +439,7 @@ class GRK_EntityComponentManager__ {
     auto operator()(GRK_EntityComponentManager& ecm, std::tuple<Ts...>& t) -> void {
       auto& elem = std::get<index>(t);
       elem.reserve(c_initial_entity_array_size);
-      ecm.m_entityComponentIndexMaps.push_back(
+      ecm.entityComponentIndexMaps_.push_back(
           notstd::unordered_bidir_map<GRK_Entity, ComponentInstance>(c_initial_entity_array_size));
       setup_component_stores_impl<index - 1, Ts...>{}(ecm, t);
     }
@@ -479,9 +479,9 @@ class GRK_EntityComponentManager__ {
   struct garbage_collect_iter_impl {
     /** The applicitive operator of the meta function*/
     auto operator()(GRK_EntityComponentManager& ecm) -> void {
-      for (auto& entity : ecm.m_deletedUncleanedEntities) {
+      for (auto& entity : ecm.deletedUncleanedEntities_) {
         using ComponentType = typename notstd::index_to_type<ComponentIndex, Ts...>::type;
-        if ((ecm.m_entityComponentsBitMaskMap[entity] & IndexToMask(ComponentIndex)) > 0) {
+        if ((ecm.entityComponentsBitMaskMap_[entity] & IndexToMask(ComponentIndex)) > 0) {
           ecm.template RemoveComponentHelper<ComponentType>(entity);
         }
       }
@@ -500,28 +500,28 @@ class GRK_EntityComponentManager__ {
   auto garbage_collect_iter() -> void {
     const auto size = sizeof...(ComponentTypes);
     garbage_collect_iter_impl<size - 1, ComponentTypes...>{}(*this);
-    m_deletedUncleanedEntities.clear();
+    deletedUncleanedEntities_.clear();
   }
 
  private:
-  bool m_isInitialized = false;                       ///< Simple bool t be sure we have a valid m_systemManager
+  bool isInitialized_ = false;                       ///< Simple bool t be sure we have a valid systemManager_
 
   GRK_SystemManager
-      * m_systemManager;                 ///< The system manager that handles updating the state stored here
+      * systemManager_;                 ///< The system manager that handles updating the state stored here
 
-  ComponentStoreTuple m_componentStores;              ///< The tuple of vectors which store each component type
+  ComponentStoreTuple componentStores_;              ///< The tuple of vectors which store each component type
 
   GRK_Entity
-      m_nextEntityId;                          ///< The next entity ID that is incremened each time an entity is made
+      nextEntityId_;                          ///< The next entity ID that is incremened each time an entity is made
 
-  std::vector<GRK_Entity> m_deletedUncleanedEntities; ///< list of deleted entites that need to be Garbage Collected
+  std::vector<GRK_Entity> deletedUncleanedEntities_; ///< list of deleted entites that need to be Garbage Collected
 
   typedef size_t ComponentInstance;                   ///< index into vector for component
 
   ///this is a map of entities to a bitmask of their components, used for system registration/component deletion checks etc
-  std::unordered_map<GRK_Entity, GRK_ComponentBitMask> m_entityComponentsBitMaskMap;
-  ///vector of bidirectional maps from entity to component index into std::get<ComponetIndex>(m_componentStores)[]
-  mutable std::vector<notstd::unordered_bidir_map<GRK_Entity, ComponentInstance>> m_entityComponentIndexMaps;
+  std::unordered_map<GRK_Entity, GRK_ComponentBitMask> entityComponentsBitMaskMap_;
+  ///vector of bidirectional maps from entity to component index into std::get<ComponetIndex>(componentStores_)[]
+  mutable std::vector<notstd::unordered_bidir_map<GRK_Entity, ComponentInstance>> entityComponentIndexMaps_;
 };
 } /*Grok3d*/
 

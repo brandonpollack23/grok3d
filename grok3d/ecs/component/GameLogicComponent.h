@@ -88,16 +88,20 @@ class GRK_GameLogicComponent {
   auto UnregisterBehaviour(BehaviourHandle handle) -> GRK_Result;
 
  protected:
-  typedef size_t BehaviourIndex; ///< the index into behaviours_ that corresponds to a behaviour
+  /// The index into behaviours_ that corresponds to a behaviour.
+  typedef size_t BehaviourIndex;
 
-  static BehaviourHandle s_nextHandle; ///< a static counter that makes every BehaviourHandle unique (enough)
+  /// A static counter that makes every BehaviourHandle unique (enough).
+  static BehaviourHandle s_nextHandle;
 
-  notstd::unordered_bidir_map<BehaviourHandle, BehaviourIndex>
-      behaviourIndexMap_; ///< an internal bidirectional mapping of handles to indexes into behaviours_
-  std::vector<std::unique_ptr<GRK_GameBehaviourBase>>
-      behaviours_; ///< the actual store of behaviours, stored as unique_ptr for lifetime management
+  /// An internal bidirectional mapping of handles to indexes into behaviours_.
+  notstd::unordered_bidir_map<BehaviourHandle, BehaviourIndex> behaviourIndexMap_;
 
-  std::vector<BehaviourHandle> behavioursToRemove_; ///< the queue of behaviours to remove after done updating
+  /// The actual store of behaviours, stored as unique_ptr for lifetime management.
+  std::vector<std::unique_ptr<GRK_GameBehaviourBase>> behaviours_;
+
+  /// The queue of behaviours to remove after done updating.
+  std::vector<BehaviourHandle> behavioursToRemove_;
 };
 
 /**
@@ -135,12 +139,15 @@ class GRK_GameBehaviourBase {
  protected:
   friend class GRK_GameLogicComponent;
 
-  GRK_EntityHandle owningEntity_;         ///< the entity that this behaviour applies to
+  /// The entity that this behaviour applies to.
+  GRK_EntityHandle owningEntity_;
 
-  GRK_GameLogicComponent::BehaviourHandle behaviourHandle_; /**<
-                                                                    * the handle to the behaviour,
-                                                                    * used by @link GRK_GameBehaviourBase::UnregisterThisBehaviour
-                                                                    * UnregisterThisBehaviour @endlink*/
+  /**
+   * The handle to the behaviour,
+   * used by @link GRK_GameBehaviourBase::UnregisterThisBehaviour
+   * UnregisterThisBehaviour @endlink
+   */
+  GRK_GameLogicComponent::BehaviourHandle behaviourHandle_;
 };
 }
 

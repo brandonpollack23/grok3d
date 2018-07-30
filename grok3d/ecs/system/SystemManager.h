@@ -45,9 +45,12 @@ class GRK_SystemManager {
 
   GRK_EntityComponentManager* ecm_;
 
-  std::array<GRK_System*, 1> systems_; ///< An array for easy iteration of all systems, initialized on construction.
-  GRK_GameLogicSystem gls_; ///< The game logic system.
-  GRK_RenderSystem rs_; ///< The rendering system.
+  /// An array for easy iteration of all systems, initialized on construction.
+  std::array<GRK_System*, 1> systems_;
+
+  GRK_GameLogicSystem gls_;
+
+  GRK_RenderSystem rs_;
 };
 }
 

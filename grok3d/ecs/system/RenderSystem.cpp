@@ -7,11 +7,13 @@
 
 #include <iostream>
 
+#include "grok3d/grok3d_types.h"
+#include "grok3d/ecs/system/RenderSystem.h"
+#include "grok3d/ecs/EntityComponentManager.h"
+
 #include "grok3d/glad/glad/glad.h"
 #include "GLFW/glfw3.h"
 
-#include "grok3d/grok3d_types.h"
-#include "grok3d/ecs/EntityComponentManager.h"
 
 using namespace Grok3d;
 
@@ -132,6 +134,9 @@ auto GRK_RenderSystem::RenderComponents() const -> void {
     // TODO for each rendercomponent there can be multiple vertex arrays...
     // Bind VAO (rules for how this vertex shader data is formatted).
     glBindVertexArray(renderComponent.GetVAO());
+
+    // TODO for each rendercomponent it has a transform component...need to find MVP and set uniform.
+    // I put a corresponding TODO in RenderComponent.h which caches the transform component, so I can get it easily here.
 
     //draw
     switch (renderComponent.GetDrawFunction()) {

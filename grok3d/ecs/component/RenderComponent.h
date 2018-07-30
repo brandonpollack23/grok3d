@@ -142,6 +142,9 @@ class GRK_RenderComponent {
 
   /** Which shader program to load. */
   ShaderManager::GRK_ShaderProgramID shaderProgramID_;
+
+  // TODO cache the TransformComponent reference here (everyone has one) so it is easy to get in the corresponding TODO
+  // in RenderSystem::RenderComponents function.
 };
 }
 

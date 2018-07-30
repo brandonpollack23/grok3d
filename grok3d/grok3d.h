@@ -24,7 +24,7 @@
 #include "ecs/system/GameLogicSystem.h"
 #include "ecs/system/RenderSystem.h"
 
-#include "shaders/ShaderManager.h"
+#include "grok3d/shaders/shaderprogram.h"
 
 #include "engine/Engine.h"
 

@@ -12,7 +12,7 @@
 #define __RENDERCOMPONENT__H
 
 #include "grok3d/grok3d_types.h"
-#include "grok3d/shaders/ShaderManager.h"
+#include "grok3d/shaders/shaderprogram.h"
 
 #include "grok3d/glad/glad/glad.h"
 #include "glm/fwd.hpp"

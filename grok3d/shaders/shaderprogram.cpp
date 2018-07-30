@@ -5,7 +5,7 @@
 
 /**@file*/
 
-#include "grok3d/shaders/ShaderManager.h"
+#include "grok3d/shaders/shaderprogram.h"
 
 #include <fstream>
 #include <iostream>

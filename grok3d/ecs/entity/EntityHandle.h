@@ -129,16 +129,19 @@ class GRK_EntityHandle__ {
  private:
   friend ::std::hash<GRK_EntityHandle__<ECM>>;
 
-  GRK_Entity entity_; ///< The entiy ID this is the handle for
-  ECM* const manager_;                  ///< the manager who created this handle
-  ///< (@link GRK_EntityComponentManager__ GRK_EntityComponentManager__ @endlink)
+  /// The entiy ID this is the handle for.
+  GRK_Entity entity_;
+
+  /// The @link Grok3d::GRK_EntityComponentManager__ @endlink manager who created this handle.
+  ECM* const manager_;
 };
 }
 
 /**A hash algorithm for @link GRK_EntityHandle__ GRK_EntityHandle__ @endlink
  *
  * @details
- * This just forwards the hash to size_t's implementation on the internal entity ID*/
+ * This just forwards the hash to size_t's implementation on the internal entity ID
+ */
 template<class ECM>
 typename std::hash<Grok3d::GRK_EntityHandle__<ECM>>::result_type
 std::hash<Grok3d::GRK_EntityHandle__<ECM>>::operator()(

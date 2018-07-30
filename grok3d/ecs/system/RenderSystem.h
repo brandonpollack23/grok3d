@@ -62,10 +62,13 @@ class GRK_RenderSystem {
   auto CloseRenderingWindow() const -> GRK_Result;
 
  private:
-  bool isInitialized_; ///< Keeps track if class is initialized.
-  const std::vector<GRK_RenderComponent>
-      * renderComponents_; ///< The store of all rendercomponents for quick iterating
-  GLFWwindow* window_; ///< GLFW window context.
+  bool isInitialized_;
+
+  /// The store of all GRK_RenderComponents for quick iterating.
+  const std::vector<GRK_RenderComponent>* renderComponents_;
+
+  /// GLFW window context.
+  GLFWwindow* window_;
 };
 }
 

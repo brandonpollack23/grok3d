@@ -112,25 +112,35 @@ class GRK_RenderComponent {
   GRK_GL_PrimitiveType vertexPrimitiveType_;
   std::size_t numIndices_;
 
-  GRK_VertexArrayObject vertexArrayObject_; /**< VertexArrayObject descriptor
-                                           relates vertex buffer, vertex attributes,
-                                           and element buffer in the OGL context*/
+  /** VertexArrayObject descriptor
+   *  relates vertex buffer, vertex attributes,
+   *  and element buffer in the OGL context.
+   */
+  GRK_VertexArrayObject vertexArrayObject_;
 
-  GRK_VertexBufferObject vertexBufferObject_; /**< VertexBufferObject descriptor
-                                            buffer in the OGL context (on the GPU)
-                                            that stores the vertices*/
+  /**
+   * VertexBufferObject descriptor
+   *  buffer in the OGL context (on the GPU)
+   *  that stores the vertices
+   */
+  GRK_VertexBufferObject vertexBufferObject_;
 
-  GRK_ElementBufferObject elementBufferObject_; /** ElementBufferObject
-                                             buffer in OGL context (on the GPU)
-                                             that stores the order of the vertices in the VBO
-                                             to be rendered in to draw triangles*/
+  /** ElementBufferObject
+   *  buffer in OGL context (on the GPU)
+   *  that stores the order of the vertices in the VBO
+   *  to be rendered in to draw triangles
+   */
+  GRK_ElementBufferObject elementBufferObject_;
 
   std::size_t elementBufferObjectOffset_;
 
+  /** Draw either element or arrays. */
   GRK_DrawFunction drawFunctionType_;
 
+  /** Draw triangles, squres, points, etc. */
   GRK_OpenGLPrimitive drawingPrimitive_;
 
+  /** Which shader program to load. */
   ShaderManager::GRK_ShaderProgramID shaderProgramID_;
 };
 }

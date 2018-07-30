@@ -31,11 +31,6 @@ auto ShaderProgram::GetId() const -> GRK_ShaderProgramID {
   return shaderProgramId_;
 }
 
-ShaderProgram::~ShaderProgram() {
-  // TODO save pointer in RenderComponent so this destructor not called.
-  // GRK_UnloadShaderProgram(shaderProgramId_);
-}
-
 auto LoadShader(const char* const shaderSource, ShaderType type) -> GRK_ShaderID {
   auto id = glCreateShader(static_cast<GLenum>(type));
 

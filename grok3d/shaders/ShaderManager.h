@@ -29,7 +29,6 @@ using GRK_ShaderProgramID = GLuint;
 class ShaderProgram {
  public:
   ShaderProgram(const char* vertexShader, const char* fragmentShader);
-  ~ShaderProgram();
 
   auto GetId() const -> GRK_ShaderProgramID;
  protected:

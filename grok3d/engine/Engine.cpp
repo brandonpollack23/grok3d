@@ -7,8 +7,6 @@
 #include "grok3d/engine/Engine.h"
 
 #include <chrono>
-
-// TODO remove this if it isn't already gone...
 #include <iostream>
 
 using namespace std::chrono_literals;
@@ -22,7 +20,7 @@ GRK_Engine::GRK_Engine() noexcept {
 }
 
 GRK_Engine::GRK_Engine(std::function<GRK_Result(GRK_EntityComponentManager&)> initFunction) noexcept : GRK_Engine() {
-  initFunction_ = initFunction;
+  initFunction_ = std::move(initFunction);
 }
 
 auto GRK_Engine::Initialize() -> GRK_Result {

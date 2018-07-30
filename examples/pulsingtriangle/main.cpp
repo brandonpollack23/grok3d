@@ -10,7 +10,7 @@
 #include <iostream>
 
 using namespace Grok3d;
-using namespace Grok3d::ShaderManager;
+using namespace Grok3d::Shaders;
 
 static constexpr auto kFirstUniformName = "ourColor";
 
@@ -39,7 +39,7 @@ class FirstUniformShader : public ShaderProgram {
       const char* const vertexShader,
       const char* const fragmentShader,
       const char* const uniform) : ShaderProgram(vertexShader, fragmentShader) {
-    theUniform_ = static_cast<GRK_UniformID>(glGetUniformLocation(shaderProgramId, uniform));
+    theUniform_ = static_cast<GRK_UniformID>(glGetUniformLocation(shaderProgramId_, uniform));
     if (theUniform_ < 0) {
       std::cout << "Error getting uniform \"" << uniform << "\" from shaders: "
                 << vertexShader << " " << fragmentShader << std::endl;

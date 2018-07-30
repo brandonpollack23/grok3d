@@ -80,7 +80,7 @@ GetHelloSquareInitializationFunction(const char* const* args) {
     auto vertexes = LoadVertexes(sizeof(squareFloats) / sizeof(float));
     auto indices = LoadElementIndices();
     auto vertexAttributes = CreateVertexAttributes();
-    auto shaderProgram = ShaderManager::ShaderProgram({args[1], args[2]});
+    auto shaderProgram = Shaders::ShaderProgram({args[1], args[2]});
 
     auto rc = GRK_RenderComponent(
         vertexes,

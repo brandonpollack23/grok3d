@@ -15,8 +15,28 @@ using namespace Grok3d;
 
 // TODO make this a class with helper functions and clean up.
 // TODO then go ahead and make it a real class that returns shared_ptr, destructor for shared ptr unloads the shader
-namespace Grok3d::ShaderManager {
-auto GRK_LoadShader(const char* const shaderSource, ShaderType type) -> GRK_ShaderID {
+namespace Grok3d::Shaders {
+
+ShaderProgram::ShaderProgram(const char* const vertexShader, const char* const fragmentShader) {
+  auto vertexShaderID =
+      LoadShaderFile(vertexShader, Shaders::ShaderType::VertexShader);
+
+  auto fragShaderID =
+      LoadShaderFile(fragmentShader, Shaders::ShaderType::FragmentShader);
+
+  shaderProgramId_ = CreateShaderProgram({vertexShaderID, fragShaderID});
+}
+
+auto ShaderProgram::GetId() const -> GRK_ShaderProgramID {
+  return shaderProgramId_;
+}
+
+ShaderProgram::~ShaderProgram() {
+  // TODO save pointer in RenderComponent so this destructor not called.
+  // GRK_UnloadShaderProgram(shaderProgramId_);
+}
+
+auto LoadShader(const char* const shaderSource, ShaderType type) -> GRK_ShaderID {
   auto id = glCreateShader(static_cast<GLenum>(type));
 
   glShaderSource(id, 1, &shaderSource, nullptr);
@@ -38,7 +58,7 @@ auto GRK_LoadShader(const char* const shaderSource, ShaderType type) -> GRK_Shad
   return id;
 }
 
-auto GRK_LoadShaderFile(const char* const shaderFile, ShaderType type) -> GRK_ShaderID {
+auto LoadShaderFile(const char* const shaderFile, ShaderType type) -> GRK_ShaderID {
   //open the file
   auto fs = std::ifstream(shaderFile);
   if (!fs.is_open()) {
@@ -48,10 +68,10 @@ auto GRK_LoadShaderFile(const char* const shaderFile, ShaderType type) -> GRK_Sh
 
   auto shaderSource = std::string(std::istreambuf_iterator<char>(fs), std::istreambuf_iterator<char>());
 
-  return GRK_LoadShader(shaderSource.c_str(), type);
+  return LoadShader(shaderSource.c_str(), type);
 }
 
-auto GRK_UnloadShader(const GRK_ShaderID id) -> GRK_Result {
+auto UnloadShader(const GRK_ShaderID id) -> GRK_Result {
   glDeleteShader(id);
 
   auto error = glGetError();
@@ -63,7 +83,7 @@ auto GRK_UnloadShader(const GRK_ShaderID id) -> GRK_Result {
   }
 }
 
-auto GRK_CreateShaderProgram(std::initializer_list<GRK_ShaderID> shaders) -> GRK_ShaderProgramID {
+auto CreateShaderProgram(std::initializer_list<GRK_ShaderID> shaders) -> GRK_ShaderProgramID {
   auto id = GRK_ShaderProgramID{glCreateProgram()};
 
   for (auto shader : shaders) {
@@ -111,18 +131,5 @@ auto GRK_UnloadShaderProgram(GRK_ShaderProgramID id) -> GRK_Result {
   } else {
     return GRK_Result::Ok;
   }
-}
-
-ShaderProgram::ShaderProgram(const char* const vertexShader, const char* const fragmentShader) {
-  auto vertexShaderID =
-      GRK_LoadShaderFile(vertexShader, ShaderManager::ShaderType::VertexShader);
-
-  auto fragShaderID =
-      GRK_LoadShaderFile(fragmentShader, ShaderManager::ShaderType::FragmentShader);
-
-  shaderProgramId = GRK_CreateShaderProgram({vertexShaderID, fragShaderID});
-}
-auto ShaderProgram::GetId() const -> GRK_ShaderProgramID {
-  return shaderProgramId;
 }
 }

@@ -55,7 +55,7 @@ class GRK_RenderComponent {
       unsigned int* indices,
       std::size_t numIndices,
       GRK_OpenGLPrimitive primitive,
-      ShaderManager::GRK_ShaderProgramID shaderProgramID,
+      Shaders::GRK_ShaderProgramID shaderProgramID,
       GRK_VertexAttribute vertexAttributes[],
       GLsizei numVertexAttributes) noexcept;
 
@@ -85,7 +85,7 @@ class GRK_RenderComponent {
 
   auto GetPrimitive() const { return static_cast<GLenum>(drawingPrimitive_); }
 
-  auto GetShaderProgramID() const -> ShaderManager::GRK_ShaderProgramID { return shaderProgramID_; }
+  auto GetShaderProgramID() const -> Shaders::GRK_ShaderProgramID { return shaderProgramID_; }
 
   auto SizeOfIndexType() const -> std::size_t {
     switch (vertexPrimitiveType_) {
@@ -141,7 +141,7 @@ class GRK_RenderComponent {
   GRK_OpenGLPrimitive drawingPrimitive_;
 
   /** Which shader program to load. */
-  ShaderManager::GRK_ShaderProgramID shaderProgramID_;
+  Shaders::GRK_ShaderProgramID shaderProgramID_;
 
   // TODO cache the TransformComponent reference here (everyone has one) so it is easy to get in the corresponding TODO
   // in RenderSystem::RenderComponents function.

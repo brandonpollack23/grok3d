@@ -121,14 +121,14 @@ using GRK_EntityHandle = GRK_EntityHandle__<GRK_EntityComponentManager>;
 
 /** Namespace that contains various other classes and helpers that are not necessarily part of
  * the ECS*/
-namespace ShaderManager {
+namespace Shaders {
 enum class ShaderType : GLenum {
   VertexShader = GL_VERTEX_SHADER,
   FragmentShader = GL_FRAGMENT_SHADER
 };
 
 class ShaderProgram;
-} /*ShaderManager*/
+} /*Shaders*/
 } /*Grok3d*/
 
 /**std namespace, added a hash function*/

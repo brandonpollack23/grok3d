@@ -8,7 +8,7 @@
 #include "grok3d/ecs/component/RenderComponent.h"
 
 using namespace Grok3d;
-using namespace Grok3d::ShaderManager;
+using namespace Grok3d::Shaders;
 
 // TODO should there only be one vertex buffer per shader?
 // TODO when you start using files, pass a handle to the vertexes (returned from a factory that loads files/converts literals) instead of the vertexes themselves.

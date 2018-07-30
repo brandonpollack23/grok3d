@@ -114,14 +114,19 @@ class GRK_TransformComponent {
   auto GetChild(unsigned int index) const -> GRK_TransformComponent*;
 
  private:
-  GRK_TransformComponent* parent_;                ///< The parent of this TransformComponent
+  /// The parent of this TransformComponent.
+  GRK_TransformComponent* parent_;
 
-  std::vector<GRK_TransformComponent*>
-      children_; ///< The vector of children who are positioned relative to this TransformComponent
+  /// The vector of children who are positioned relative to this TransformComponent.
+  std::vector<GRK_TransformComponent*> children_;
+
+  /// Position relative to parent TransformComponent.
+  glm::dvec3 localPosition_;
+
+  /// Scale relative to parent TransformComponent.
+  glm::dvec3 localScale_;
 
   //TODO rotation as quaternion
-  glm::dvec3 localPosition_;                      ///< Position relative to parent TransformComponent
-  glm::dvec3 localScale_;                         ///< Scale relative to parent TransformComponent
 };
 }
 

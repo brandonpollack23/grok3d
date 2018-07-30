@@ -143,7 +143,7 @@ template<class ECM>
 typename std::hash<Grok3d::GRK_EntityHandle__<ECM>>::result_type
 std::hash<Grok3d::GRK_EntityHandle__<ECM>>::operator()(
     typename std::hash<Grok3d::GRK_EntityHandle__<ECM>>::argument_type const& e) const {
-  return hash < size_t > {}(e.entity_);
+  return std::hash<std::size_t>{}(e.entity_);
 }
 
 template<class ECM>

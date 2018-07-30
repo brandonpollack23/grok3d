@@ -36,17 +36,17 @@ class ShaderProgram {
 };
 
 /** compiles the source of a shader program, and returns a handle*/
-auto LoadShader(const char* const shaderSource, ShaderType type) -> GRK_ShaderID;
+auto LoadShader(const char* shaderSource, ShaderType type) -> GRK_ShaderID;
 
 /** compiles shader using a file as the source*/
-auto LoadShaderFile(const char* const shaderFile, ShaderType type) -> GRK_ShaderID;
+auto LoadShaderFile(char* shaderFile, ShaderType type) -> GRK_ShaderID;
 
 /** Unloads a shader and frees the memory
  * @detail
  * It is worth noting that you need to call this explicitly when you're done with a shader,
  * otherwise it'll be kept around in memory in case you want to compile another program with
  * it, in other words shader management is your responsibility*/
-auto UnloadShader(const GRK_ShaderID id) -> GRK_Result;
+auto UnloadShader(GRK_ShaderID id) -> GRK_Result;
 
 /** Creates a linked shader program pipeline to be used when rendering*/
 auto CreateShaderProgram(std::initializer_list<GRK_ShaderID> shaders) -> GRK_ShaderProgramID;

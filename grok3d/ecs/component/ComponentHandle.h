@@ -68,14 +68,16 @@ class GRK_ComponentHandle {
   }
 
  private:
-  const GRK_Entity
-      owner_; ///< The @link GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong
-  const ComponentType* component_;           /**< @brief The raw component pointer, points directly
-                                                         to the component's location in the 
-                                                         @link GRK_EntityComponentManager__::componentStores_
-                                                         GRK_EntityComponentManager__::componentStores_ @endlink tuple of vectors*/
-  const ECM
-      * manager_;                       ///< The manager which created this handle, passed in as "this" on construction
+  /// The @link GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong
+  const GRK_Entity owner_;
+
+  /** @brief The raw component pointer, points directly to the component's location in the
+   * @link GRK_EntityComponentManager__::componentStores_ GRK_EntityComponentManager__::componentStores_ @endlink
+   * tuple of vectors*/
+  const ComponentType* component_;
+
+  /// The manager which created this handle, passed in as "this" on construction
+  const ECM * manager_;
 };
 }
 

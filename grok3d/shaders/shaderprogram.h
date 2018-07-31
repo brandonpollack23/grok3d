@@ -3,8 +3,8 @@
 * This file is available under the MIT license included in the project
 */
 
-#ifndef __SHADERMANAGER__H
-#define __SHADERMANAGER__H
+#ifndef __SHADERPROGRAM__H
+#define __SHADERPROGRAM__H
 
 /** @file
  * This class manages compiling and lifetime of shaders*/
@@ -39,7 +39,7 @@ class ShaderProgram {
 auto LoadShader(const char* shaderSource, ShaderType type) -> GRK_ShaderID;
 
 /** compiles shader using a file as the source*/
-auto LoadShaderFile(char* shaderFile, ShaderType type) -> GRK_ShaderID;
+auto LoadShaderFile(const char* shaderFile, ShaderType type) -> GRK_ShaderID;
 
 /** Unloads a shader and frees the memory
  * @detail

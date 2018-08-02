@@ -53,7 +53,7 @@ cc_library(
     deps = [
         "//grok3d/glad",
         "//notstd",
-        "@glfw3",
+        "@glfw",
         "@glm",
     ],
 )

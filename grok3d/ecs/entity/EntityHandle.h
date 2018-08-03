@@ -46,7 +46,7 @@ class GRK_EntityHandle__ {
       manager_(entityComponentManager) {
   }
 
-  operator GRK_Entity() const {
+  explicit operator GRK_Entity() const {
     return entity_;
   }
 
@@ -67,15 +67,18 @@ class GRK_EntityHandle__ {
     return entity_ == 0;
   }
 
-  /**Adds component to the entity by moving it into the
+  /**
+   * Adds component to the entity by moving it into the
    * @link GRK_EntityComponentManager__ GRK_EntityComponentManager__ @endlink
+   *
+   * <p>Note that this will <strong>move</strong> the component!!!</p>
    *
    * @tparam ComponentTypes the type of component to add, should be deduced by the compiler*/
   template<class ComponentType>
   auto AddComponent(ComponentType&& component) -> GRK_Result {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
-        GRK_Result::Ok,
-        return manager_->template AddComponent<ComponentType>(entity_, std::move(component)););
+        GRK_Result::EntityAlreadyDeleted,
+        return manager_->template AddComponent<ComponentType>(entity_, std::move(component));); // NOLINT
   }
 
   /**Adds component to the entity by specifying the type,

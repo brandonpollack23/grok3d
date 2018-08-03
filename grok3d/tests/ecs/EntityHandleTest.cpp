@@ -16,7 +16,18 @@ int constexpr kTestEntityId = 37;
 class MockECM {
  public:
   MOCK_METHOD1(DeleteEntity, GRK_Result(GRK_Entity entity));
+
+  /** Template methods need to be explicitly specialized to be mocked into tests */
+  MOCK_METHOD2(AddComponentTransform, GRK_Result(GRK_Entity entity, GRK_TransformComponent component));
+  template<class ComponentType>
+  GRK_Result AddComponent(GRK_Entity entity, ComponentType component) { return GRK_Result::Ok; }
 };
+
+/** Add Component Specialization for transform. */
+template<> GRK_Result MockECM::AddComponent(GRK_Entity entity, GRK_TransformComponent component) {
+  // TODO assert that component is RVALUE reference
+  return AddComponentTransform(entity, std::forward<GRK_TransformComponent>(component));
+}
 
 class TestEntityHandle : public Test {
  protected:
@@ -39,4 +50,19 @@ TEST_F(TestEntityHandle, testDestroyEntity) {
 
   testEntity_.Destroy();
   EXPECT_EQ(testEntity_.IsDestroyed(), true);
+}
+
+TEST_F(TestEntityHandle, testAddComponent) {
+  EXPECT_CALL(ecm_, AddComponentTransform(kTestEntityId, A<GRK_TransformComponent>()));
+
+  testEntity_.AddComponent(GRK_TransformComponent());
+}
+
+TEST_F(TestEntityHandle, testAddComponent_entityDestroyed) {
+  EXPECT_CALL(ecm_, AddComponentTransform(kTestEntityId, A<GRK_TransformComponent>()))
+      .Times(0);
+
+  testEntity_.Destroy();
+  auto result = testEntity_.AddComponent(GRK_TransformComponent());
+  EXPECT_EQ(result, GRK_Result::EntityAlreadyDeleted);
 }

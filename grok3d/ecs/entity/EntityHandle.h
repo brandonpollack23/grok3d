@@ -55,8 +55,11 @@ class GRK_EntityHandle__ {
   auto Destroy() -> GRK_Result {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
         GRK_Result::NoSuchEntity,
-        return manager_->DeleteEntity(entity_);
-            entity_ = 0;);
+
+        auto retVal = manager_->DeleteEntity(entity_);
+        entity_ = 0;
+        return retVal;
+    );
   }
 
   /**Checks if the entity is destroyed (it has an ID of 0 if it is destroyed)*/

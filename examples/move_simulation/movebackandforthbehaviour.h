@@ -21,31 +21,31 @@ class MoveBackAndForthBehaviour : public GRK_GameBehaviourBase {
   auto Update(double dt) -> void override {
     static const float speed = 1.0f;
 
-    float translationX = m_direction * speed * static_cast<float>(dt);
+    float translationX = direction_ * speed * static_cast<float>(dt);
 
-    m_updateCount++;
+    updateCount_++;
 
     m_transform->TranslateLocal(translationX, 0, 0);
 
     glm::dvec3 worldPosition = m_transform->GetWorldPosition();
 
-    if (abs(worldPosition.x) > 1 * m_behaviourHandle) {
-      //m_direction = -m_direction;
+    if (abs(worldPosition.x) > 1 * direction_) {
+      //direction_ = -direction_;
       UnregisterThisBehaviour();
-      m_owningEntity.Destroy();
+      owningEntity_.Destroy();
     }
 
-    if (m_updateCount == 72) {
-      std::cout << "Entity #" << m_owningEntity << ": " << worldPosition.x << ", " << worldPosition.y << ", "
+    if (updateCount_ == 72) {
+      std::cout << "Entity #" << owningEntity_ << ": " << worldPosition.x << ", " << worldPosition.y << ", "
                 << worldPosition.z << std::endl;
-      m_updateCount = 0;
+      updateCount_ = 0;
     }
   }
 
  private:
   GRK_ComponentHandle<GRK_TransformComponent> m_transform;
-  float m_direction = 1;
-  int m_updateCount = 0;
+  float direction_ = 1;
+  int updateCount_ = 0;
 };
 
 #endif //GROK3DTESTS_MOVEBACKANDFORTHBEHAVIOUR_H

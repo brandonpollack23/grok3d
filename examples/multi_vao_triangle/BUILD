@@ -15,7 +15,8 @@ cc_binary(
     srcs = [":source"],
     data = SHADER_FILES,
     linkopts = [
-        "-lglfw",
+        "-lX11",    
+        "-lpthread",    
         "-lGL",
         "-ldl",
     ],

@@ -9,7 +9,8 @@ cc_binary(
     name = "move_simulation",
     srcs = [":sources"],
     linkopts = [
-        "-lglfw",
+        "-lX11",    
+        "-lpthread",    
         "-lGL",
         "-ldl",
     ],

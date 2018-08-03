@@ -15,8 +15,8 @@ class MoveBackAndForthBehaviour : public GRK_GameBehaviourBase {
  public:
   explicit MoveBackAndForthBehaviour(GRK_EntityHandle entity) noexcept :
       GRK_GameBehaviourBase(entity),
-      m_transform(entity.GetComponent<GRK_TransformComponent>()) {
-  }
+      m_transform(entity.GetComponent<GRK_TransformComponent>()),
+      direction_(1) {}
 
   auto Update(double dt) -> void override {
     static const float speed = 1.0f;
@@ -29,10 +29,10 @@ class MoveBackAndForthBehaviour : public GRK_GameBehaviourBase {
 
     glm::dvec3 worldPosition = m_transform->GetWorldPosition();
 
-    if (abs(worldPosition.x) > 1 * direction_) {
-      //direction_ = -direction_;
-      UnregisterThisBehaviour();
-      owningEntity_.Destroy();
+    if (abs(worldPosition.x) >= 3) {
+      direction_ *= -1;
+//      UnregisterThisBehaviour();
+//      owningEntity_.Destroy();
     }
 
     if (updateCount_ == 72) {
@@ -44,7 +44,7 @@ class MoveBackAndForthBehaviour : public GRK_GameBehaviourBase {
 
  private:
   GRK_ComponentHandle<GRK_TransformComponent> m_transform;
-  float direction_ = 1;
+  float direction_;
   int updateCount_ = 0;
 };
 

@@ -12,3 +12,17 @@ new_git_repository(
     remote = "https://github.com/g-truc/glm",
     tag = "0.9.9.0",
 )
+
+# Needed by googletest.
+http_archive(
+     name = "com_google_absl",
+     urls = ["https://github.com/abseil/abseil-cpp/archive/master.zip"],
+     strip_prefix = "abseil-cpp-master",
+)
+
+new_git_repository(
+    name = "gtest",
+    remote = "https://github.com/google/googletest",
+    tag = "release-1.8.0",
+    build_file = "buildfiles-bazel/googletest.BUILD"
+)

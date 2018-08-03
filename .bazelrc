@@ -1,5 +1,8 @@
 build --config=debug
 
+# enable exceptions for tests
+test  --cxxopt="-std=c++17" --cxxopt="-Wall" --cxxopt="-fexceptions"
+
 build:debug --cxxopt="-std=c++17" --cxxopt="-O0" --cxxopt="-g" --cxxopt="-fno-exceptions" --cxxopt="-Wall"
 build:release --cxxopt="-std=c++17 --cxxopt="-O3" --cxxopt="-fno-exceptions" --cxxopt="-Wall"
 

@@ -97,7 +97,6 @@ class GRK_EntityComponentManager__ {
    * @link GRK_Result::ComponentAlreadyAdded ComponentAlreadyAdded @endlink*/
   auto Initialize(GRK_SystemManager* systemManager) -> GRK_Result {
     systemManager_ = systemManager;
-    isInitialized_ = true;
 
     return GRK_Result::Ok;
   }
@@ -505,9 +504,6 @@ class GRK_EntityComponentManager__ {
   }
 
  private:
-  /// Simple bool t be sure we have a valid systemManager_.
-  bool isInitialized_ = false;
-
   /// The tuple of vectors which store each component type.
   ComponentStoreTuple componentStores_;
 

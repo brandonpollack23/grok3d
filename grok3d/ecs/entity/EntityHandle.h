@@ -96,15 +96,13 @@ class GRK_EntityHandle__ {
         return manager_->template RemoveComponent<ComponentType>(entity_););
   }
 
-  /**Gets the specified componenet by type
+  /**
+   * Gets the specified component by type
    *
-   * @tparam ComponentType The type of componet you are trying to get, must be specified
-   *
-   * @returns returns @link GRK_Result::NoSuchEntity NoSuchEntity @endlink
-   * if entity does not exist anymore or @link GRK_Result::NoSuchElement NoSuchElement
-   * @endlink if it doesn't have the necessary component*/
+   * @tparam ComponentType The type of component you are trying to get, must be specified
+   */
   template<class ComponentType>
-  auto GetComponent() const -> GRK_ComponentHandle<ComponentType> {
+  auto GetComponent() const -> GRK_ComponentHandle<ComponentType, ECM> {
     return manager_->template GetComponent<ComponentType>(entity_);
   }
 

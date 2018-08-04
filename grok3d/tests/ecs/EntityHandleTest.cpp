@@ -6,7 +6,7 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 #include "grok3d/ecs/entity/EntityHandle.h"
-#include "grok3d/ecs/EntityComponentManager.h"
+#include "grok3d/ecs/component/TransformComponent.h"
 
 using namespace Grok3d;
 using namespace ::testing;
@@ -21,12 +21,34 @@ class MockECM {
   MOCK_METHOD2(AddComponentTransform, GRK_Result(GRK_Entity entity, GRK_TransformComponent component));
   template<class ComponentType>
   GRK_Result AddComponent(GRK_Entity entity, ComponentType component) { return GRK_Result::Ok; }
+
+  MOCK_METHOD1(RemoveComponentTransform, GRK_Result(GRK_Entity entity));
+  template<class ComponentType>
+  GRK_Result RemoveComponent(GRK_Entity entity) { return GRK_Result::Ok; }
+
+  MOCK_METHOD1(
+      GetComponentTransform,
+      GRK_ComponentHandle<GRK_TransformComponent, MockECM>(GRK_Entity entity));
+  template<class ComponentType>
+  GRK_ComponentHandle<ComponentType, MockECM>
+      GetComponent(GRK_Entity entity) {
+    return GRK_ComponentHandle<ComponentType, MockECM>(this, nullptr, kTestEntityId);
+  }
 };
 
 /** Add Component Specialization for transform. */
 template<> GRK_Result MockECM::AddComponent(GRK_Entity entity, GRK_TransformComponent component) {
-  // TODO assert that component is RVALUE reference
   return AddComponentTransform(entity, std::forward<GRK_TransformComponent>(component));
+}
+
+template<> GRK_Result MockECM::RemoveComponent<GRK_TransformComponent>(GRK_Entity entity) {
+  return RemoveComponentTransform(entity);
+}
+
+template<>
+GRK_ComponentHandle<GRK_TransformComponent, MockECM>
+    MockECM::GetComponent<GRK_TransformComponent>(GRK_Entity entity) {
+  return GetComponentTransform(entity);
 }
 
 class TestEntityHandle : public Test {
@@ -39,26 +61,26 @@ class TestEntityHandle : public Test {
 };
 
 /// New entities should not be destroyed.
-TEST_F(TestEntityHandle, testEntityNotDestroyed) {
+TEST_F(TestEntityHandle, TestEntityNotDestroyed) {
   EXPECT_EQ(testEntity_.IsDestroyed(), false);
 }
 
 // TODO googlemock ecm_ and expect destroy to be called.
 /// Destroyed entities should be destroyed.
-TEST_F(TestEntityHandle, testDestroyEntity) {
+TEST_F(TestEntityHandle, TestDestroyEntity) {
   EXPECT_CALL(ecm_, DeleteEntity(kTestEntityId));
 
   testEntity_.Destroy();
   EXPECT_EQ(testEntity_.IsDestroyed(), true);
 }
 
-TEST_F(TestEntityHandle, testAddComponent) {
+TEST_F(TestEntityHandle, TestAddComponent) {
   EXPECT_CALL(ecm_, AddComponentTransform(kTestEntityId, A<GRK_TransformComponent>()));
 
   testEntity_.AddComponent(GRK_TransformComponent());
 }
 
-TEST_F(TestEntityHandle, testAddComponent_entityDestroyed) {
+TEST_F(TestEntityHandle, TestAddComponent_entityDestroyed) {
   EXPECT_CALL(ecm_, AddComponentTransform(kTestEntityId, A<GRK_TransformComponent>()))
       .Times(0);
 
@@ -66,3 +88,19 @@ TEST_F(TestEntityHandle, testAddComponent_entityDestroyed) {
   auto result = testEntity_.AddComponent(GRK_TransformComponent());
   EXPECT_EQ(result, GRK_Result::EntityAlreadyDeleted);
 }
+
+TEST_F(TestEntityHandle, TestRemoveComponent) {
+  testEntity_.AddComponent(GRK_TransformComponent());
+
+  EXPECT_CALL(ecm_, RemoveComponentTransform(kTestEntityId));
+  testEntity_.RemoveComponent<GRK_TransformComponent>();
+}
+
+TEST_F(TestEntityHandle, TestGetComponent) {
+  EXPECT_CALL(ecm_, GetComponentTransform(kTestEntityId))
+      .WillOnce(Return(
+          GRK_ComponentHandle<GRK_TransformComponent, MockECM>(&ecm_, nullptr, kTestEntityId)));
+
+  testEntity_.GetComponent<GRK_TransformComponent>();
+}
+

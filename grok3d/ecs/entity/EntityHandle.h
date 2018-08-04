@@ -106,11 +106,13 @@ class GRK_EntityHandle__ {
     return manager_->template GetComponent<ComponentType>(entity_);
   }
 
-  /**Check if this entity has the specified components
+  /**
+   * Check if this entity has the specified components
    *
    * @param componentBits a bitmask consisting of the components constructed by OR'ing
    * IndexToMask on @link GRK_EntityComponentManager__::GetComponentTypeAccessIndex
-   * GetComponentTypeAccessIndex @endlink of the necessary component types*/
+   * GetComponentTypeAccessIndex @endlink of the necessary component types
+   */
   auto HasComponents(const GRK_ComponentBitMask componentBits) const -> bool {
     RETURN_FAILURE_IF_ENTITY_DESTROYED(
         false,
@@ -118,17 +120,18 @@ class GRK_EntityHandle__ {
             return ((components & componentBits) == componentBits));
   }
 
-  auto operator==(const GRK_EntityHandle& rhs) const -> bool {
+  auto operator==(const GRK_EntityHandle__<ECM>& rhs) const -> bool {
     return this->entity_ == rhs.entity_;
   }
 
-  template<class EntityComponentManager>
-  friend auto
-  operator==(const int entity, const GRK_EntityHandle__<EntityComponentManager>& handle) -> bool;
-
-  template<class EntityComponentManager>
-  friend auto
-  operator==(const GRK_EntityHandle__<EntityComponentManager>& handle, const int entity) -> bool;
+  // TODO these dont compile, need to fix them and reenable in the unit test.
+//  template<class EntityComponentManager>
+//  friend auto
+//  operator==(int entity, const GRK_EntityHandle__<EntityComponentManager>& handle) -> bool;
+//
+//  template<class EntityComponentManager>
+//  friend auto
+//  operator==(const GRK_EntityHandle__<EntityComponentManager>& handle, int entity) -> bool;
 
  private:
   friend ::std::hash<GRK_EntityHandle__<ECM>>;
@@ -141,10 +144,11 @@ class GRK_EntityHandle__ {
 };
 }
 
-/**A hash algorithm for @link GRK_EntityHandle__ GRK_EntityHandle__ @endlink
+/**
+ * A hash algorithm for @link GRK_EntityHandle__ GRK_EntityHandle__ @endlink
  *
  * @details
- * This just forwards the hash to size_t's implementation on the internal entity ID
+ * This just forwards the hash to size_t's implementation on the internal entity ID.
  */
 template<class ECM>
 typename std::hash<Grok3d::GRK_EntityHandle__<ECM>>::result_type
@@ -152,15 +156,15 @@ std::hash<Grok3d::GRK_EntityHandle__<ECM>>::operator()(
     typename std::hash<Grok3d::GRK_EntityHandle__<ECM>>::argument_type const& e) const {
   return std::hash<std::size_t>{}(e.entity_);
 }
-
-template<class ECM>
-auto operator==(const int entity, const Grok3d::GRK_EntityHandle__<ECM>& handle) -> bool {
-  return entity == handle.entity_;
-}
-
-template<class ECM>
-auto operator==(const Grok3d::GRK_EntityHandle__<ECM>& handle, const int entity) -> bool {
-  return entity == handle.entity_;
-}
+//
+//template<class ECM>
+//auto operator==(const int entity, const Grok3d::GRK_EntityHandle__<ECM>& handle) -> bool {
+//  return entity == handle.entity_;
+//}
+//
+//template<class ECM>
+//auto operator==(const Grok3d::GRK_EntityHandle__<ECM>& handle, const int entity) -> bool {
+//  return entity == handle.entity_;
+//}
 
 #endif

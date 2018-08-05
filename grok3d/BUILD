@@ -105,6 +105,19 @@ cc_test(
     ],
 )
 
+cc_test(
+    name = "gamelogiccomponent_tests",
+    srcs = ["tests/ecs/gamelogiccomponenttest.cpp"],
+    linkopts = GROK3D_RUNTIME_LIBS,
+    deps = [
+        ":grok3d",
+        "//grok3d/tests/mocks",
+        "@gtest",
+        # Includes the main function for us, custom is possible but not necessary.
+        "@gtest//:gtest_main",
+    ],
+)
+
 #TODO test_suite ecs tests
 #TODO test _suite engine tests
 #TODO test_suite all tests

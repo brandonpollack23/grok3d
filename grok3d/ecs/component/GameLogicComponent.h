@@ -35,7 +35,7 @@ class GRK_GameLogicComponent {
   /**A handle to a behaviour, it is an integer that works much like a file descriptor, it
    * is your key into the @link GRK_GameLogicComponent
    * GRK_GameLogicComponent @endlink to access your behaviour, usually for removal*/
-  typedef size_t BehaviourHandle;
+  using BehaviourHandle = size_t;
 
  public:
   GRK_GameLogicComponent() noexcept;
@@ -91,17 +91,17 @@ class GRK_GameLogicComponent {
   /// The index into behaviours_ that corresponds to a behaviour.
   typedef size_t BehaviourIndex;
 
-  /// A static counter that makes every BehaviourHandle unique (enough).
-  static BehaviourHandle s_nextHandle;
-
   /// An internal bidirectional mapping of handles to indexes into behaviours_.
   notstd::unordered_bidir_map<BehaviourHandle, BehaviourIndex> behaviourIndexMap_;
+
+  /// The queue of behaviours to remove after done updating.
+  std::vector<BehaviourHandle> behavioursToRemove_;
 
   /// The actual store of behaviours, stored as unique_ptr for lifetime management.
   std::vector<std::unique_ptr<GRK_GameBehaviourBase>> behaviours_;
 
-  /// The queue of behaviours to remove after done updating.
-  std::vector<BehaviourHandle> behavioursToRemove_;
+  /// A counter that makes every BehaviourHandle unique.
+  BehaviourHandle nextHandle_;
 };
 
 /**
@@ -117,6 +117,8 @@ class GRK_GameBehaviourBase {
    * components, they can do that with this @link GRK_EntityHandle
    * GRK_EntityHandle @endlink*/
   GRK_GameBehaviourBase(GRK_EntityHandle owningEntity) noexcept;
+
+  virtual ~GRK_GameBehaviourBase();
 
   /**
    * @brief function you override that updates the owning entity with included behaviour

@@ -8,49 +8,12 @@
 #include "grok3d/ecs/entity/EntityHandle.h"
 #include "grok3d/ecs/component/TransformComponent.h"
 
+#include "grok3d/tests/mocks/mock_entitycomponentmanager.h"
+
 using namespace Grok3d;
 using namespace ::testing;
 
-int constexpr kTestEntityId = 37;
-
-class MockECM {
- public:
-  MOCK_METHOD1(DeleteEntity, GRK_Result(GRK_Entity entity));
-  MOCK_METHOD1(GetEntityComponentsBitMask, GRK_ComponentBitMask(GRK_Entity entity));
-
-  /** Template methods need to be explicitly specialized to be mocked into tests */
-  MOCK_METHOD2(AddComponentTransform, GRK_Result(GRK_Entity entity, GRK_TransformComponent component));
-  template<class ComponentType>
-  GRK_Result AddComponent(GRK_Entity entity, ComponentType component) { return GRK_Result::Ok; }
-
-  MOCK_METHOD1(RemoveComponentTransform, GRK_Result(GRK_Entity entity));
-  template<class ComponentType>
-  GRK_Result RemoveComponent(GRK_Entity entity) { return GRK_Result::Ok; }
-
-  MOCK_METHOD1(
-      GetComponentTransform,
-      GRK_ComponentHandle<GRK_TransformComponent, MockECM>(GRK_Entity entity));
-  template<class ComponentType>
-  GRK_ComponentHandle<ComponentType, MockECM>
-      GetComponent(GRK_Entity entity) {
-    return GRK_ComponentHandle<ComponentType, MockECM>(this, nullptr, kTestEntityId);
-  }
-};
-
-/** Add Component Specialization for transform. */
-template<> GRK_Result MockECM::AddComponent(GRK_Entity entity, GRK_TransformComponent component) {
-  return AddComponentTransform(entity, std::forward<GRK_TransformComponent>(component));
-}
-
-template<> GRK_Result MockECM::RemoveComponent<GRK_TransformComponent>(GRK_Entity entity) {
-  return RemoveComponentTransform(entity);
-}
-
-template<>
-GRK_ComponentHandle<GRK_TransformComponent, MockECM>
-    MockECM::GetComponent<GRK_TransformComponent>(GRK_Entity entity) {
-  return GetComponentTransform(entity);
-}
+auto constexpr kTestEntityId = 37;
 
 class TestEntityHandle : public Test {
  protected:

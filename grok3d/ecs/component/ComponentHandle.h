@@ -32,7 +32,7 @@ class GRK_ComponentHandle {
    * location in the GRK_EntityComponentManager__::componentStores_ tuple of vectors
    * @param[in] owner The @link GRK_Entity GRK_Entity @endlink to which this GRK_Component* will belong*/
   GRK_ComponentHandle(
-      const ECM* entityComponentManager,
+      ECM* entityComponentManager,
       const ComponentType* component,
       const GRK_Entity owner) noexcept :
       owner_(owner),
@@ -53,7 +53,7 @@ class GRK_ComponentHandle {
     return ((components & thisComponentBitMask) == thisComponentBitMask);
   }
 
-  /**dereferences and fowards to internal ComponentType*/
+  /** Dereferences and fowards to internal ComponentType. */
   auto operator->() -> ComponentType* {
     if (IsHandleValid()) {
       return const_cast<ComponentType*>(component_);
@@ -62,8 +62,8 @@ class GRK_ComponentHandle {
     }
   }
 
-  /**forwards a call to the manager to remove this component from owning entity*/
-  auto Destroy() const -> GRK_Result {
+  /** Forwards a call to the manager to remove this component from owning entity. */
+  auto Destroy() -> GRK_Result {
     return manager_->template RemoveComponent<ComponentType>(owner_);
   }
 
@@ -77,7 +77,7 @@ class GRK_ComponentHandle {
   const ComponentType* component_;
 
   /// The manager which created this handle, passed in as "this" on construction
-  const ECM * manager_;
+  ECM * manager_;
 };
 }
 

@@ -73,7 +73,10 @@ test_suite(
 # ECS only tests
 test_suite(
     name = "ecs_tests",
-    tests = [":entityhandle_tests"],
+    tests = [
+        ":componenthandle_tests",
+        ":entityhandle_tests",
+    ],
 )
 
 cc_test(
@@ -82,6 +85,20 @@ cc_test(
     linkopts = GROK3D_RUNTIME_LIBS,
     deps = [
         ":grok3d",
+        "//grok3d/tests/mocks",
+        "@gtest",
+        # Includes the main function for us, custom is possible but not necessary.
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "componenthandle_tests",
+    srcs = ["tests/ecs/componenthandletest.cpp"],
+    linkopts = GROK3D_RUNTIME_LIBS,
+    deps = [
+        ":grok3d",
+        "//grok3d/tests/mocks",
         "@gtest",
         # Includes the main function for us, custom is possible but not necessary.
         "@gtest//:gtest_main",

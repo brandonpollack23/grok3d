@@ -126,7 +126,7 @@ auto GRK_TransformComponent::GetChild(const unsigned int index) const -> GRK_Tra
 //template specialization for GRK_TransformComponent
 //every entity MUST have this it cannot be destroyed
 template<>
-auto GRK_ComponentHandle<GRK_TransformComponent>::Destroy() const -> GRK_Result {
+auto GRK_ComponentHandle<GRK_TransformComponent>::Destroy() -> GRK_Result {
   //TODO 20 log that this cant happen
   return GRK_Result::Ok;
 }

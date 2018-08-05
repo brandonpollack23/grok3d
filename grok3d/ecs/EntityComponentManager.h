@@ -268,7 +268,7 @@ class GRK_EntityComponentManager__ {
    *
    * @tparam ComponentType the type of component you'd like to get a handle for*/
   template<class ComponentType>
-  auto GetComponent(GRK_Entity entity) const -> GRK_ComponentHandle<ComponentType> {
+  auto GetComponent(GRK_Entity entity) -> GRK_ComponentHandle<ComponentType> {
     static_assert(notstd::param_pack_has_type<ComponentType, ComponentTypes...>::value,
                   "GetComponent Function requires ComponentType be one of the template params of GRK_EntityComponentManager__");
 

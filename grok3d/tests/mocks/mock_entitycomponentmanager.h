@@ -38,8 +38,8 @@ class MockECM {
   }
 
   template<class ComponentType>
-  static constexpr auto GetComponentTypeAccessIndex() -> size_t {
-    return 0x0100;
+  static auto GetComponentTypeAccessIndex() -> size_t {
+    return 2;
   }
 };
 

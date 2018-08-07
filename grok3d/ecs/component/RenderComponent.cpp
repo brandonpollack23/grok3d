@@ -32,7 +32,19 @@ GRK_RenderComponent::GRK_RenderComponent(
     drawFunctionType_(GRK_DrawFunction::DrawArrays),
     drawingPrimitive_(primitive),
     shaderProgramID_(shaderProgramID) {
-  //First bind Vertex Array Object, then bind and set vertex buffers, then configure vertex attributes
+  CreateVertexArrayAndBuffer();
+  SendDataToGPU(vertexes, vertexSize);
+
+  // Used for chaining vertices together to make many triangles.
+  MaybeCreateElementArrayBuffer(indices);
+
+  ConfigureVertexAttributes(vertexAttributes, numVertexAttributes);
+
+  UnbindBufferAndVertexArray();
+
+}
+
+void GRK_RenderComponent::CreateVertexArrayAndBuffer() {
   glGenVertexArrays(1, &vertexArrayObject_); // Create Vertex Array Object.
   glGenBuffers(1, &vertexBufferObject_); // Create OGL buffer to store vertex data.
 
@@ -40,13 +52,14 @@ GRK_RenderComponent::GRK_RenderComponent(
   glBindBuffer(GL_ARRAY_BUFFER,
                vertexBufferObject_); // Bind current Vertex Buffer Object to context's Array Buffer attribute.
 
-  // TODO not always STATIC DRAW.
+}
+
+void GRK_RenderComponent::SendDataToGPU(const std::unique_ptr<float[]>& vertexes, size_t vertexSize) {// TODO not always STATIC DRAW.
   // Bound type, size in bytes to copy (3 data per vertex X bytes per data), buffer to copy, data access pattern
   glBufferData(GL_ARRAY_BUFFER, vertexCount_ * vertexSize * kDimensions, vertexes.get(), GL_STATIC_DRAW);
+}
 
-  // If we passed any indices_ we need to set up an Element Buffer Object
-  // in order to tell OGL what order to draw the vertexes_ in to make triangles (this saves
-  // repeating vertexes_ in every triangle)
+void GRK_RenderComponent::MaybeCreateElementArrayBuffer(const unsigned int* indices) {// If we passed any indices_ we need to set up an Element Buffer Object
   if (indices != nullptr && numIndices_ > 3 && IndexTypeIsValid()) {
     //create EBO
     glGenBuffers(1, &elementBufferObject_);
@@ -58,8 +71,21 @@ GRK_RenderComponent::GRK_RenderComponent(
 
     drawFunctionType_ = GRK_DrawFunction::DrawElements;
   }
+}
 
-  // Configure vertex attributes
+/**
+ * Store topology information of the vertex buffer (offsets, sizes, strides of
+ * different data
+ *
+ * <p>such as:
+ * <ul>
+ *    <li>vertex colors
+ *    <li>texture coordinates
+ *    <li>the texture data
+ */
+void GRK_RenderComponent::ConfigureVertexAttributes(
+    const GRK_VertexAttribute* vertexAttributes,
+    GLsizei numVertexAttributes) {
   for (GLsizei i = 0; i < numVertexAttributes; i++) {
     auto& attribute = vertexAttributes[i];
     glVertexAttribPointer(
@@ -72,8 +98,9 @@ GRK_RenderComponent::GRK_RenderComponent(
 
     glEnableVertexAttribArray(static_cast<GLuint>(i));
   }
+}
 
-  // Buffer already associated with VAO, no need to leave it bound.
+void GRK_RenderComponent::UnbindBufferAndVertexArray() {// Buffer already associated with VAO, no need to leave it bound.
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   // Unbind VAO to prevent further modification elsewhere.
   glBindVertexArray(0);

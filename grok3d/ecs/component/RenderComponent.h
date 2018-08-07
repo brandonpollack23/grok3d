@@ -105,6 +105,12 @@ class GRK_RenderComponent {
         vertexPrimitiveType_ == GRK_GL_PrimitiveType::Unsigned_Short;
   }
 
+  void CreateVertexArrayAndBuffer();
+  void SendDataToGPU(const std::unique_ptr<float[]>& vertexes, size_t vertexSize);
+  void MaybeCreateElementArrayBuffer(const unsigned int* indices);
+  void ConfigureVertexAttributes(const GRK_VertexAttribute* vertexAttributes, GLsizei numVertexAttributes);
+  void UnbindBufferAndVertexArray();
+
  private:
   std::size_t vertexBufferObjectOffset_;
   std::size_t vertexCount_;

@@ -11,7 +11,7 @@ using namespace Grok3d;
 using namespace Grok3d::Shaders;
 
 // TODO should there only be one vertex buffer per shader?
-// TODO when you start using files, pass a handle to the vertexes (returned from a factory that loads files/converts literals) instead of the vertexes themselves.
+// TODO replace vertexes with handle to vertexes like textures have.
 GRK_RenderComponent::GRK_RenderComponent(
     std::unique_ptr<float[]>& vertexes,
     std::size_t vertexCount,

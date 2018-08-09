@@ -59,6 +59,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "//grok3d/glad",
+        "//grok3d/textures",
         "//notstd",
         "@glfw//:glfw3",
         "@glm",

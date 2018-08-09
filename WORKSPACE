@@ -13,6 +13,13 @@ new_git_repository(
     tag = "0.9.9.0",
 )
 
+new_git_repository(
+    name = "stb",
+    build_file = "buildfiles-bazel/stb.BUILD",
+    remote = "https://github.com/nothings/stb",
+    commit = "e6afb9cbae4064da8c3e69af3ff5c4629579c1d2", #TODO use branch tracking version
+)
+
 # Needed by googletest.
 http_archive(
      name = "com_google_absl",

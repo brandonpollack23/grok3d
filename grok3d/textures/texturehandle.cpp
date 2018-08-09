@@ -15,13 +15,13 @@
 
 using namespace Grok3d::GLPrimitives;
 
-TextureHandle::TextureHandle(GLuint id)
+TextureHandle::TextureHandle(TextureHandle::TextureID id)
     : id_(id),
       tracker_(nullptr, [this](std::nullptr_t ptr) {
         glDeleteTextures(1, reinterpret_cast<const GLuint*>(&id_));
       }) {}
 
-auto TextureHandle::Load2DTexture(char* filename) -> TextureHandle {
+auto TextureHandle::Load2DTexture(const char* filename) -> TextureHandle {
   float black[4] = {0.0f, 0.0f, 0.0f, 1.0f};
   return Load2DTexture(
       filename,
@@ -32,16 +32,17 @@ auto TextureHandle::Load2DTexture(char* filename) -> TextureHandle {
       black);
 }
 
-TextureHandle TextureHandle::Load2DTexture(char* filename,
-                                          WrapMode sWrapMode,
-                                           WrapMode tWrapMode,
-                                          FilterMode minFilterMode,
-                                          FilterMode magFilterMode,
-                                          float* borderColor) {
+TextureHandle TextureHandle::Load2DTexture(
+    const char* filename,
+    WrapMode sWrapMode,
+    WrapMode tWrapMode,
+    FilterMode minFilterMode,
+    FilterMode magFilterMode,
+    float* borderColor) {
   // Load texture file image data.
   int width, height, channels_in_file;
   std::unique_ptr<unsigned char> data(stbi_load(filename, &width, &height, &channels_in_file, 0));
-  if (data.get() == nullptr) {
+  if (data == nullptr) {
     std::cout << "Error loading texture: " << filename
               << "\n" << "Due to: " << stbi_failure_reason() << std::endl;
     std::exit(-1);
@@ -90,4 +91,14 @@ void TextureHandle::Setup2DTextureFiltering(
 void TextureHandle::Send2DTextureDataToGPU(int width, int height, const std::unique_ptr<unsigned char>& data) {
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data.get());
   glGenerateMipmap(GL_TEXTURE_2D);
+}
+
+// 0 is the default texture of none.
+auto TextureHandle::NoTexture() -> TextureHandle {
+  static auto noTexture = TextureHandle(static_cast<TextureID>(0));
+  return noTexture;
+}
+
+auto TextureHandle::GetId() -> TextureID {
+  return id_;
 }

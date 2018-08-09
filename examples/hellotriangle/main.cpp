@@ -33,6 +33,7 @@ auto HelloTriangleTest(char** args) -> void {
             vertexes,
             3,
             sizeof(float),
+            GLPrimitives::TextureHandle::NoTexture(),
             GRK_GL_PrimitiveType::Unsigned_Int,
             nullptr,
             0,

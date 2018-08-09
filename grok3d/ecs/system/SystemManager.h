@@ -10,8 +10,8 @@
 
 #include "grok3d/grok3d_types.h"
 #include "grok3d/ecs/system/System.h"
-#include "grok3d/ecs/system/GameLogicSystem.h"
 #include "grok3d/ecs/system/RenderSystem.h"
+#include "grok3d/ecs/system/GameLogicSystem.h"
 
 #include <array>
 

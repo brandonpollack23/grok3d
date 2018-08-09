@@ -13,6 +13,7 @@
 
 #include "grok3d/grok3d_types.h"
 #include "grok3d/shaders/shaderprogram.h"
+#include "grok3d/textures/texturehandle.h"
 
 #include "grok3d/glad/glad/glad.h"
 #include "glm/fwd.hpp"
@@ -21,6 +22,7 @@
 #include <memory>
 
 namespace Grok3d {
+
 enum class GRK_DrawFunction {
   DrawArrays, ///< Use glDrawArrays to draw this, it is just a list of vertices
   DrawElements ///< Use glDrawElements to draw this, it is an EBO indexed vertex object
@@ -43,7 +45,8 @@ struct GRK_VertexAttribute {
 // when this is created, use shared_ptr to reference count them, and move the freeing of those buffers to it's destructor
 // using shared_ptr will require overridding it's constructor/destructor to use OGL.
 
-// TODO for model data, only store GL references to vertex buffers
+// TODO make model loader that returns handles like texturehandle, pass that instead of vertexes
+// it can store count, size as well, and all the element buffer index data.
 
 class GRK_RenderComponent {
  public:
@@ -51,6 +54,7 @@ class GRK_RenderComponent {
       std::unique_ptr<float[]>& vertexes,
       std::size_t vertexCount,
       std::size_t vertexSize,
+      const GLPrimitives::TextureHandle& textureHandle,
       GRK_GL_PrimitiveType indexType,
       unsigned int* indices,
       std::size_t numIndices,
@@ -60,12 +64,9 @@ class GRK_RenderComponent {
       GLsizei numVertexAttributes) noexcept;
 
   GRK_RenderComponent() = default;
-  GRK_RenderComponent(GRK_RenderComponent&& other);
-  GRK_RenderComponent& operator=(GRK_RenderComponent&& other) noexcept;
-
-  ~GRK_RenderComponent();
-
-  void freeGlPrimitives();
+  GRK_RenderComponent(const GRK_RenderComponent& other) = default;
+  GRK_RenderComponent(GRK_RenderComponent&& other) = default;
+  GRK_RenderComponent& operator=(GRK_RenderComponent&& other) = default;
 
   auto GetVAO() const { return vertexArrayObject_; }
 
@@ -74,6 +75,10 @@ class GRK_RenderComponent {
   auto GetVertexCount() const { return vertexCount_; }
 
   auto GetVertexPrimitiveType() const { return vertexPrimitiveType_; }
+
+  auto GetTextureHandle() const -> GLPrimitives::TextureHandle& {
+    return const_cast<GLPrimitives::TextureHandle&>(textureHandle_);
+  }
 
   auto GetIndexCount() const { return numIndices_; }
 
@@ -115,7 +120,10 @@ class GRK_RenderComponent {
   std::size_t vertexBufferObjectOffset_;
   std::size_t vertexCount_;
 
+  GLPrimitives::TextureHandle textureHandle_;
+
   GRK_GL_PrimitiveType vertexPrimitiveType_;
+
   std::size_t numIndices_;
 
   /** VertexArrayObject descriptor

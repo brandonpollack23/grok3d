@@ -25,6 +25,7 @@
 #include "ecs/system/RenderSystem.h"
 
 #include "grok3d/shaders/shaderprogram.h"
+#include "grok3d/textures/texturehandle.h"
 
 #include "engine/Engine.h"
 

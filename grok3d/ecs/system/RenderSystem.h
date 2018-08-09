@@ -53,6 +53,10 @@ class GRK_RenderSystem {
 
   auto RenderComponents() const -> void;
 
+  auto PrepareOGLDraw(const GRK_RenderComponent& renderComponent) const -> void;
+
+  auto BindTexture(const GRK_RenderComponent& renderComponent) const -> void;
+
   auto Swap() const -> void;
 
   auto PollWindowEvents() const -> void;

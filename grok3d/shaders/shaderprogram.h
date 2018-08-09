@@ -13,6 +13,7 @@
 
 #include "grok3d/glad/glad/glad.h"
 
+// TODO make shaderhandles work like texturehandles
 /**
  * @brief A set of functions that manage lifetime of shaders and returns handles to them to unload
  *

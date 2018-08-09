@@ -9,8 +9,8 @@
 #define __ENGINE__H
 
 #include "grok3d/grok3d_types.h"
-#include "grok3d/ecs/system/SystemManager.h"
 #include "grok3d/ecs/EntityComponentManager.h"
+#include "grok3d/ecs/system/SystemManager.h"
 
 #include <functional>
 #include <chrono>

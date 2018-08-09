@@ -10,6 +10,7 @@
 #include "grok3d/grok3d_types.h"
 #include "grok3d/ecs/system/RenderSystem.h"
 #include "grok3d/ecs/EntityComponentManager.h"
+#include "grok3d/textures/texturehandle.h"
 
 #include "grok3d/glad/glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -127,18 +128,11 @@ auto GRK_RenderSystem::ClearBuffer() const -> void {
 }
 
 auto GRK_RenderSystem::RenderComponents() const -> void {
+  // TODO for each rendercomponent it has a transform component...need to find MVP and set uniform.
+  // I put a corresponding TODO in RenderComponent.h which caches the transform component, so I can get it easily here.
   for (auto& renderComponent : *renderComponents_) {
-    // Specify shader program.
-    glUseProgram(renderComponent.GetShaderProgramID());
+    PrepareOGLDraw(renderComponent);
 
-    // TODO for each rendercomponent there can be multiple vertex arrays...
-    // Bind VAO (rules for how this vertex shader data is formatted).
-    glBindVertexArray(renderComponent.GetVAO());
-
-    // TODO for each rendercomponent it has a transform component...need to find MVP and set uniform.
-    // I put a corresponding TODO in RenderComponent.h which caches the transform component, so I can get it easily here.
-
-    //draw
     switch (renderComponent.GetDrawFunction()) {
       case GRK_DrawFunction::DrawArrays:
         glDrawArrays(
@@ -156,6 +150,21 @@ auto GRK_RenderSystem::RenderComponents() const -> void {
       default:break;
     }
   }
+}
+
+auto GRK_RenderSystem::PrepareOGLDraw(const GRK_RenderComponent& renderComponent) const -> void {
+  glUseProgram(renderComponent.GetShaderProgramID());
+
+  BindTexture(renderComponent);
+
+  // Bind VAO (rules for how this vertex shader data is formatted).
+  glBindVertexArray(renderComponent.GetVAO());
+}
+
+// TODO support other texture types.
+void GRK_RenderSystem::BindTexture(const GRK_RenderComponent& renderComponent) const {
+  auto& textureHandle = renderComponent.GetTextureHandle();
+  glBindTexture(GL_TEXTURE_2D, textureHandle.GetId());
 }
 
 /**

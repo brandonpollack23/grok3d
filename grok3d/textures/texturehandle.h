@@ -33,19 +33,29 @@ class TextureHandle {
     LinearMipMapLinear = GL_LINEAR_MIPMAP_LINEAR,
   };
 
-  TextureHandle(TextureID id);
+  TextureHandle() = default;
+  TextureHandle(const TextureHandle&) = default;
+  TextureHandle(TextureHandle&&) = default;
+  TextureHandle& operator=(TextureHandle&&) = default;
 
+ public:
   /** Convenience function for repeating textures and trilinear filtering, black border. */
-  static auto Load2DTexture(char* filename) -> TextureHandle;
+  static auto Load2DTexture(const char* filename) -> TextureHandle;
   static auto Load2DTexture(
-      char* filename,
+      const char* filename,
       WrapMode sWrapMode,
       WrapMode tWrapMode,
       FilterMode minFilterMode,
       FilterMode magFilterMode,
       float borderColor[4]) -> TextureHandle;
 
+  static auto NoTexture() -> TextureHandle;
+
+  auto GetId() -> TextureID;
+
  private:
+  explicit TextureHandle(TextureID id);
+
   static auto Setup2DTextureParameters(
       WrapMode sWrapMode,
       WrapMode tWrapMode,
@@ -57,6 +67,7 @@ class TextureHandle {
   static void Setup2DTextureFiltering(FilterMode minFilterMode, FilterMode magFilterMode);
 
   static auto Send2DTextureDataToGPU(int width, int height, const std::unique_ptr<unsigned char>& data) -> void;
+
  private:
   TextureID id_;
   std::shared_ptr<std::nullptr_t> tracker_;

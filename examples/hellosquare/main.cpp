@@ -10,6 +10,7 @@
 #include <iostream>
 
 using namespace Grok3d;
+using namespace Grok3d::GLPrimitives;
 
 auto HelloSquareTest(char* args[]) -> void;
 auto GetHelloSquareInitializationFunction(const char* const args[]) -> std::function<GRK_Result(
@@ -86,6 +87,7 @@ GetHelloSquareInitializationFunction(const char* const* args) {
         vertexes,
         4,
         sizeof(float),
+        TextureHandle::NoTexture(),
         GRK_GL_PrimitiveType::Unsigned_Int,
         indices.get(),
         6,

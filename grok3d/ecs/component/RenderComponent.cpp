@@ -6,9 +6,11 @@
 /** @file */
 
 #include "grok3d/ecs/component/RenderComponent.h"
+#include "grok3d/textures/texturehandle.h"
 
 using namespace Grok3d;
 using namespace Grok3d::Shaders;
+using namespace Grok3d::GLPrimitives;
 
 // TODO should there only be one vertex buffer per shader?
 // TODO replace vertexes with handle to vertexes like textures have.
@@ -16,22 +18,24 @@ GRK_RenderComponent::GRK_RenderComponent(
     std::unique_ptr<float[]>& vertexes,
     std::size_t vertexCount,
     std::size_t vertexSize, //eg sizeof(float)
+    const TextureHandle& textureHandle,
     GRK_GL_PrimitiveType indexType,
     unsigned int* indices,
     std::size_t numIndices,
     GRK_OpenGLPrimitive primitive,
     GRK_ShaderProgramID shaderProgramID,
     GRK_VertexAttribute vertexAttributes[],
-    GLsizei numVertexAttributes) noexcept :
-    vertexBufferObjectOffset_(0),
-    vertexCount_(vertexCount),
-    vertexPrimitiveType_(indexType),
-    numIndices_(numIndices),
-    elementBufferObject_(0), //overwrite later in constructor if necessary
-    elementBufferObjectOffset_(0),
-    drawFunctionType_(GRK_DrawFunction::DrawArrays),
-    drawingPrimitive_(primitive),
-    shaderProgramID_(shaderProgramID) {
+    GLsizei numVertexAttributes) noexcept
+    : vertexBufferObjectOffset_(0),
+      vertexCount_(vertexCount),
+      textureHandle_(textureHandle),
+      vertexPrimitiveType_(indexType),
+      numIndices_(numIndices),
+      elementBufferObject_(0), //overwrite later in constructor if necessary
+      elementBufferObjectOffset_(0),
+      drawFunctionType_(GRK_DrawFunction::DrawArrays),
+      drawingPrimitive_(primitive),
+      shaderProgramID_(shaderProgramID) {
   CreateVertexArrayAndBuffer();
   SendDataToGPU(vertexes, vertexSize);
 
@@ -45,12 +49,18 @@ GRK_RenderComponent::GRK_RenderComponent(
 }
 
 void GRK_RenderComponent::CreateVertexArrayAndBuffer() {
-  glGenVertexArrays(1, &vertexArrayObject_); // Create Vertex Array Object.
-  glGenBuffers(1, &vertexBufferObject_); // Create OGL buffer to store vertex data.
+  // Create Vertex Array Object.
+  glGenVertexArrays(1, &vertexArrayObject_);
+  // Create OGL buffer to store vertex data.
+  glGenBuffers(1, &vertexBufferObject_);
 
-  glBindVertexArray(vertexArrayObject_); // Bind this Vertex Array Object to the context.
-  glBindBuffer(GL_ARRAY_BUFFER,
-               vertexBufferObject_); // Bind current Vertex Buffer Object to context's Array Buffer attribute.
+  // Bind this Vertex Array Object to the context.
+  glBindVertexArray(vertexArrayObject_);
+
+  // Bind current Vertex Buffer Object to context's Array Buffer attribute.
+  glBindBuffer(
+      GL_ARRAY_BUFFER,
+      vertexBufferObject_);
 
 }
 
@@ -104,28 +114,4 @@ void GRK_RenderComponent::UnbindBufferAndVertexArray() {// Buffer already associ
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   // Unbind VAO to prevent further modification elsewhere.
   glBindVertexArray(0);
-}
-
-GRK_RenderComponent::~GRK_RenderComponent() {
-  freeGlPrimitives();
-}
-
-void GRK_RenderComponent::freeGlPrimitives() {
-  glDeleteVertexArrays(1, &vertexArrayObject_);
-  glDeleteBuffers(1, &vertexBufferObject_);
-
-  if (elementBufferObject_ != 0) {
-    glDeleteBuffers(1, &elementBufferObject_);
-  }
-}
-
-GRK_RenderComponent::GRK_RenderComponent(GRK_RenderComponent&& other) {
-  std::memcpy(this, &other, sizeof(GRK_RenderComponent));
-  std::memset(&other, 0, sizeof(GRK_RenderComponent));
-}
-
-GRK_RenderComponent& GRK_RenderComponent::operator=(GRK_RenderComponent&& other) noexcept {
-  std::memcpy(this, &other, sizeof(GRK_RenderComponent));
-  std::memset(&other, 0, sizeof(GRK_RenderComponent));
-  return *this;
 }

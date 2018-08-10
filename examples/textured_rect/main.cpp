@@ -94,7 +94,7 @@ auto LoadElementIndices() -> std::unique_ptr<unsigned int[]> {
 
 auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[]>, GLsizei> {
   GLsizei numAttributes = 3;
-  auto attributes = std::make_unique<GRK_VertexAttribute[]>(numAttributes);
+  auto attributes = std::make_unique<GRK_VertexAttribute[]>(static_cast<size_t>(numAttributes));
 
   GLsizei stride = // 2*size of 3d point float + 1*size of 2d point float
       2 * static_cast<GLsizei>(kDimensions)
@@ -120,9 +120,9 @@ auto CreateVertexAttributes() -> std::tuple<std::unique_ptr<GRK_VertexAttribute[
       stride, // stride
       reinterpret_cast<void*>(colorOffset),
   };
-  attributes[1] = {
+  attributes[2] = {
       2, // index
-      3, // size
+      2, // size
       GL_FLOAT, // type
       GL_FALSE, // normalize
       stride, // stride

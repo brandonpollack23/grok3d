@@ -1,3 +1,8 @@
+# No longer in development
+Despite what the rest of this readme and repo says, I have this up for posterity.  My focus has shifted to graphics and rendering and therefore [sarekt](https://github.com/brandonpollack23/sarekt).  This repository is still full of interesting template meta programming nuggets.
+
+I'm most proud of the compile time ECS Component Bit generation. Gross.
+
 # Grok3d - An Open Source Game Engine You can Grok!
 
 This is an attempt to make an Entity Component System (ECS) based game engine from scratch in C++
